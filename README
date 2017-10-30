@@ -1,0 +1,46 @@
+The distribution contains XX directories, YYY files. The list of
+directories and files is given at the end of this file (following the
+starred line)
+
+===========================================================================
+          B R I E F     C O N T E N T S     D E S C R I P T I O N
+===========================================================================
+
+README: (This file)
+README.md (instructions for git users)
+
+===========================================================================
+                   I N S T A L L A T I O N
+===========================================================================
+
+
+====================================================================================
+              R U N N I N G     T H E     P R O G R A M S
+====================================================================================
+
+
+
+====================================================================================
+                  L I S T    O F    F I L E S
+====================================================================================
+
+Use 'tree' for creating this
+
+***********************************************************************
+├── README
+└── src
+    ├── alignandcomparemolecule
+    │   ├── alignandcomparemolecule.cc
+    │   ├── localdefs.h
+    │   └── makefile
+    ├── common
+    │   ├── globaldefs.h
+    │   ├── makefile
+    │   ├── screenutils.cpp
+    │   └── screenutils.h
+    ├── devdoc
+    │   └── Doxyfile
+    └── test
+        ├── makefile
+        └── test_screenutils.cc
+
