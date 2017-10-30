@@ -18,8 +18,14 @@ public:
 	double getYCoordinate();
 	double getZCoordinate();
 	//vector<double> getCoordinates();
-/* Assing name and letter to type of element */
+/* Assign name and letter to type of element */
 	void setTypeElement(string element);
+	string getTypeElement();
+/* Assign atomic weight to the element  */
+	double getWeightElement();
+
+/***************************************************************************************/  
+/***************************************************************************************/  
 
 protected:
 	double xPosition;
@@ -27,4 +33,12 @@ protected:
 	double zPosition;
 	vector<double> coordinates; 
 	string typeAtom;
+	int numelement;
+	double weighelement;
+
+/***************************************************************************************/  
+/***************************************************************************************/  
+
+private:
+	int convertTypeElement2NumElement(string);
 };

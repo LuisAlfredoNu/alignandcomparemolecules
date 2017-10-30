@@ -11,6 +11,9 @@ using std::vector;
 
 int main (int argc, char *argv[])
 {
+	cout << endl << "********************************************************" << endl;
+	cout << " Testing for Atom Class " << endl;
+	cout << "********************************************************" << endl << endl;
 	vector<Atom> atoms (3,Atom());
 
 	double x1=1.5, y1=2.0, z1=0.5;
@@ -18,7 +21,7 @@ int main (int argc, char *argv[])
 	double x3=1.2, y3=3.4, z3=5.6;
 	string nameelemnt01 ("H");
 	string nameelemnt02 ("C");
-	string nameelemnt03 ("Ne");
+	string nameelemnt03 ("Alfredo");
 
 	atoms[0].setCoordinates(x1,y1,z1);
 	atoms[0].setTypeElement(nameelemnt01);
@@ -26,8 +29,10 @@ int main (int argc, char *argv[])
 	atoms[1].setTypeElement(nameelemnt02);
 	atoms[2].setCoordinates(x3,y3,z3);
 	atoms[2].setTypeElement(nameelemnt03);
-	for(int i=0;i<3;i++)
-		cout << "Coordinates of atom "<< i <<" = " << atoms[i].getXCoordinate() <<","<< atoms[i].getYCoordinate() <<","<< atoms[i].getZCoordinate() <<"  Element: "<< atoms[i].getTypeElement() << endl;
+	for(int i=0;i<3;i++){
+		cout << "Coordinates of atom "<< i <<" = " << atoms[i].getXCoordinate() <<","<< atoms[i].getYCoordinate() <<","<< atoms[i].getZCoordinate() << endl;
+		cout << "Element: "<< atoms[i].getTypeElement() << "   Atomic weight= "<< atoms[i].getWeightElement() << endl;
+	 }
 
 
 	return EXIT_SUCCESS;

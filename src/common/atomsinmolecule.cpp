@@ -2,6 +2,9 @@
  * Class for Atoms inside of molecules for align and compare 2 molecules
  */
 
+#include <iostream>
+using std::cout;
+using std::endl;
 #include <string>
 using std::string;
 #include <vector>
@@ -16,6 +19,8 @@ Atom::Atom(){
 	yPosition=0.0;
 	zPosition=0.0;
 	typeAtom.clear();
+	numelement=0;
+	weighelement=0.0;
 	}
 
 void Atom::setCoordinates(double x, double y, double z){
@@ -42,11 +47,34 @@ double Atom::getZCoordinate(){
 /***************************************************************************************/ 
 /***************************************************************************************/ 
 void Atom::setTypeElement(string element){
-	if(element.size()>3){
+	if(element.size()<3){
 		typeAtom = element;}
 	else{
-		cout << "Its not a element" << endl;
+		typeAtom = element; 
+		typrAtom +=" Invalid element";}
+			// Launch a error menssage
 }
 string Atom::getTypeElement(){
 	return typeAtom;
+}
+/***************************************************************************************/  
+/***************************************************************************************/  
+double Atom::getWeightElement(){
+	switch(convertTypeElement2NumElement(typeAtom)){
+		case 1 :
+			weighelement=1.002;
+			break;
+		case 0 :
+			weighelement=0.0;
+			// Launch a error menssage
+			break;
+	}
+	return weighelement;
+}
+int Atom::convertTypeElement2NumElement(string element){
+	if(element == "H"){
+		numelement=1;}
+	else{numelement = 0;}
+			// Launch a error menssage
+	return numelement;
 }
