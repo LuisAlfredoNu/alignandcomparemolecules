@@ -2,4 +2,13 @@
 /* Class of Molecular Operations       */
 /***************************************************************************************/  
 
-MolecularOpetations::MolecularOpetations(){}
+#include "atomsinmolecule.h"
+
+class MolecularOpetations{
+	public:
+		MolecularOpetations();
+		massCenter(Atom molecule);
+	private:
+
+	protected:
+};

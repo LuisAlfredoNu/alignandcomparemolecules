@@ -3,3 +3,7 @@
 /***************************************************************************************/  
 
 MolecularOpetations::MolecularOpetations(){}
+
+vector massCenter(Atom molecule){
+
+}
