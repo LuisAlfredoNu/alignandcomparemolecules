@@ -17,7 +17,7 @@ public:
 	double getXCoordinate();
 	double getYCoordinate();
 	double getZCoordinate();
-	//vector<double> getCoordinates();
+	vector<double> getCoordinates();
 /* Assign name and letter to type of element */
 	void setTypeElement(string element);
 	string getTypeElement();

@@ -7,7 +7,7 @@
 class MolecularOpetations{
 	public:
 		MolecularOpetations();
-		massCenter(Atom molecule);
+		vector<double> massCenter(Atom molecule);
 	private:
 
 	protected:

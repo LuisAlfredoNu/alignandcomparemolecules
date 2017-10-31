@@ -41,9 +41,9 @@ double Atom::getYCoordinate(){
 double Atom::getZCoordinate(){
 	return zPosition;
 }
-//vector<double> Atom::getCoodinates(){
-//	return coordinates
-//}
+vector<double> Atom::getCoodinates(){
+	return coordinates
+}
 /***************************************************************************************/ 
 /***************************************************************************************/ 
 void Atom::setTypeElement(string element){
