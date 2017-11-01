@@ -37,15 +37,16 @@ vector<vector<double>> MolecularOperations::inertiaTensor(vector<Atom> molecule)
 	double module_r2=0.0;
 
 	for(int i=0;i<3;i++){
-		for(int j=0;i<3;j++){
+		for(int j=0;j<3;j++){
 			if(i==j){
 				for(unsigned int im=0;im<molecule.size();im++){
-					for(int jm=0;jm<3;jm++) module_r2 += molecule[im].atomCoordinates[jm] * molecule[im].atomCoordinates[jm];
-					matrix[i][j] = molecule[im].atomWeight * (module_r2 - molecule[im].atomCoordinates[i] * molecule[im].atomCoordinates[j]); 
+					module_r2 = 0.0;
+					for(int xyz=0;xyz<3;xyz++) module_r2 += molecule[im].atomCoordinates[xyz] * molecule[im].atomCoordinates[xyz];
+					matrix[i][j] += molecule[im].atomWeight * (module_r2 - molecule[im].atomCoordinates[i] * molecule[im].atomCoordinates[j]); 
 				}
 			}else{
 				for(unsigned int im=0;im<molecule.size();im++) 
-					matrix[i][j] = molecule[im].atomWeight * molecule[im].atomCoordinates[i] * molecule[im].atomCoordinates[j] ;
+					matrix[i][j] += molecule[im].atomWeight * molecule[im].atomCoordinates[i] * molecule[im].atomCoordinates[j] ;
 				matrix[i][j] = -matrix[i][j];
 			}
 		}

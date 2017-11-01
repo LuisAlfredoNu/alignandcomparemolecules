@@ -40,11 +40,17 @@ int main (int argc, char *argv[])
 /***************************************************************************************/ 
 
 	MolecularOperations molecularop;
-	vector<double> rmasscenter(3);
-	
+	vector<double> rmasscenter(3,0);
+	vector<vector<double>> inertiatensor(3,vector<double>(3,0));
+
 	rmasscenter = molecularop.massCenter(molecule);
 
 	for(int i=0;i<3;++i) cout << "Coordinate of Center of mass = " << rmasscenter[i] << endl;
+	
+	inertiatensor= molecularop.inertiaTensor(molecule);
+	
+	cout << endl << "Inertia Tensor - Matrix" << endl;
+	for(int i=0;i<3;++i) cout << " | " << inertiatensor[i][0] << "\t--\t" << inertiatensor[i][1]<< "\t--\t" << inertiatensor[i][2] << " | " << endl;
 
 
 	return EXIT_SUCCESS;
