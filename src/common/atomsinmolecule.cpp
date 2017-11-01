@@ -1,6 +1,8 @@
 /* 
  * Class for Atoms inside of molecules for align and compare 2 molecules
  */
+#ifndef _ATOM_CPP_
+#define _ATOM_CPP_
 
 #include <iostream>
 using std::cout;
@@ -98,3 +100,4 @@ string Atom::convertAtomNumber2AtomSymbol(int number){
 
 	return listatomymbol[number-1]; 
 }
+#endif // _ATOM_CPP_

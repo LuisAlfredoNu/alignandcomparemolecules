@@ -1,6 +1,8 @@
 /* 
  * Class for Atoms inside of molecules for align and compare 2 molecules
  */
+#ifndef _ATOM_H_
+#define _ATOM_H_
 
 #include <string>
 using std::string;
@@ -47,3 +49,4 @@ private:
 /* Assign atomic weight to the element  */
 	double setAtomWeight(int);
 };
+#endif // _ATOM_H_
