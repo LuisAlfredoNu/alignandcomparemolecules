@@ -11,18 +11,24 @@ class Atom{
 /***************************************************************************************/ 
 public:
 	Atom();
+/***************************************************************************************/ 
+	// Variables
+	int atomNumber;
+	string atomSymbol;
+	vector<double> atomCoordinates; 
+	double atomWeight;
+	bool statusData;
+
+/***************************************************************************************/ 
 /* Assing values to coordinates X,Y,Z */
 	void setCoordinates(double x, double y, double z);
 /* Get the Value of the atom */
 	double getXCoordinate();
 	double getYCoordinate();
 	double getZCoordinate();
-	vector<double> getCoordinates();
 /* Assign name and letter to type of element */
-	void setTypeElement(string element);
-	string getTypeElement();
-/* Assign atomic weight to the element  */
-	double getWeightElement();
+	void setAtomSymbol(string);
+	void setAtomNumber(int);
 
 /***************************************************************************************/  
 /***************************************************************************************/  
@@ -31,14 +37,13 @@ protected:
 	double xPosition;
 	double yPosition;
 	double zPosition;
-	vector<double> coordinates; 
-	string typeAtom;
-	int numelement;
-	double weighelement;
 
 /***************************************************************************************/  
 /***************************************************************************************/  
 
 private:
-	int convertTypeElement2NumElement(string);
+	string convertAtomNumber2AtomSymbol(int);
+	int convertAtomSymbol2AtomNumber(string);
+/* Assign atomic weight to the element  */
+	double setAtomWeight(int);
 };
