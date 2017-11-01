@@ -1,6 +1,7 @@
+
 /***************************************************************************************/  
-/* Class of Molecular Operations       */
-/***************************************************************************************/  
+#ifndef _MOLECULAR_OPERATIONS_H_
+#define _MOLECULAR_OPERATIONS_H_
 
 #include <vector>
 using std::vector;
@@ -13,6 +14,7 @@ class MolecularOperations{
 		MolecularOperations();
 	/***************************************************************************************/
 		vector<double> massCenter(vector<Atom>);
+		vector<vector<double>> inertiaTensor(vector<Atom>);
 	/***************************************************************************************/ 
 	/***************************************************************************************/ 
 	private:
@@ -22,3 +24,4 @@ class MolecularOperations{
 
 	protected:
 };
+#endif // _MOLECULAR_OPERATIONS_H
