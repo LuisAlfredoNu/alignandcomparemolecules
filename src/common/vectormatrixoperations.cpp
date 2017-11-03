@@ -7,7 +7,7 @@
 #include <vector>
 using std::vector;
 #include <math.h>
-# define PI 	3.141592653589793
+#define PI 	3.141592653589793
 /***************************************************************************************/ 
 #include<vectormatrixoperations.h>
 /***************************************************************************************/  
@@ -15,14 +15,22 @@ using std::vector;
 
 VectorAndMatrixOperations::VectorAndMatrixOperations(){ }
 
-VectorAndMatrixOperations::rotationOperation(double angle,vector<double> vector2rotate){
-	vector<vector<double> matrixrotation;
+vector<double> VectorAndMatrixOperations::rotationOperation(double angle,vector<double> vector2rotate){
+	vector<vector<double>> matrixrotation;
 	matrixrotation[0][0] = matrixrotation[1][1] = cos(angle * PI / 180.0);
 	matrixrotation[0][1] = -sin(angle * PI /180.0);
 	matrixrotation[1][0] = sin(angle * PI /180.0);
 	matrixrotation[2][0] = matrixrotation[2][1] = matrixrotation[0][2] = matrixrotation[1][2] = 0.0;
 	matrixrotation[2][2] = 1.0;
 
+	vector<double> vector_prime(3,0.0);
+
+	for(int i=0;i < 3; i++){
+		for(int j=0;j<3;j++){
+			vector_prime[i] += matrixrotation[i][j]*vector2rotate[j]; 
+		}
+	}
+	return vector_prime;
 }
 /***************************************************************************************/ 
 double VectorAndMatrixOperations::getAngleBetween2Vectors(vector<double> vector01, vector<double> vector02){
@@ -38,7 +46,7 @@ double VectorAndMatrixOperations::getAngleBetween2Vectors(vector<double> vector0
 	magnitudVec02 = sqrt(magnitudVec02);
 
 	double angle = 0.0;
-	angle = acon(dotproduct / (magnitudVec01*magnitudVec02)) * 180.0 / PI;
+	angle = acos(dotproduct / (magnitudVec01*magnitudVec02)) * 180.0 / PI;
 
 	return angle;
 }

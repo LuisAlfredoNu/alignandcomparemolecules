@@ -22,10 +22,10 @@ class VectorAndMatrixOperations{
 	/***************************************************************************************/ 
 	public:
 		VectorAndMatrixOperations();
-		rotationOperation(double, vector<double>);
-		double getAngleBetween2Vectors();
-	/***************************************************************************************/
 	/***************************************************************************************/ 
+		vector<double> rotationOperation(double, vector<double>);
+		double getAngleBetween2Vectors(vector<double>,vector<double>);
+	/***************************************************************************************/
 	/***************************************************************************************/ 
 	private:
 
