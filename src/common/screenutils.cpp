@@ -295,7 +295,6 @@ void ScreenUtils::PrintFancyMemoryUsage(size_t memus_,std::string msg) {
    }
    std::cout << "More than 1 PetaByte!" << std::endl;
 #if DEBUG
-   DISPLAYDEBUGINFOFILELINE;
 #endif /* ( DEBUG ) */
 }
 /* ************************************************************************************** */
