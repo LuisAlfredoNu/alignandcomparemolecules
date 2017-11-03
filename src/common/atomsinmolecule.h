@@ -23,7 +23,8 @@ public:
 
 /***************************************************************************************/ 
 /* Assing values to coordinates X,Y,Z */
-	void setCoordinates(double x, double y, double z);
+	void setCoordinates(double,double,double);
+	void setCoordinates(vector<double>);
 /* Get the Value of the atom */
 	double getXCoordinate();
 	double getYCoordinate();

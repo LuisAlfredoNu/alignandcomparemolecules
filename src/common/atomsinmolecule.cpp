@@ -34,6 +34,12 @@ void Atom::setCoordinates(double x, double y, double z){
 	atomCoordinates[1]=y;
 	atomCoordinates[2]=z;
 }
+void Atom::setCoordinates(vector<double> xyz_coordinates){
+	xPosition=xyz_coordinates[0];
+	yPosition=xyz_coordinates[1];
+	zPosition=xyz_coordinates[2];
+	atomCoordinates=xyz_coordinates;
+}
 /***************************************************************************************/ 
 double Atom::getXCoordinate(){
 	return xPosition;
