@@ -12,8 +12,9 @@ using std::vector;
 /***************************************************************************************/  
 /***************************************************************************************/  
 
-MolecularOperations::MolecularOperations(){ }
-
+MolecularOperations::MolecularOperations(){ 
+	centerMass.assign(3,0.0);
+}
 
 vector<double> MolecularOperations::massCenter(vector<Atom> molecule){
 	double totalmass=0.0;
@@ -29,8 +30,11 @@ vector<double> MolecularOperations::massCenter(vector<Atom> molecule){
 		}
 		rmasscenter[i] /= totalmass;
 	}
+	centerMass = rmasscenter;
 	return rmasscenter;
 }
+/***************************************************************************************/
+/***************************************************************************************/ 
 vector<vector<double>> MolecularOperations::inertiaTensor(vector<Atom> molecule){
 
 	vector<vector<double>> matrix(3,vector<double>(3,0));
@@ -52,6 +56,24 @@ vector<vector<double>> MolecularOperations::inertiaTensor(vector<Atom> molecule)
 		}
 	}
 	return matrix;
+}
+/***************************************************************************************/ 
+/***************************************************************************************/ 
+vector<Atom> MolecularOperations::moveCM2Origin(vector<Atom> molecule){
+	
+	vector<Atom> molecule_inCM (molecule.size(),Atom());
+	vector<double> new_coordinates (3,0.0);
+	
+	// Copy all info the initial array of molecule
+	molecule_inCM = molecule;
+
+	for(unsigned int i=0;i < molecule.size();++i){
+		for(int xyz=0;xyz<3;++xyz){
+			new_coordinates[xyz] = molecule[i].atomCoordinates[xyz] - centerMass[xyz];
+		}
+		molecule_inCM[i].setCoordinates(new_coordinates);
+	}
+	return molecule_inCM;
 }
 /***************************************************************************************/ 
 /***************************************************************************************/ 
