@@ -16,7 +16,7 @@ using std::vector;
 VectorAndMatrixOperations::VectorAndMatrixOperations(){ }
 
 vector<double> VectorAndMatrixOperations::rotationOperation(double angle,vector<double> vector2rotate){
-	vector<vector<double>> matrixrotation;
+	vector<vector<double>> matrixrotation (3,vector<double> (3,0.0));
 	matrixrotation[0][0] = matrixrotation[1][1] = cos(angle * PI / 180.0);
 	matrixrotation[0][1] = -sin(angle * PI /180.0);
 	matrixrotation[1][0] = sin(angle * PI /180.0);
