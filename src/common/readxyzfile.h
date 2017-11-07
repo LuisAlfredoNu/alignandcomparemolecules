@@ -29,14 +29,16 @@ class ReadXYZFile{
 	/***************************************************************************************/ 
 		// Variables
 		bool open_without_problems;
+		int begindata_pos;
 	/***************************************************************************************/ 
-		bool getValuesFromFile(string,vector<Atom>);
+		bool getValuesFromFile(string,vector<Atom>&);
 	
 	/***************************************************************************************/
 	/***************************************************************************************/ 
 	private:
-		bool openFileXYZ(string);
-		int getNumofAtoms();
+		int getNumofAtoms(ifstream &file);
+		bool getDataAtoms(ifstream &file, vector<Atom> &);
+		bool typeDataNumOChar(ifstream &file);
 
 	/***************************************************************************************/ 
 	/***************************************************************************************/ 
