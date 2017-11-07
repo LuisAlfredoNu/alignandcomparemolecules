@@ -19,6 +19,8 @@ using std::string;
 
 ReadXYZFile::ReadXYZFile(){ 
 	open_without_problems = true;
+	Natoms = 0;
+	begindata_pos = 0;
 }
 
 bool ReadXYZFile::getValuesFromFile(string filename, vector<Atom> & molecule){
@@ -36,9 +38,10 @@ bool ReadXYZFile::getValuesFromFile(string filename, vector<Atom> & molecule){
 		return false;
 	}
 
-	molecule.resize(getNumofAtoms(XYZFile));
+	Natoms = getNumofAtoms(XYZFile);
+	molecule.resize(Natoms);
 	getDataAtoms(XYZFile,molecule);
-
+	open_without_problems = statusAllData(molecule);
 
 	XYZFile.close();
 
@@ -58,19 +61,17 @@ int ReadXYZFile::getNumofAtoms(ifstream &file){
 	return numof_Atoms;
 }
 /***************************************************************************************/ 
-bool ReadXYZFile::getDataAtoms(ifstream &file, vector<Atom>& molecule){
+void ReadXYZFile::getDataAtoms(ifstream &file, vector<Atom>& molecule){
 
-	int data_startpos;
-	int i = 0;
-	int numatoms = getNumofAtoms(file);
-	
 	int atomnumber;
 	string symbol;
 	vector<double> vectorposition (3);
+			
+	file.seekg(begindata_pos);
 	
+	int i = 0;
 	if(typeDataNumOChar(file)){
-		while(i < numatoms ){
-			file.seekg(begindata_pos);
+		while(i < Natoms ){
 			file >> atomnumber;
 			file >> vectorposition[0];
 			file >> vectorposition[1];
@@ -79,29 +80,21 @@ bool ReadXYZFile::getDataAtoms(ifstream &file, vector<Atom>& molecule){
 			molecule[i].setAtomNumber(atomnumber);
 			molecule[i].setCoordinates(vectorposition);
 
-			cout << "count  i = " << i << "begindata_pos" << begindata_pos << endl;
 			i++;
 		}
 	}else{
-		while(i < numatoms){
-			file.seekg(0);
-			getline(file,symbol);
-		//	file >> symbol;
-		//	file >> vectorposition[0];
-		//	file >> vectorposition[1];
-		//	file >> vectorposition[2];
+		while(i < Natoms){
+			file >> symbol;
+			file >> vectorposition[0];
+			file >> vectorposition[1];
+			file >> vectorposition[2];
 
-			cout << "Symbol" <<symbol << endl;
-		//	molecule[i].setAtomSymbol(symbol);
-		//	molecule[i].setCoordinates(vectorposition);
+			molecule[i].setAtomSymbol(symbol);
+			molecule[i].setCoordinates(vectorposition);
 			
-			cout << "count  i = " << i << endl;
-			cout << "count  i = " << i << "begindata_pos" << begindata_pos << endl;
-
 			i++;
 		}
 	}
-
 }
 /***************************************************************************************/ 
 bool ReadXYZFile::typeDataNumOChar(ifstream &file){
@@ -113,14 +106,25 @@ bool ReadXYZFile::typeDataNumOChar(ifstream &file){
 	file.seekg(0,file.beg);
 
 	for(int i=0; i<2;i++) getline(file,line);
+	
+	begindata_pos = file.tellg();		
+	cout << "begindata_pos" << begindata_pos << endl;
 
 	file >> number;
-	begindata_pos = file.tellg();
-			cout << "begindata_pos" << begindata_pos << endl;
-
-	if(file.fail()) is_number=false;
+	if(file.fail()){
+		is_number = false;
+		file.clear();
+	}
 	
 	return is_number;
+}
+/***************************************************************************************/ 
+bool ReadXYZFile::statusAllData(vector<Atom> molecule){
+
+	for(int i=0;i<Natoms;i++)
+		if(!molecule[i].statusData) return false;
+
+	return true;
 }
 /***************************************************************************************/ 
 /***************************************************************************************/ 
