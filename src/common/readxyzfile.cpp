@@ -63,14 +63,14 @@ int ReadXYZFile::getNumofAtoms(ifstream &file){
 /***************************************************************************************/ 
 void ReadXYZFile::getDataAtoms(ifstream &file, vector<Atom>& molecule){
 
-	int atomnumber;
+	int atomnumber=0;
 	string symbol;
 	vector<double> vectorposition (3);
 			
-	file.seekg(begindata_pos);
 	
 	int i = 0;
 	if(typeDataNumOChar(file)){
+		file.seekg(begindata_pos);
 		while(i < Natoms ){
 			file >> atomnumber;
 			file >> vectorposition[0];
@@ -83,6 +83,7 @@ void ReadXYZFile::getDataAtoms(ifstream &file, vector<Atom>& molecule){
 			i++;
 		}
 	}else{
+		file.seekg(begindata_pos);
 		while(i < Natoms){
 			file >> symbol;
 			file >> vectorposition[0];
