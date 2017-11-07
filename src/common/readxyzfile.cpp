@@ -109,7 +109,6 @@ bool ReadXYZFile::typeDataNumOChar(ifstream &file){
 	for(int i=0; i<2;i++) getline(file,line);
 	
 	begindata_pos = file.tellg();		
-	cout << "begindata_pos" << begindata_pos << endl;
 
 	file >> number;
 	if(file.fail()){
