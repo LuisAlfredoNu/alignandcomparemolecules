@@ -16,28 +16,34 @@ int main (int argc, char *argv[])
 	cout << " Testing for ReadXYZFile Class " << endl;
 	cout << "********************************************************" << endl << endl;
 
-	cout << "File for read: "<<argv[1]<<endl;
+	if(argc>1){
+		cout << "File for read: "<<argv[1]<<endl;
 
-	ReadXYZFile reader;
-	vector<Atom> molecule;
+		ReadXYZFile reader;
+		vector<Atom> molecule;
 
-	reader.getValuesFromFile(argv[1],molecule);
-
-
-	string statusanswer;
-   for(unsigned int i=0;i<molecule.size();i++){
-      cout << "Atom = " << i << endl;
-      for (int ii=0;ii<3;ii++) cout << "Coordinate = " << molecule[i].atomCoordinates[ii] << endl;
-      cout << "Element: "<< molecule[i].atomSymbol <<"   Atomic number="<< molecule[i].atomNumber << "   Atomic weight= "<< molecule[i].atomWeight<< endl;
-      molecule[i].statusData ? statusanswer="yes" : statusanswer="no"; 
-      cout << "All data is fine? " << statusanswer << endl;
-      cout << "********************************************************" << endl << endl;
-    }   
+		bool statusAllData = reader.getValuesFromFile(argv[1],molecule);
 
 
-	cout << "Size of molecule" << molecule.size()<< endl;
+		string statusanswer;
+		for(unsigned int i=0;i<molecule.size();i++){
+			cout << "Atom = " << i << endl;
+			for (int ii=0;ii<3;ii++) cout << "Coordinate = " << molecule[i].atomCoordinates[ii] << endl;
+			cout << "Element: "<< molecule[i].atomSymbol <<"   Atomic number="<< molecule[i].atomNumber << "   Atomic weight= "<< molecule[i].atomWeight<< endl;
+			molecule[i].statusData ? statusanswer="yes" : statusanswer="no"; 
+			cout << "All data is fine? " << statusanswer << endl;
+			cout << "********************************************************" << endl << endl;
+		}   
+	
+		cout << "All data is fine ?  " << (statusAllData ? statusanswer="yes" : statusanswer="no") << endl;
+	
+		return EXIT_SUCCESS;
+	}else { 
+		cout << "Dont input file in arguments " << endl << endl;
+		return EXIT_FAILURE;
+	
+	}
 
-	return EXIT_SUCCESS;
 }
 
 
