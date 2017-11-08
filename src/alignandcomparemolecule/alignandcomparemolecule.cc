@@ -20,8 +20,15 @@ int main (int argc, char *argv[]) {
 	ScreenUtils scrut;
 	
 	if(argc > 2){
-		cout << "File for molecule A:  "<<argv[1]<<endl;
-		cout << "File for molecule B:  "<<argv[2]<<endl;
+
+		cout << endl;
+		scrut.PrintScrStarLine();
+		scrut.SetScrGreenBoldFont();
+		cout << "Comparation molecules." << endl;
+		scrut.SetScrNormalFont();
+		scrut.PrintScrStarLine();
+		cout << endl << " Molecule A: "<< argv[1] << setw(35);
+		cout << " Molecule B: "<< argv[2] << endl;
 
 		vector<Atom> molecule_A;
 		vector<Atom> molecule_B;
@@ -57,20 +64,27 @@ int main (int argc, char *argv[]) {
 			matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
 			matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
 
-			cout << endl << " Inertia Tensor - Molecule A" << endl;
-			for(int i=0;i<3;++i) cout << " | " << left << setw(15) << inertiatensor_molecula_A[0][i] << left << setw(15) << inertiatensor_molecula_A[1][i]<< left << setw(13)<<  inertiatensor_molecula_A[2][i] << " | " << endl;
-			cout << endl << " Diagonalization - Inertia Tensor - Molecule A" << endl;
-			for(int i=0;i<3;++i) cout << " | " << left << setw(15) << diagmatrix_molecule_A[0][i] << left << setw(15) << diagmatrix_molecule_A[1][i] << left << setw(13)<< diagmatrix_molecule_A[2][i] << " | " << endl;
-			cout << endl << " EingenValues - Inertia Tensor - Molecule A" << endl;
-			cout << " | " << left << setw(15)<< eigvalues_molecule_A[0] << left << setw(15) << eigvalues_molecule_A[1] << left << setw(13)<< eigvalues_molecule_A[2] << " | " << endl;
+			cout << endl << " Inertia Tensor - Molecule A" << setw(49);
+			cout << " Inertia Tensor - Molecule B" << endl;
 
-			cout << endl << " Inertia Tensor - Molecule B" << endl;
-			for(int i=0;i<3;++i) cout << " | "<< left << setw(15) << inertiatensor_molecula_B[0][i] << left << setw(15) << inertiatensor_molecula_B[1][i] << left << setw(13)<< inertiatensor_molecula_B[2][i] << " | " << endl;
-			cout << endl << " Diagonalization - Inertia Tensor - Molecule B" << endl;
-			for(int i=0;i<3;++i) cout << " | "<< left << setw(15) << diagmatrix_molecule_B[0][i] << left << setw(15)<< diagmatrix_molecule_B[1][i]<< left << setw(13)<< diagmatrix_molecule_B[2][i] << " | " << endl;
-			cout << endl << " EingenValues - Inertia Tensor - Molecule B" << endl;
-			cout << " | " << eigvalues_molecule_B[0] << left << setw(15) << eigvalues_molecule_B[1]<< left << setw(13)<<  eigvalues_molecule_B[2] << " | " << endl;
+			for(int i=0;i<3;++i){ 
+				cout << " | " << setw(15) << inertiatensor_molecula_A[0][i] << setw(15) << inertiatensor_molecula_A[1][i] << setw(13) << inertiatensor_molecula_A[2][i] << " | ";
+				cout << " | " << setw(15) << inertiatensor_molecula_B[0][i] << setw(15) << inertiatensor_molecula_B[1][i] << setw(13) << inertiatensor_molecula_B[2][i] << " | " << endl;
+			}
+			
+			cout << endl << " Diagonalization - Inertia Tensor - Molecule A" << setw(49);
+			cout  << " Diagonalization - Inertia Tensor - Molecule B" << endl;
 
+			for(int i=0;i<3;++i){
+				cout << " | " << setw(15) << diagmatrix_molecule_A[0][i] << setw(15) << diagmatrix_molecule_A[1][i] << setw(13) << diagmatrix_molecule_A[2][i] << " | ";
+				cout << " | " << setw(15) << diagmatrix_molecule_B[0][i] << setw(15) << diagmatrix_molecule_B[1][i] << setw(13) << diagmatrix_molecule_B[2][i] << " | " << endl;
+			}
+			
+			cout << endl << " EingenValues - Inertia Tensor - Molecule A" << setw(49);
+			cout << " EingenValues - Inertia Tensor - Molecule B" << endl;
+
+			cout << " | "  << setw(15)<< eigvalues_molecule_A[0]  << setw(15) << eigvalues_molecule_A[1]  << setw(13)<< eigvalues_molecule_A[2] << " | ";
+			cout << " | " << eigvalues_molecule_B[0]  << setw(15) << eigvalues_molecule_B[1] << setw(13)<<  eigvalues_molecule_B[2] << " | " << endl << endl;
 
 			return EXIT_SUCCESS;
 		}else{
