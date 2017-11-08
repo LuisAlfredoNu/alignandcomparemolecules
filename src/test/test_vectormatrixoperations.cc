@@ -41,11 +41,6 @@ int main (int argc, char *argv[])
 
   matrixOP.eigenVectorValues(initialmatrix,diagmatrix,eigvectors,eigvalues);
 
-  cout << endl << "Inertia Tensor Diagonalizaded - Matrix" << endl;
-  for(int i=0;i<3;++i) cout << " | " << diagmatrix[i][0] << "\t--\t" << diagmatrix[i][1]<< "\t--\t" << diagmatrix[i][2] << " | " << endl    ;
-
-
-
 	return EXIT_SUCCESS;
 }
 

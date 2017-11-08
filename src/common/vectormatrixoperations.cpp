@@ -57,10 +57,7 @@ double VectorAndMatrixOperations::getAngleBetween2Vectors(vector<double> vector0
 }
 /***************************************************************************************/ 
 void VectorAndMatrixOperations::eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues){ 
-	cout << "Inside of Class "<< endl;
-	for(int i=0;i<3;++i) cout << " | " << initialmatrix[i][0] << "\t--\t" << initialmatrix[i][1]<< "\t--\t" << initialmatrix[i][2] << " | " << endl    ;
 	double array_initialmatrix[3][3];
-	double array_diagmatrix[3][3];
 	double array_eigvectors[3][3];
 	double array_eigvalues[3]; 
 
@@ -69,20 +66,62 @@ void VectorAndMatrixOperations::eigenVectorValues(vector<vector<double>> initial
 			array_initialmatrix[i][j] = initialmatrix[i][j];
 		}
 	}
-	cout << "Inside of Class Array initital matrix "<< endl;
-	for(int i=0;i<3;++i) cout << " | " << array_initialmatrix[i][0] << "\t--\t" << array_initialmatrix[i][1]<< "\t--\t" << array_initialmatrix[i][2] << " | " << endl    ;
-
+	cout << endl << " Inertia Tensor - Matrix" << endl;
+	for(int i=0;i<3;++i) cout << " | " << initialmatrix[0][i] << "\t--\t" << initialmatrix[1][i]<< "\t--\t" << initialmatrix[2][i] << " | " << endl    ;
+	cout << endl << " Array Inertia Tensor - Matrix" << endl;
+	for(int i=0;i<3;++i) cout << " | " << array_initialmatrix[0][i] << "\t--\t" << array_initialmatrix[1][i]<< "\t--\t" << array_initialmatrix[2][i] << " | " << endl    ;
 
 	eigen_decomposition3(array_initialmatrix,array_eigvectors,array_eigvalues);
 
+	vector<vector<double>> transpose_eigvectors(3,vector<double>(3,0.0));
+
 	for(int i=0;i<3;i++){
 		for(int j=0;j<3;j++){
-		diagmatrix[i][j] = array_diagmatrix[i][j];
 		eigvectors[i][j] = array_eigvectors[i][j];
+		transpose_eigvectors[i][j] = array_eigvectors[j][i];
 		}
-		array_eigvalues[i] = eigvalues[i];
+		eigvalues[i] = array_eigvalues[i];
 	}
+	cout << endl << " EingenVectores - Inertia Tensor - Matrix" << endl;
+	for(int i=0;i<3;++i) cout << " | " << eigvectors[0][i] << "\t--\t" << eigvectors[1][i]<< "\t--\t" << eigvectors[2][i] << " | " << endl    ;
+	cout << endl << " Transpose EingenVectores - Inertia Tensor - Matrix" << endl;
+	for(int i=0;i<3;++i) cout << " | " << transpose_eigvectors[0][i] << "\t--\t" << transpose_eigvectors[1][i]<< "\t--\t" << transpose_eigvectors[2][i] << " | " << endl    ;
+
+	vector<vector<double>> pre_diagmatrix(3,vector<double>(3,0.0));
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			for(int k=0;k<3;k++){
+				pre_diagmatrix[i][j] += transpose_eigvectors[i][k] * initialmatrix[k][j];  
+			}
+		}
+	}
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			for(int k=0;k<3;k++){
+				diagmatrix[i][j] += pre_diagmatrix[i][k]* eigvectors[k][j];  
+			}
+		}
+	}
+	cout << endl << " Diagonalization - Inertia Tensor - Matrix" << endl;
+	for(int i=0;i<3;++i) cout << " | " << diagmatrix[0][i] << "\t--\t" << diagmatrix[1][i]<< "\t--\t" << diagmatrix[2][i] << " | " << endl    ;
+	cout << endl << " EingenValues - Inertia Tensor - Matrix" << endl;
+	 cout << " | " << eigvalues[0] << "\t--\t" << eigvalues[1]<< "\t--\t" << eigvalues[2] << " | " << endl    ;
 }
+/***************************************************************************************/ 
+/*
+vector<vector<double>> VectorAndMatrixOperations::transposeMatrix(vector<vector<double>> matrix){
+	
+	vector<vector<double>> transposematrix (3,vector<double>(3,0.0));
+
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+
+
+		}
+	}
+	return transposematrix;
+}
+*/
 
 /***************************************************************************************/ 
 /***************************************************************************************/ 
