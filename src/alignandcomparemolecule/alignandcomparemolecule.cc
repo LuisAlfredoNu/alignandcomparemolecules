@@ -40,21 +40,25 @@ int main (int argc, char *argv[]) {
 
 			inertiatensor_molecula_A = molecularOP.inertiaTensor(molecule_A_inCM);
 			inertiatensor_molecula_B = molecularOP.inertiaTensor(molecule_B_inCM);
+			
+			cout << endl << " Inertia Tensor - Molecule A" << endl;
+			for(int i=0;i<3;++i) cout << " | " << inertiatensor_molecula_A[0][i] << "\t--\t" << inertiatensor_molecula_A[1][i]<< "\t--\t" << inertiatensor_molecula_A[2][i] << " | " << endl;
 
-			vector<vector<double>> initialmatrix_molecule_A (3,vector<double>(3,0.0));
+			cout << endl << " Inertia Tensor - Molecule B" << endl;
+			for(int i=0;i<3;++i) cout << " | " << inertiatensor_molecula_B[0][i] << "\t--\t" << inertiatensor_molecula_B[1][i]<< "\t--\t" << inertiatensor_molecula_B[2][i] << " | " << endl;
+
 			vector<vector<double>> diagmatrix_molecule_A(3,vector<double>(3,0.0));
 			vector<vector<double>> eigvectors_molecule_A(3,vector<double>(3,0.0));
 			vector<double> eigvalues_molecule_A(3,0.0);
 
-			vector<vector<double>> initialmatrix_molecule_B (3,vector<double>(3,0.0));
 			vector<vector<double>> diagmatrix_molecule_B(3,vector<double>(3,0.0));
 			vector<vector<double>> eigvectors_molecule_B(3,vector<double>(3,0.0));
 			vector<double> eigvalues_molecule_B(3,0.0);
 
 			VectorAndMatrixOperations matrixOP;
 
-			matrixOP.eigenVectorValues(initialmatrix_molecule_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
-			matrixOP.eigenVectorValues(initialmatrix_molecule_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
+			matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
+			matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
 
 			cout << endl << " Diagonalization - Inertia Tensor - Molecule A" << endl;
 			for(int i=0;i<3;++i) cout << " | " << diagmatrix_molecule_A[0][i] << "\t--\t" << diagmatrix_molecule_A[1][i]<< "\t--\t" << diagmatrix_molecule_A[2][i] << " | " << endl;
