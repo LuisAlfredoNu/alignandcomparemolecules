@@ -32,6 +32,7 @@ int main (int argc, char *argv[])
 	vector<vector<double>> initialmatrix (3,vector<double>(3,0.0));
 	vector<vector<double>> diagmatrix(3,vector<double>(3,0.0));
 	vector<vector<double>> eigvectors(3,vector<double>(3,0.0));
+	vector<vector<double>> transpose_eigvectors(3,vector<double>(3,0.0));
 	vector<double> eigvalues(3,0.0);
 
   initialmatrix[0][0]=446379	;	initialmatrix[0][1]=-38006.1;	initialmatrix[0][2]=94002.7; 
@@ -40,6 +41,21 @@ int main (int argc, char *argv[])
 
 
   matrixOP.eigenVectorValues(initialmatrix,diagmatrix,eigvectors,eigvalues);
+  
+  cout << endl << " Inertia Tensor - Matrix" << endl;
+  for(int i=0;i<3;++i) cout << " | " << initialmatrix[0][i] << "\t--\t" << initialmatrix[1][i]<< "\t--\t" << initialmatrix[2][i] << " | " << endl;
+
+  cout << endl << " EingenVectores - Inertia Tensor - Matrix" << endl;
+  for(int i=0;i<3;++i) cout << " | " << eigvectors[0][i] << "\t--\t" << eigvectors[1][i]<< "\t--\t" << eigvectors[2][i] << " | " << endl    ;
+  
+  cout << endl << " Transpose EingenVectores - Inertia Tensor - Matrix" << endl;
+  for(int i=0;i<3;++i) cout << " | " << transpose_eigvectors[0][i] << "\t--\t" << transpose_eigvectors[1][i]<< "\t--\t" << transpose_eigvectors[2    ][i] << " | " << endl    ;
+
+  cout << endl << " EingenValues - Inertia Tensor - Matrix" << endl;
+  cout << " | " << eigvalues[0] << "\t--\t" << eigvalues[1]<< "\t--\t" << eigvalues[2] << " | " << endl;
+
+  cout << endl << " Diagonalization - Inertia Tensor - Matrix" << endl;
+  for(int i=0;i<3;++i) cout << " | " << diagmatrix[0][i] << "\t--\t" << diagmatrix[1][i]<< "\t--\t" << diagmatrix[2][i] << " | " << endl    ;
 
 	return EXIT_SUCCESS;
 }
