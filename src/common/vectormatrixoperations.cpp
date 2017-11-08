@@ -4,12 +4,17 @@
 #ifndef _VECTORMATRIXOPERATIONS_CPP_
 #define _VECTORMATRIXOPERATIONS_CPP_
 
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
 #include <vector>
 using std::vector;
 #include <math.h>
 #define PI 	3.141592653589793
 /***************************************************************************************/ 
-#include<vectormatrixoperations.h>
+#include"eig2-4.h"
+#include"vectormatrixoperations.h"
 /***************************************************************************************/  
 /***************************************************************************************/  
 
@@ -49,6 +54,34 @@ double VectorAndMatrixOperations::getAngleBetween2Vectors(vector<double> vector0
 	angle = acos(dotproduct / (magnitudVec01*magnitudVec02)) * 180.0 / PI;
 
 	return angle;
+}
+/***************************************************************************************/ 
+void VectorAndMatrixOperations::eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues){ 
+	cout << "Inside of Class "<< endl;
+	for(int i=0;i<3;++i) cout << " | " << initialmatrix[i][0] << "\t--\t" << initialmatrix[i][1]<< "\t--\t" << initialmatrix[i][2] << " | " << endl    ;
+	double array_initialmatrix[3][3];
+	double array_diagmatrix[3][3];
+	double array_eigvectors[3][3];
+	double array_eigvalues[3]; 
+
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			array_initialmatrix[i][j] = initialmatrix[i][j];
+		}
+	}
+	cout << "Inside of Class Array initital matrix "<< endl;
+	for(int i=0;i<3;++i) cout << " | " << array_initialmatrix[i][0] << "\t--\t" << array_initialmatrix[i][1]<< "\t--\t" << array_initialmatrix[i][2] << " | " << endl    ;
+
+
+	eigen_decomposition3(array_initialmatrix,array_eigvectors,array_eigvalues);
+
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+		diagmatrix[i][j] = array_diagmatrix[i][j];
+		eigvectors[i][j] = array_eigvectors[i][j];
+		}
+		array_eigvalues[i] = eigvalues[i];
+	}
 }
 
 /***************************************************************************************/ 
