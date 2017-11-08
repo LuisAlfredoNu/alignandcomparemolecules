@@ -13,7 +13,7 @@ int main (int argc, char *argv[])
 {
 	cout << endl << "********************************************************" << endl;
 	cout << " Testing for VectorAndMatrixOperations Class " << endl;
-	cout << "********************************************************" << endl << endl;
+	cout << "********************************************************" << endl;
 
 	vector<double> vector01={5.0, 5.0, 0.0};
 	vector<double> vector02={0.0,10.0, 0.0};
@@ -25,9 +25,15 @@ int main (int argc, char *argv[])
 	cout << endl << "Angle between this vector is = " << angle << endl;
 
 	vector<double> rotatedvector (3,0.0);
-	rotatedvector = matrixOP.rotationOperation(45.0, vector01);
 
+	rotatedvector = matrixOP.rotationOperationOverZ(45.0, vector01);
 	cout << endl << "Vector rotated 45° in the plane x-y in counterwise clock = "<<rotatedvector[0]<<" , "<<rotatedvector[1]<<" , "<<rotatedvector[2] << endl;
+	
+	rotatedvector = matrixOP.rotationOperationOverY(45.0, vector01);
+	cout << endl << "Vector rotated 45° in the plane x-z in counterwise clock = "<<rotatedvector[0]<<" , "<<rotatedvector[1]<<" , "<<rotatedvector[2] << endl;
+	
+	rotatedvector = matrixOP.rotationOperationOverX(45.0, vector01);
+	cout << endl << "Vector rotated 45° in the plane y-z in counterwise clock = "<<rotatedvector[0]<<" , "<<rotatedvector[1]<<" , "<<rotatedvector[2] << endl;
 
 	vector<vector<double>> initialmatrix (3,vector<double>(3,0.0));
 	vector<vector<double>> diagmatrix(3,vector<double>(3,0.0));
@@ -48,9 +54,6 @@ int main (int argc, char *argv[])
   cout << endl << " EingenVectores - Inertia Tensor - Matrix" << endl;
   for(int i=0;i<3;++i) cout << " | " << eigvectors[0][i] << "\t--\t" << eigvectors[1][i]<< "\t--\t" << eigvectors[2][i] << " | " << endl    ;
   
-  cout << endl << " Transpose EingenVectores - Inertia Tensor - Matrix" << endl;
-  for(int i=0;i<3;++i) cout << " | " << transpose_eigvectors[0][i] << "\t--\t" << transpose_eigvectors[1][i]<< "\t--\t" << transpose_eigvectors[2    ][i] << " | " << endl    ;
-
   cout << endl << " EingenValues - Inertia Tensor - Matrix" << endl;
   cout << " | " << eigvalues[0] << "\t--\t" << eigvalues[1]<< "\t--\t" << eigvalues[2] << " | " << endl;
 

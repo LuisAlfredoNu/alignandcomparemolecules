@@ -19,20 +19,72 @@ using std::vector;
 /***************************************************************************************/  
 
 VectorAndMatrixOperations::VectorAndMatrixOperations(){ }
+/*
+ * For rotation operation 
+ * All rotation is counter clockwise
+ */
+vector<double> VectorAndMatrixOperations::rotationOperationOverZ(double theta,vector<double> vector2rotate){
+	
+	vector<vector<double>> rotation (3,vector<double> (3,0.0));
+	rotation[0][0] = cos(theta * PI / 180.0); 
+	rotation[0][1] = -sin(theta * PI /180.0);
+	rotation[0][2] = 0.0; 
+	rotation[1][0] = sin(theta * PI /180.0);
+	rotation[1][1] = cos(theta * PI / 180.0);
+	rotation[1][2] = 0.0;
+	rotation[2][0] = 0.0; 
+	rotation[2][1] = 0.0; 
+	rotation[2][2] = 1.0;
+	
+	vector<double> vector_prime(3,0.0);
 
-vector<double> VectorAndMatrixOperations::rotationOperation(double angle,vector<double> vector2rotate){
-	vector<vector<double>> matrixrotation (3,vector<double> (3,0.0));
-	matrixrotation[0][0] = matrixrotation[1][1] = cos(angle * PI / 180.0);
-	matrixrotation[0][1] = -sin(angle * PI /180.0);
-	matrixrotation[1][0] = sin(angle * PI /180.0);
-	matrixrotation[2][0] = matrixrotation[2][1] = matrixrotation[0][2] = matrixrotation[1][2] = 0.0;
-	matrixrotation[2][2] = 1.0;
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			vector_prime[i] += rotation[i][j]*vector2rotate[j]; 
+		}
+	}
+	return vector_prime;
+}
+/***************************************************************************************/ 
+vector<double> VectorAndMatrixOperations::rotationOperationOverY(double phi,vector<double> vector2rotate){
+	vector<vector<double>> rotation (3,vector<double> (3,0.0));
+	rotation[0][0] = cos(phi * PI / 180.0); 
+	rotation[0][1] = 0.0;
+	rotation[0][2] = sin(phi * PI /180.0);
+	rotation[1][0] = 0.0;
+	rotation[1][1] = 1.0;
+	rotation[1][2] = 0.0;
+	rotation[2][0] = -sin(phi * PI /180.0);  
+	rotation[2][1] = 0.0; 
+	rotation[2][2] = cos(phi * PI / 180.0);
+	
+	vector<double> vector_prime(3,0.0);
+
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			vector_prime[i] += rotation[i][j]*vector2rotate[j]; 
+		}
+	}
+	return vector_prime;
+}
+/***************************************************************************************/ 
+vector<double> VectorAndMatrixOperations::rotationOperationOverX(double psi,vector<double> vector2rotate){
+	vector<vector<double>> rotation (3,vector<double> (3,0.0));
+	rotation[0][0] = 1.0;
+	rotation[0][1] = 0.0;
+	rotation[0][2] = 0.0; 
+	rotation[1][0] = 0.0; 
+	rotation[1][1] = cos(psi * PI / 180.0);
+	rotation[1][2] = -sin(psi * PI /180.0);
+	rotation[2][0] = 0.0; 
+	rotation[2][1] = sin(psi * PI /180.0);
+	rotation[2][2] = cos(psi * PI / 180.0); 
 
 	vector<double> vector_prime(3,0.0);
 
-	for(int i=0;i < 3; i++){
+	for(int i=0;i<3;i++){
 		for(int j=0;j<3;j++){
-			vector_prime[i] += matrixrotation[i][j]*vector2rotate[j]; 
+			vector_prime[i] += rotation[i][j]*vector2rotate[j]; 
 		}
 	}
 	return vector_prime;

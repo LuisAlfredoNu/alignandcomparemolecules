@@ -23,7 +23,9 @@ class VectorAndMatrixOperations{
 	public:
 		VectorAndMatrixOperations();
 	/***************************************************************************************/ 
-		vector<double> rotationOperation(double, vector<double>);
+		vector<double> rotationOperationOverZ(double, vector<double>);
+		vector<double> rotationOperationOverY(double, vector<double>);
+		vector<double> rotationOperationOverX(double, vector<double>);
 		double getAngleBetween2Vectors(vector<double>,vector<double>);
 		void eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues);
 	/***************************************************************************************/
