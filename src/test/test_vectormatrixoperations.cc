@@ -22,6 +22,9 @@ int main (int argc, char *argv[])
 
 	double angle = matrixOP.getAngleBetween2Vectors(vector01,vector02);
 
+	cout << endl << "Vector A: " << vector01[0] << " " << vector01[1] << " " << vector01[2] << endl;
+	cout << endl << "Vector B: " << vector02[0] << " " << vector02[1] << " " << vector02[2] << endl;
+
 	cout << endl << "Angle between this vector is = " << angle << endl;
 
 	vector<double> rotatedvector (3,0.0);
