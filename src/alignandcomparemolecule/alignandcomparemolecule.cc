@@ -28,7 +28,7 @@ int main (int argc, char *argv[]) {
 		scrut.SetScrNormalFont();
 		scrut.PrintScrStarLine();
 		cout << endl << " Molecule A: "<< argv[1] << setw(35);
-		cout << " Molecule B: "<< argv[2] << endl;
+		cout << " Molecule B: "<< argv[2] << endl << endl;
 
 		vector<Atom> molecule_A;
 		vector<Atom> molecule_B;
@@ -63,6 +63,15 @@ int main (int argc, char *argv[]) {
 
 			matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
 			matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
+
+			if(matrixOP.compareEigenValues(eigvalues_molecule_A,eigvalues_molecule_B)){
+				scrut.PrintScrStarLine();
+				scrut.SetScrGreenBoldFont();
+				cout << "Have the same EigenValues" << endl;
+				scrut.SetScrNormalFont();
+				scrut.PrintScrStarLine();
+
+			}
 
 			cout << endl << " Inertia Tensor - Molecule A" << setw(49);
 			cout << " Inertia Tensor - Molecule B" << endl;

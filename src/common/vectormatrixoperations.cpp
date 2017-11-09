@@ -24,7 +24,6 @@ VectorAndMatrixOperations::VectorAndMatrixOperations(){ }
  * All rotation is counter clockwise
  */
 vector<double> VectorAndMatrixOperations::rotationOperationOverZ(double theta,vector<double> vector2rotate){
-	
 	vector<vector<double>> rotation (3,vector<double> (3,0.0));
 	rotation[0][0] = cos(theta * PI / 180.0); 
 	rotation[0][1] = -sin(theta * PI /180.0);
@@ -148,6 +147,19 @@ void VectorAndMatrixOperations::eigenVectorValues(vector<vector<double>> initial
 	}
 }
 /***************************************************************************************/ 
+bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_moleculeA, vector<double> eigenValues_moleculeB){
+	bool is_equal = true;
+	double epsilon = 0.5;
+	double diffvalues = 0.0;
+
+	for(int i=0;i<3;i++){
+		diffvalues = eigenValues_moleculeA[i] - eigenValues_moleculeB[i];
+		diffvalues = abs(diffvalues);
+		if(diffvalues > epsilon) is_equal = false;
+	}
+	return is_equal;
+}
+
 /*
 vector<vector<double>> VectorAndMatrixOperations::transposeMatrix(vector<vector<double>> matrix){
 	

@@ -63,6 +63,10 @@ int main (int argc, char *argv[])
   cout << endl << " Diagonalization - Inertia Tensor - Matrix" << endl;
   for(int i=0;i<3;++i) cout << " | " << diagmatrix[0][i] << "\t--\t" << diagmatrix[1][i]<< "\t--\t" << diagmatrix[2][i] << " | " << endl    ;
 
+  bool status = matrixOP.compareEigenValues(eigvalues,eigvalues);
+
+  cout << endl << "Is the same the last eigenVector: " << (status ? "Yes" : "No") << endl << endl; 
+
 	return EXIT_SUCCESS;
 }
 

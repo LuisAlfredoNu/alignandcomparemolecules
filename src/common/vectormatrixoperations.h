@@ -28,6 +28,7 @@ class VectorAndMatrixOperations{
 		vector<double> rotationOperationOverX(double, vector<double>);
 		double getAngleBetween2Vectors(vector<double>,vector<double>);
 		void eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues);
+		bool compareEigenValues(vector<double>, vector<double>);
 	/***************************************************************************************/
 	/***************************************************************************************/ 
 	private:
