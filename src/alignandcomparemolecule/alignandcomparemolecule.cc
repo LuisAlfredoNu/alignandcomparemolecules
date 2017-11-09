@@ -72,12 +72,12 @@ int main (int argc, char *argv[]) {
 				cout << " | " << setw(15) << inertiatensor_molecula_B[0][i] << setw(15) << inertiatensor_molecula_B[1][i] << setw(13) << inertiatensor_molecula_B[2][i] << " | " << endl;
 			}
 			
-			cout << endl << " Diagonalization - Inertia Tensor - Molecule A" << setw(49);
-			cout  << " Diagonalization - Inertia Tensor - Molecule B" << endl;
+			cout << endl << " EingenVectors - Inertia Tensor - Molecule A" << setw(49);
+			cout  << " EingenVectors - Inertia Tensor - Molecule B" << endl;
 
 			for(int i=0;i<3;++i){
-				cout << " | " << setw(15) << diagmatrix_molecule_A[0][i] << setw(15) << diagmatrix_molecule_A[1][i] << setw(13) << diagmatrix_molecule_A[2][i] << " | ";
-				cout << " | " << setw(15) << diagmatrix_molecule_B[0][i] << setw(15) << diagmatrix_molecule_B[1][i] << setw(13) << diagmatrix_molecule_B[2][i] << " | " << endl;
+				cout << " | " << setw(15) << eigvectors_molecule_A[0][i] << setw(15) << eigvectors_molecule_A[1][i] << setw(13) << eigvectors_molecule_A[2][i] << " | ";
+				cout << " | " << setw(15) << eigvectors_molecule_B[0][i] << setw(15) << eigvectors_molecule_B[1][i] << setw(13) << eigvectors_molecule_B[2][i] << " | " << endl;
 			}
 			
 			cout << endl << " EingenValues - Inertia Tensor - Molecule A" << setw(49);

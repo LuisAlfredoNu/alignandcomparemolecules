@@ -63,6 +63,8 @@ vector<Atom> MolecularOperations::moveCM2Origin(vector<Atom> molecule){
 	
 	vector<Atom> molecule_inCM (molecule.size(),Atom());
 	vector<double> new_coordinates (3,0.0);
+
+	centerMass = massCenter(molecule);
 	
 	// Copy all info the initial array of molecule
 	molecule_inCM = molecule;
