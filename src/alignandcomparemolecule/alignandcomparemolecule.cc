@@ -71,6 +71,7 @@ int main (int argc, char *argv[]) {
 				scrut.SetScrNormalFont();
 				scrut.PrintScrStarLine();
 
+				matrixOP.alignEigenVectors(eigvectors_molecule_A,eigvectors_molecule_B);
 			}
 
 			cout << endl << " Inertia Tensor - Molecule A" << setw(49);

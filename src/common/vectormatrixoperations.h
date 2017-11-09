@@ -29,6 +29,7 @@ class VectorAndMatrixOperations{
 		double getAngleBetween2Vectors(vector<double>,vector<double>);
 		void eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues);
 		bool compareEigenValues(vector<double>, vector<double>);
+		void alignEigenVectors(vector<vector<double>>& eigenVector_moleculeA,vector<vector<double>>& eigenVector_moleculeB);
 	/***************************************************************************************/
 	/***************************************************************************************/ 
 	private:

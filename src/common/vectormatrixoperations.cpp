@@ -159,7 +159,61 @@ bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_mo
 	}
 	return is_equal;
 }
+/***************************************************************************************/ 
+void VectorAndMatrixOperations::alignEigenVectors(vector<vector<double>>& eigenVector_moleculeA,vector<vector<double>>& eigenVector_moleculeB){
+	vector<double> magnitudA (3,0.0);
+	vector<double> magnitudB (3,0.0);
 
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			magnitudA[i] += eigenVector_moleculeA[i][j] * eigenVector_moleculeA[i][j];
+			magnitudB[i] += eigenVector_moleculeB[i][j] * eigenVector_moleculeB[i][j];
+		}
+		magnitudA[i] = sqrt(magnitudA[i]);
+		magnitudB[i] = sqrt(magnitudB[i]);
+	}
+
+	int biggestVectorA = -1;
+	if(magnitudA[0] > magnitudA[1]){
+		if(magnitudA[0] > magnitudA[2]){
+			biggestVectorA = 0;
+		}else{
+			biggestVectorA = 2;
+		}
+	}else{
+		if(magnitudA[1]>magnitudA[2]){
+			biggestVectorA = 1;
+		}else{
+			biggestVectorA = 2;
+		}
+	}
+	int biggestVectorB = -1;
+	if(magnitudB[0] > magnitudB[1]){
+		if(magnitudB[0] > magnitudB[2]){
+			biggestVectorB = 0;
+		}else{
+			biggestVectorB = 2;
+		}
+	}else{
+		if(magnitudB[1]>magnitudB[2]){
+			biggestVectorB = 1;
+		}else{
+			biggestVectorB = 2;
+		}
+	}
+
+	vector<double> unitvectorZ (3,0.0);
+	unitvectorZ[2] = 1.0;
+
+	double angle_eigVecA = getAngleBetween2Vectors(eigenVector_moleculeA[biggestVectorA], unitvectorZ);
+	double angle_eigVecB = getAngleBetween2Vectors(eigenVector_moleculeB[biggestVectorB], unitvectorZ);
+
+	for(int i=0;i<3;i++){
+		eigenVector_moleculeA[i] = rotationOperationOverY(angle_eigVecA,eigenVector_moleculeA[i]);
+		eigenVector_moleculeB[i] = rotationOperationOverY(angle_eigVecB,eigenVector_moleculeB[i]);
+	}
+
+}
 /*
 vector<vector<double>> VectorAndMatrixOperations::transposeMatrix(vector<vector<double>> matrix){
 	
