@@ -23,6 +23,8 @@ class VectorAndMatrixOperations{
 	public:
 		VectorAndMatrixOperations();
 	/***************************************************************************************/ 
+		double dotProduct(vector<double>,vector<double>);
+		vector<double> crossProduct(vector<double>,vector<double>);
 		vector<double> rotationOperationOverZ(double, vector<double>);
 		vector<double> rotationOperationOverY(double, vector<double>);
 		vector<double> rotationOperationOverX(double, vector<double>);
