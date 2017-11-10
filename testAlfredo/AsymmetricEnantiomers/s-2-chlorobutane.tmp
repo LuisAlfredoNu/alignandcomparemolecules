@@ -1,0 +1,31 @@
+HEADER
+REMARK Spartan exported Fri Nov 20 07:42:19 1998
+HETATM    1  C   UNK  0001       0.502  -0.048   0.364
+HETATM    2  C   UNK  0001       0.539  -0.061   1.914
+HETATM    3  H   UNK  0001       1.066   0.831   2.287
+HETATM    4  H   UNK  0001       1.066  -0.956   2.281
+HETATM    5  H   UNK  0001      -0.484  -0.061   2.321
+HETATM    6  H   UNK  0001       1.536  -0.029  -0.018
+HETATM    7 Cl   UNK  0001      -0.301   1.436  -0.174
+HETATM    8  C   UNK  0001      -0.234  -1.299  -0.190
+HETATM    9  H   UNK  0001       0.254  -2.208   0.200
+HETATM   10  C   UNK  0001      -0.211  -1.354  -1.740
+HETATM   11  H   UNK  0001      -1.280  -1.294   0.160
+HETATM   12  H   UNK  0001       0.826  -1.360  -2.108
+HETATM   13  H   UNK  0001      -0.735  -0.488  -2.173
+HETATM   14  H   UNK  0001      -0.712  -2.271  -2.091
+CONECT    1    2    6    7    8
+CONECT    2    1    3    4    5
+CONECT    3    2
+CONECT    4    2
+CONECT    5    2
+CONECT    6    1
+CONECT    7    1
+CONECT    8    1    9   10   11
+CONECT    9    8
+CONECT   10    8   12   13   14
+CONECT   11    8
+CONECT   12   10
+CONECT   13   10
+CONECT   14   10
+END
