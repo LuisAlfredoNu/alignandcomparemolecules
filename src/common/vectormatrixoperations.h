@@ -23,18 +23,20 @@ class VectorAndMatrixOperations{
 	public:
 		VectorAndMatrixOperations();
 	/***************************************************************************************/ 
+		void eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues);
+		bool compareEigenValues(vector<double>, vector<double>);
+		void alignEigenVectors(vector<vector<double>> eigenVector_moleculeA,vector<vector<double>> eigenVector_moleculeB);
+		vector<double> anglesEuler(vector<vector<double>>);
+		vector<vector<double>> rotationEuler(vector<double>, vector<vector<double>> ); 
+	/***************************************************************************************/
+	/***************************************************************************************/ 
+	private:
 		double dotProduct(vector<double>,vector<double>);
 		vector<double> crossProduct(vector<double>,vector<double>);
 		vector<double> rotationOperationOverZ(double, vector<double>);
 		vector<double> rotationOperationOverY(double, vector<double>);
 		vector<double> rotationOperationOverX(double, vector<double>);
 		double getAngleBetween2Vectors(vector<double>,vector<double>);
-		void eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues);
-		bool compareEigenValues(vector<double>, vector<double>);
-		void alignEigenVectors(vector<vector<double>>& eigenVector_moleculeA,vector<vector<double>>& eigenVector_moleculeB);
-	/***************************************************************************************/
-	/***************************************************************************************/ 
-	private:
 		//vector<vector<double>> transposeMatrix(vector<vector<double>> matrix);
 
 	/***************************************************************************************/ 

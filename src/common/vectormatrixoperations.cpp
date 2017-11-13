@@ -105,7 +105,6 @@ vector<double> VectorAndMatrixOperations::rotationOperationOverX(double psi,vect
 }
 /***************************************************************************************/ 
 double VectorAndMatrixOperations::getAngleBetween2Vectors(vector<double> vectorA, vector<double> vectorB){
-	
 	double magnitudVec01 = 0.0, magnitudVec02 = 0.0;
 	for(int xyz=0;xyz<3;xyz++){
 		magnitudVec01 += vectorA[xyz] * vectorA[xyz]; 
@@ -138,7 +137,7 @@ void VectorAndMatrixOperations::eigenVectorValues(vector<vector<double>> initial
 	for(int i=0;i<3;i++){
 		for(int j=0;j<3;j++){
 		eigvectors[i][j] = array_eigvectors[i][j];
-		transpose_eigvectors[i][j] = array_eigvectors[j][i];
+		transpose_eigvectors[i][j] = array_eigvectors[i][j];
 		}
 		eigvalues[i] = array_eigvalues[i];
 	}
@@ -173,8 +172,27 @@ bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_mo
 	return is_equal;
 }
 /***************************************************************************************/ 
-void VectorAndMatrixOperations::alignEigenVectors(vector<vector<double>>& eigenVector_moleculeA,vector<vector<double>>& eigenVector_moleculeB){
+void VectorAndMatrixOperations::alignEigenVectors(vector<vector<double>> eigenVector_moleculeA,vector<vector<double>> eigenVector_moleculeB){
 
+
+	vector<double> angleseulerA = anglesEuler(eigenVector_moleculeA);
+	
+	vector<vector<double>> alignvectorA = rotationEuler(angleseulerA, eigenVector_moleculeA);
+	
+	cout << endl << " Align Vectors - Molecule A" << endl;
+	for(int i=0;i<3;++i){
+		cout << " | " << setw(15) << alignvectorA[0][i] << setw(15) << alignvectorA[1][i] << setw(13) << alignvectorA[2][i] << " | " << endl;
+	}
+	vector<double> angleseulerB = anglesEuler(eigenVector_moleculeB);
+	
+	vector<vector<double>> alignvectorB = rotationEuler(angleseulerB, eigenVector_moleculeB);
+	
+	cout << endl << " Align Vectors - Molecule B" << endl;
+	for(int i=0;i<3;++i){
+		cout << " | " << setw(15) << alignvectorB[0][i] << setw(15) << alignvectorB[1][i] << setw(13) << alignvectorB[2][i] << " | " << endl;
+	}
+	
+/*
 	vector<double> crossproductA = crossProduct(eigenVector_moleculeA[0],eigenVector_moleculeA[1]);
 	vector<double> crossproductB = crossProduct(eigenVector_moleculeB[0],eigenVector_moleculeB[1]);
 
@@ -195,11 +213,16 @@ void VectorAndMatrixOperations::alignEigenVectors(vector<vector<double>>& eigenV
 		component_xy[1] = dotProduct(eigenVector_moleculeA[2], unitvectorXYZ[1]);
 	}
 
-	double angle_eigVecA_xy = getAngleBetween2Vectors(component_xy,unitvectorXYZ[1]);
+	double angle_eigVecA_xy = getAngleBetween2Vectors(component_xy,unitvectorXYZ[0]);
+	double angle_eigVecA_xy2 = getAngleBetween2Vectors(component_xy,unitvectorXYZ[1]);
 
-	alignvector[2] = rotationOperationOverZ(angle_eigVecA_xy,eigenVector_moleculeA[2]);
+	if(eigenVector_moleculeA[2][1]< 0.0 && eigenVector_moleculeA[2][0]<0.0) angle_eigVecA_xy += 90;
+
+	for(int i=0;i<3;i++)
+	alignvector[i] = rotationOperationOverZ(angle_eigVecA_xy,eigenVector_moleculeA[i]);
 	
 	cout << "Angle of xy A = " << angle_eigVecA_xy << endl;
+	cout << "Angle of xy A = " << angle_eigVecA_xy2 << endl;
 	cout << endl << " Align Vectors - Molecule A" << endl;
 	for(int i=0;i<3;++i){
 		cout << " | " << setw(15) << alignvector[0][i] << setw(15) << alignvector[1][i] << setw(13) << alignvector[2][i] << " | " << endl;
@@ -215,7 +238,93 @@ void VectorAndMatrixOperations::alignEigenVectors(vector<vector<double>>& eigenV
 	
 	double angle_eigVecA_yz = getAngleBetween2Vectors(eigenVector_moleculeA[2],unitvectorXYZ[2]);
 	eigenVector_moleculeA[2] = rotationOperationOverX(angle_eigVecA_yz,eigenVector_moleculeA[0]);
+*/
+}
+/***************************************************************************************/ 
+vector<double> VectorAndMatrixOperations::anglesEuler(vector<vector<double>> eigenVector_moleculeA){
 
+	vector<double> angles (3,0.0);
+	vector<vector<double>> unitvectorXYZ (3,vector<double> (3,0.0));
+	unitvectorXYZ[0][0] = 1.0;
+	unitvectorXYZ[1][1] = 1.0;
+	unitvectorXYZ[2][2] = 1.0;
+	
+	double phi = 0.0;
+	double theta = 0.0;
+	double psi = 0.0;
+
+	vector<vector<double>> component_xy (3,vector<double>(3,0.0));
+
+	//Component on x and y of first vector
+	component_xy[0][0] = dotProduct(eigenVector_moleculeA[0], unitvectorXYZ[0]);
+	component_xy[0][1] = dotProduct(eigenVector_moleculeA[0], unitvectorXYZ[1]);
+
+	//Component on x and y of second vector
+	component_xy[1][0] = dotProduct(eigenVector_moleculeA[1], unitvectorXYZ[0]);
+	component_xy[1][1] = dotProduct(eigenVector_moleculeA[1], unitvectorXYZ[1]);
+
+	double angleVec1_2_compXY = -getAngleBetween2Vectors(component_xy[0],unitvectorXYZ[0]);
+	double angleVec2_2_compXY = getAngleBetween2Vectors(component_xy[1],unitvectorXYZ[1]);
+
+	phi = atan2(eigenVector_moleculeA[0][1],eigenVector_moleculeA[0][0]) - atan2(unitvectorXYZ[0][1],unitvectorXYZ[0][0]) ;
+	theta = atan2(eigenVector_moleculeA[2][2],eigenVector_moleculeA[2][0]) - atan2(unitvectorXYZ[2][2], unitvectorXYZ[2][0]) ;
+
+	
+	cout << " Phi = " << (phi * 360 /(2.0*PI)) << endl;
+	cout << " Tetha = " << (theta * 180 /PI) << endl;
+	angles[0] = phi;
+	angles[1] = theta;
+	angles[2] = psi;
+
+/*	
+	double tmp_angle1 = atan2(component_xy[0][0],component_xy[0][1]) - atan2(unitvectorXYZ[0][0], unitvectorXYZ[0][0]);
+	angles[0] = 101.3004 * (1.0*PI) / 180.0;
+	angles[1] = -24.25 * (1.0*PI) / 180.0;
+	angles[2] = 0.0 * (1.0*PI) / 180.0;
+	tmp_angle1 *= 180.0 / (1.0 * PI);
+
+	if(tmp_angle1 < 0.0) tmp_angle1 += 360.0;
+
+	double tmp_angle2 = atan2(component_xy[1][0],component_xy[1][1])  - atan2(unitvectorXYZ[1][0], unitvectorXYZ[1][1]);
+	tmp_angle2 *= 360.0 / (2.0 * PI);
+
+	if(tmp_angle2 < 0.0) tmp_angle2 += 360.0;
+	
+	cout << "phi atan2 = " << tmp_angle1 <<" - " << tmp_angle2 << endl;
+	cout << "phi = " << angleVec1_2_compXY <<" - " << angleVec2_2_compXY << endl;
+*/
+
+	return angles;
+}
+vector<vector<double>> VectorAndMatrixOperations::rotationEuler(vector<double> angleseuler,vector<vector<double>> eigenVector_moleculeA){
+
+	vector<vector<double >> matrixrotation (3,vector<double>(3,0.0));
+
+	matrixrotation[0][0] =  cos(angleseuler[2]) * cos(angleseuler[0]) - cos(angleseuler[1]) * sin(angleseuler[0]) * sin(angleseuler[2]);
+	matrixrotation[1][0] = -sin(angleseuler[2]) * cos(angleseuler[0]) - cos(angleseuler[1]) * sin(angleseuler[0]) * cos(angleseuler[2]);
+	matrixrotation[2][0] =  sin(angleseuler[1]) * sin(angleseuler[0]);
+
+	matrixrotation[0][1] =  cos(angleseuler[2]) * sin(angleseuler[0]) + cos(angleseuler[1]) * cos(angleseuler[0]) * sin(angleseuler[2]);
+	matrixrotation[1][1] = -sin(angleseuler[2]) * sin(angleseuler[0]) + cos(angleseuler[1]) * cos(angleseuler[0]) * cos(angleseuler[2]);
+	matrixrotation[2][1] = -sin(angleseuler[1]) * cos(angleseuler[0]);
+
+	matrixrotation[0][2] =  sin(angleseuler[2]) * sin(angleseuler[1]);
+	matrixrotation[1][2] =  cos(angleseuler[2]) * sin(angleseuler[1]);
+	matrixrotation[2][2] =  cos(angleseuler[1]);
+
+
+	vector<vector<double>> afterrotation_vec (3,vector<double>(3,0.0));
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			for(int k=0;k<3;k++){
+				afterrotation_vec[i][j] += matrixrotation[j][k]*eigenVector_moleculeA[i][k]; 
+			}
+		}
+	}
+
+	cout << "DotProduct after rotation = " << dotProduct(afterrotation_vec[0],afterrotation_vec[1]);
+
+	return afterrotation_vec;
 }
 /*
 vector<vector<double>> VectorAndMatrixOperations::transposeMatrix(vector<vector<double>> matrix){
