@@ -114,7 +114,7 @@ double VectorAndMatrixOperations::getAngleBetween2Vectors(vector<double> vectorA
 	magnitudVec02 = sqrt(magnitudVec02);
 
 	double angle = 0.0;
-	angle = acos(dotProduct(vectorA,vectorB) / (magnitudVec01*magnitudVec02)) * 180.0 / PI;
+	angle = acos(dotProduct(vectorA,vectorB) / (magnitudVec01*magnitudVec02)) ;
 
 	return angle;
 }
@@ -174,26 +174,67 @@ bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_mo
 /***************************************************************************************/ 
 void VectorAndMatrixOperations::alignEigenVectors(vector<vector<double>> eigenVector_moleculeA,vector<vector<double>> eigenVector_moleculeB){
 	
-	vector<vector<double>> alignvectorA (3,vector<double>(3,0.0)); 
-	vector<vector<double>> alignvectorB (3,vector<double>(3,0.0)); 
 
 	vector<vector<double>> unitvectorXYZ (3,vector<double> (3,0.0));
 	unitvectorXYZ[0][0] = 1.0;
 	unitvectorXYZ[1][1] = 1.0;
 	unitvectorXYZ[2][2] = 1.0;
+	
 	double phi = 0.0;
 	double theta = 0.0;
 	double psi = 0.0;
 
-	phi = atan2(eigenVector_moleculeA[0][1],eigenVector_moleculeA[0][0]) - atan2(unitvectorXYZ[0][1],unitvectorXYZ[0][0]) ;
+	vector<vector<double>> alignvectorA (3,vector<double>(3,0.0)); 
 	// Align the axis X
-	for(int i=0;i<3;i++)
-	alignvectorA[i] = rotationOperationOverZ(phi,eigenVector_moleculeA[i]);
+
+	vector<double> angleseulerA = anglesEuler(0,eigenVector_moleculeA);
+	alignvectorA = rotationEuler(angleseulerA, eigenVector_moleculeA);
 	
-	theta = atan2(alignvectorA[0][2],alignvectorA[0][0]) - atan2(unitvectorXYZ[2][2],unitvectorXYZ[2][0]) ;
+	// Align the axis Y
+	theta = atan2(alignvectorA[0][0],alignvectorA[0][2]) - atan2(unitvectorXYZ[0][0],unitvectorXYZ[0][2]) ;
+	cout << " Tetha = " << (theta * 180 /PI) << endl;
 	for(int i=0;i<3;i++)
-	alignvectorA[i] = rotationOperationOverY(theta,alignvectorA[i]);
+	alignvectorA[i] = rotationOperationOverY(-theta,alignvectorA[i]);
 	
+
+	//Aling the axis Z 
+	psi = -getAngleBetween2Vectors(alignvectorA[1],unitvectorXYZ[2]) ;
+	cout << " Psi = " << (-psi * 180 /PI) << endl;
+	psi = 122.9 * PI /180.0;
+	for(int i=0;i<3;i++)
+	alignvectorA[i] = rotationOperationOverX(psi,alignvectorA[i]);
+	
+	cout << endl << " Align Vectors - Molecule A" << endl;
+	for(int i=0;i<3;++i){
+		cout << " | " << setw(15) << alignvectorA[0][i] << setw(15) << alignvectorA[1][i] << setw(13) << alignvectorA[2][i] << " | " << endl;
+	}
+
+	vector<vector<double>> alignvectorB (3,vector<double>(3,0.0)); 
+	// Align the axis X
+
+	vector<double> angleseulerB = anglesEuler(0,eigenVector_moleculeB);
+	alignvectorB = rotationEuler(angleseulerB, eigenVector_moleculeB);
+	
+	// Align the axis Y
+	theta = atan2(alignvectorB[0][0],alignvectorB[0][2]) - atan2(unitvectorXYZ[0][0],unitvectorXYZ[0][2]) ;
+	cout << " Tetha = " << (theta * 180 /PI) << endl;
+	for(int i=0;i<3;i++)
+	alignvectorB[i] = rotationOperationOverY(-theta,alignvectorB[i]);
+	
+	//Aling the axis Z 
+	psi = getAngleBetween2Vectors(alignvectorB[1],unitvectorXYZ[2]) ;
+	cout << " Psi = " << (psi * 180 /PI) << endl;
+	psi = -50.0 * PI /180.0;
+	for(int i=0;i<3;i++)
+	alignvectorB[i] = rotationOperationOverX(psi,alignvectorB[i]);
+	
+	cout << endl << " Align Vectors - Molecule B" << endl;
+	for(int i=0;i<3;++i){
+		cout << " | " << setw(15) << alignvectorB[0][i] << setw(15) << alignvectorB[1][i] << setw(13) << alignvectorB[2][i] << " | " << endl;
+	}
+/*
+	
+	// Align the axis Z
 	psi = atan2(alignvectorA[1][1],alignvectorA[1][0]) - atan2(unitvectorXYZ[1][1],unitvectorXYZ[1][0]) ;
 	for(int i=0;i<3;i++)
 	alignvectorA[i] = rotationOperationOverZ(psi,alignvectorA[i]);
@@ -201,10 +242,6 @@ void VectorAndMatrixOperations::alignEigenVectors(vector<vector<double>> eigenVe
 	cout << " Phi = " << (phi * 360 /(2.0*PI));
 	cout << " Tetha = " << (theta * 180 /PI);
 	cout << " Psi = " << (psi * 180 /PI) << endl;
-	cout << endl << " Align Vectors - Molecule A" << endl;
-	for(int i=0;i<3;++i){
-		cout << " | " << setw(15) << alignvectorA[0][i] << setw(15) << alignvectorA[1][i] << setw(13) << alignvectorA[2][i] << " | " << endl;
-	}
 	
 	
 	phi = atan2(eigenVector_moleculeB[0][1],eigenVector_moleculeB[0][0]) - atan2(unitvectorXYZ[0][1],unitvectorXYZ[0][0]) ;
@@ -223,7 +260,7 @@ void VectorAndMatrixOperations::alignEigenVectors(vector<vector<double>> eigenVe
 	cout << " Phi = " << (phi * 360 /(2.0*PI));
 	cout << " Tetha = " << (theta * 180 /PI);
 	cout << " Psi = " << (psi * 180 /PI) << endl;
-	cout << endl << " Blign Vectors - Molecule B" << endl;
+	cout << endl << " Align Vectors - Molecule B" << endl;
 	for(int i=0;i<3;++i){
 		cout << " | " << setw(15) << alignvectorB[0][i] << setw(15) << alignvectorB[1][i] << setw(13) << alignvectorB[2][i] << " | " << endl;
 	}
