@@ -25,9 +25,8 @@ class VectorAndMatrixOperations{
 	/***************************************************************************************/ 
 		void eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues);
 		bool compareEigenValues(vector<double>, vector<double>);
-		void alignEigenVectors(vector<vector<double>> eigenVector_moleculeA,vector<vector<double>> eigenVector_moleculeB);
-		vector<double> anglesEuler(int,vector<vector<double>>);
-		vector<vector<double>> rotationEuler(vector<double>, vector<vector<double>> ); 
+		vector<double> alignEigenVectors4Angles(vector<vector<double>>);
+		vector<Atom> rotateMolecule(vector<double> angles,vector<Atom> molecula);
 	/***************************************************************************************/
 	/***************************************************************************************/ 
 	private:
@@ -38,6 +37,8 @@ class VectorAndMatrixOperations{
 		vector<double> rotationOperationOverX(double, vector<double>);
 		double getAngleBetween2Vectors(vector<double>,vector<double>);
 		//vector<vector<double>> transposeMatrix(vector<vector<double>> matrix);
+		vector<double> anglesEuler(int,vector<vector<double>>);
+		vector<vector<double>> rotationEuler(vector<double>, vector<vector<double>> ); 
 
 	/***************************************************************************************/ 
 	/***************************************************************************************/ 
