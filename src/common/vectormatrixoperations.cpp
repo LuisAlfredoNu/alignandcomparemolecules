@@ -286,7 +286,6 @@ vector<double> VectorAndMatrixOperations::alignEigenVectors4Angles(vector<vector
 }
 /***************************************************************************************/ 
 vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<double> angles,vector<Atom> molecule){
-
 	vector<Atom> molecule_aligned = molecule;
 	for(unsigned int i=0;i < molecule.size();i++){
 
@@ -295,6 +294,20 @@ vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<double> angles,vec
 		molecule_aligned[i].setCoordinates(rotationOperationOverZ(angles[2],molecule_aligned[i].atomCoordinates));
 	}
 
+	return molecule_aligned;
+}
+/***************************************************************************************/  
+vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<vector<double>> matrixrotation,vector<Atom> molecule){
+	vector<Atom> molecule_aligned = molecule;
+	for(unsigned int i=0;i < molecule.size();i++){
+		vector<double> coordinates (3,0.0);
+		for(int j=0; j<3;j++){
+			coordinates[0] += matrixrotation[0][j] * molecule[i].atomCoordinates[j];
+			coordinates[1] += matrixrotation[1][j] * molecule[i].atomCoordinates[j];
+			coordinates[2] += matrixrotation[2][j] * molecule[i].atomCoordinates[j];
+		}
+		molecule_aligned[i].setCoordinates(coordinates); 
+	}
 	return molecule_aligned;
 }
 /***************************************************************************************/ 

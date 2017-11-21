@@ -27,6 +27,7 @@ class VectorAndMatrixOperations{
 		bool compareEigenValues(vector<double>, vector<double>);
 		vector<double> alignEigenVectors4Angles(vector<vector<double>>);
 		vector<Atom> rotateMolecule(vector<double> angles,vector<Atom> molecula);
+		vector<Atom> rotateMolecule(vector<vector<double>>,vector<Atom> molecula);
 	/***************************************************************************************/
 	/***************************************************************************************/ 
 	private:
