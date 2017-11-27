@@ -6,18 +6,14 @@
  *
  */
 /***************************************************************************************/  
-#include "atomsinmolecule.h"
 #ifndef _OUTPUT_H_
 #define _OUTPUT_H_
-#include <fstream>
-using std::ifstream;
-using std::ofstream;
 #include <string>
 using std::string;
-
 #include <vector>
 using std::vector;
 /***************************************************************************************/ 
+#include "screenutils.h"
 #include "atomsinmolecule.h"
 /***************************************************************************************/ 
 /***************************************************************************************/ 
@@ -33,6 +29,7 @@ class OutputAlignProgram{
 		void displayDualMatrix(string,vector<double>,vector<double>);
 		void displayFilesNames(string,string);
 		void displayItsTheSame();
+		bool saveXYZFile(string,vector<Atom>);
 	/***************************************************************************************/ 
 		// Variables
 	/***************************************************************************************/ 

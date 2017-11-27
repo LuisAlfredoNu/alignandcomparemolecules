@@ -13,6 +13,8 @@ using std::setw;
 using std::vector;
 #include <string>
 using std::string;
+#include <fstream>
+using std::ofstream;
 /***************************************************************************************/ 
 #include "screenutils.h"
 #include "output.h"
@@ -63,6 +65,32 @@ void OutputAlignProgram::displayItsTheSame(){
 	scrut.PrintScrStarLine();
 }
 /***************************************************************************************/ 
+bool OutputAlignProgram::saveXYZFile(string filename, vector<Atom> molecule){
+
+	string ofilename = filename.substr(0,(filename.size()-4));
+	ofilename += "_rotated.xyz";
+	ofstream ofil(ofilename.c_str());
+	
+	if ( !ofil.good() ) {
+		cout << "Error while opening the file " << ofilename << endl;
+      cout << "OWBCOutputData values not written!" << endl;
+		cout << __FILE__ << ", line: " << __LINE__ << endl;
+		ofil.close();
+		return false;
+	}
+	ofil << molecule.size() << endl;
+	ofil << "\t" << filename << " ---> " << ofilename << endl;
+	for(unsigned int i=0;i<molecule.size();i++){
+
+		ofil << molecule[i].atomSymbol 			<<setw(12) ;
+		ofil << molecule[i].atomCoordinates[0] <<setw(15) ;
+		ofil << molecule[i].atomCoordinates[1] <<setw(15) ;
+		ofil << molecule[i].atomCoordinates[2] <<setw(15) ;
+		ofil << endl;
+	}
+	cout << "Output file XYZ " << ofilename << endl;
+	return true;
+}
 /***************************************************************************************/ 
 /***************************************************************************************/ 
 /***************************************************************************************/ 

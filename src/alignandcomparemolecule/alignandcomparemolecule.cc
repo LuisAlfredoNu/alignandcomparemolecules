@@ -74,45 +74,13 @@ int main (int argc, char *argv[]) {
 
 				output.displayItsTheSame();
 
-				vector<Atom> molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A);
-				vector<Atom> molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B);
+				vector<Atom> molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A_inCM);
+				vector<Atom> molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B_inCM);
 				
-				cout << endl << "Coordenates of molecule A"<< setw(50);
-				cout << "Coordenates of molecule B"<< endl;
-				cout << molecule_A_align.size() << setw(50);
-				cout << molecule_B_align.size() << endl;
-				for(unsigned int i=0;i<molecule_A_align.size();i++){
-
-					cout << molecule_A_align[i].atomSymbol << setw(13);
-					cout << molecule_A_align[i].atomCoordinates[0] <<setw(15) ;
-					cout << molecule_A_align[i].atomCoordinates[1] <<setw(15) ;
-					cout << molecule_A_align[i].atomCoordinates[2] <<setw(15) ;
-					cout << setw(15);
-					cout << molecule_B_align[i].atomSymbol << setw(15);
-					cout << molecule_B_align[i].atomCoordinates[0] << setw(15);
-					cout << molecule_B_align[i].atomCoordinates[1] << setw(15);
-					cout << molecule_B_align[i].atomCoordinates[2];
-					cout << endl;
-
-				}
-				cout << endl << "Coordenates of molecule A after"<< setw(50);
-				cout << "Coordenates of molecule B after"<< endl;
-				cout << molecule_A.size() << setw(50);
-				cout << molecule_B.size() << endl;
-				for(unsigned int i=0;i<molecule_A.size();i++){
-
-					cout << molecule_A[i].atomSymbol << setw(13);
-					cout << molecule_A[i].atomCoordinates[0] <<setw(15) ;
-					cout << molecule_A[i].atomCoordinates[1] <<setw(15) ;
-					cout << molecule_A[i].atomCoordinates[2] <<setw(15) ;
-					cout << setw(15);
-					cout << molecule_B[i].atomSymbol << setw(15);
-					cout << molecule_B[i].atomCoordinates[0] << setw(15);
-					cout << molecule_B[i].atomCoordinates[1] << setw(15);
-					cout << molecule_B[i].atomCoordinates[2];
-					cout << endl;
-
-				}
+				cout << endl << "Coordenates of molecule A" << endl;
+				output.saveXYZFile(argv[1],molecule_A_align);
+				cout << "Coordenates of molecule B" << endl;
+				output.saveXYZFile(argv[2],molecule_B_align);
 
 			}
 			return EXIT_SUCCESS;
