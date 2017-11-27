@@ -8,6 +8,7 @@
 using std::cout;
 using std::endl;
 #include <iomanip>
+using std::left;
 using std::setw;
 #include <vector>
 using std::vector;
@@ -79,13 +80,13 @@ bool OutputAlignProgram::saveXYZFile(string filename, vector<Atom> molecule){
 		return false;
 	}
 	ofil << molecule.size() << endl;
-	ofil << "\t" << filename << " ---> " << ofilename << endl;
+	ofil << filename << " ---> " << ofilename << endl;
 	for(unsigned int i=0;i<molecule.size();i++){
 
-		ofil << molecule[i].atomSymbol 			<<setw(12) ;
-		ofil << molecule[i].atomCoordinates[0] <<setw(15) ;
-		ofil << molecule[i].atomCoordinates[1] <<setw(15) ;
-		ofil << molecule[i].atomCoordinates[2] <<setw(15) ;
+		ofil << setw(5) << left << molecule[i].atomSymbol;
+		ofil << setw(15)<< left << molecule[i].atomCoordinates[0];
+		ofil << setw(15)<< left << molecule[i].atomCoordinates[1];
+		ofil << setw(15)<< left << molecule[i].atomCoordinates[2];
 		ofil << endl;
 	}
 	cout << "Output file XYZ " << ofilename << endl;
