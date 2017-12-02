@@ -4,8 +4,6 @@ using std::cout;
 using std::endl;
 using std::left;
 using std::cerr;
-#include <iomanip>
-using std::setw;
 #include <vector>
 using std::vector;
 /***************************************************************************************/ 
