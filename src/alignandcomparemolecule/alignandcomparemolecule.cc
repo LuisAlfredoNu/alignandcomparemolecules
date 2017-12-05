@@ -71,7 +71,7 @@ int main (int argc, char *argv[]) {
 			if(matrixOP.compareEigenValues(eigvalues_molecule_A,eigvalues_molecule_B)){
 
 				output.displayItsTheSame();
-
+/*
 				vector<Atom> molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A_inCM);
 				vector<Atom> molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B_inCM);
 				
@@ -79,7 +79,7 @@ int main (int argc, char *argv[]) {
 				output.saveXYZFile(argv[1],molecule_A_align);
 				cout << "Coordenates of molecule B" << endl;
 				output.saveXYZFile(argv[2],molecule_B_align);
-
+*/
 			}
 			return EXIT_SUCCESS;
 		}else{
