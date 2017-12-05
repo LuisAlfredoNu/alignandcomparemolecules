@@ -79,5 +79,26 @@ vector<Atom> MolecularOperations::moveCM2Origin(vector<Atom> molecule){
 }
 /***************************************************************************************/ 
 /***************************************************************************************/ 
+bool MolecularOperations::haveSameTypeNumAtoms(vector<Atom> moleculeA, vector<Atom> moleculeB){
+
+	bool have_same = true;
+
+	vector<int> type_num_atoms_moleculeA (108,0.0);
+	vector<int> type_num_atoms_moleculeB (108,0.0);
+
+	if(moleculeA.size() == moleculeB.size()){
+		for(unsigned int i=0;i<moleculeA.size();i++){
+			type_num_atoms_moleculeA[moleculeA[i].atomNumber] += 1;
+			type_num_atoms_moleculeB[moleculeB[i].atomNumber] += 1;
+		}
+		for(int i=0;i<108;i++){
+			if(type_num_atoms_moleculeA[i] != type_num_atoms_moleculeB[i]) 
+				have_same = false;
+		}
+	}else{
+		have_same = false;
+	}
+	return have_same;
+}
 #endif // _MOLECULAR_OPERATIONS_CPP_
 

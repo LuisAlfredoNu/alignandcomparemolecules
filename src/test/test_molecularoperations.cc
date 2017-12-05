@@ -9,6 +9,7 @@ using std::string;
 using std::vector;
 #include "atomsinmolecule.h"
 #include "molecularoperations.h"
+#include "readxyzfile.h"
 
 int main (int argc, char *argv[])
 {
@@ -95,6 +96,33 @@ int main (int argc, char *argv[])
 	cout << "Inertia Tensor - Matrix" << endl;
 	for(int i=0;i<3;++i) cout << " | " << inertiatensor[i][0] << "\t--\t" << inertiatensor[i][1]<< "\t--\t" << inertiatensor[i][2] << " | " << endl;
 
+	cout << endl << "********************************************************" << endl;
+	cout << " Test if two molecules have the same number and type of atoms  " << endl;
+	cout << "********************************************************" << endl << endl;
+
+	vector<Atom> molecule_A, molecule_B;
+	ReadXYZFile read;
+	bool status_molecuelaA = read.getValuesFromFile("filetest_numbers_plus.xyz",molecule_A);
+	bool status_molecuelaB = read.getValuesFromFile("filetest_symbols_xyz.xyz",molecule_B);
+
+	if(status_molecuelaA && status_molecuelaB){	
+		cout << "List of atoms: " << endl;
+		for(unsigned int i=0; i < molecule_A.size(); i++){
+			cout << molecule_A[i].atomNumber << ",";
+		}
+		cout << endl;
+		for(unsigned int i=0; i < molecule_B.size(); i++){
+			cout << molecule_B[i].atomNumber << ",";
+		}
+		cout << endl;
+		if(molecularop.haveSameTypeNumAtoms(molecule_A,molecule_B)){
+			cout << " The moelcule filetest_numbers_xyz.xyz and filetest_symbols_xyz.xyz"<< endl;
+			cout << " have the same number and type of atoms" << endl ;
+		}else{
+			cout << " The moelcule filetest_numbers_xyz.xyz and filetest_symbols_xyz.xyz"<< endl;
+			cout << " not have the same number and type of atoms" << endl ;
+		}
+	}
 
 	return EXIT_SUCCESS;
 }
