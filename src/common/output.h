@@ -2,7 +2,12 @@
 /*
  * 
  * Class for output of program  
- * Methods
+ * Methods:
+ * 	displayDualMatrix -> Display on screen two matrix in a row
+ * 							-> Display on screen two vectors in a row
+ * 	displayFilesNames -> Display on screen the name of the files which will to use 
+ * 	displayItsTheSame -> Display on screen a flag when the main inertia axis are the same in the two molecules 
+ * 	saveXYZFile -> Create a file with format xyz for the molecule 
  *
  */
 /***************************************************************************************/  
