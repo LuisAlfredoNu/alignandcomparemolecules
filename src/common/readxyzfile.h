@@ -49,6 +49,8 @@ class ReadXYZFile{
 		int getNumofAtoms(ifstream &file);
 		bool typeDataNumOChar(ifstream &file);
 		bool statusAllData(vector<Atom>);
+		void sortingAtoms(vector<Atom> &);
+
 
 	/***************************************************************************************/ 
 	/***************************************************************************************/ 

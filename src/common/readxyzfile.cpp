@@ -3,7 +3,6 @@
 /***************************************************************************************/  
 #ifndef _READXYZFILE_CPP_
 #define _READXYZFILE_CPP_
-
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -41,6 +40,7 @@ bool ReadXYZFile::getValuesFromFile(string filename, vector<Atom> & molecule){
 	Natoms = getNumofAtoms(XYZFile);
 	molecule.resize(Natoms);
 	getDataAtoms(XYZFile,molecule);
+	sortingAtoms(molecule);
 	open_without_problems = statusAllData(molecule);
 
 	XYZFile.close();
@@ -125,6 +125,38 @@ bool ReadXYZFile::statusAllData(vector<Atom> molecule){
 		if(!molecule[i].statusData) return false;
 
 	return true;
+}
+/***************************************************************************************/ 
+void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
+
+	// Here I adapt the Comb sort algorithm from Wikipedia  
+	Atom atom4swap_tmp;
+
+	int swaps = 1;
+	int gap = molecule.size();
+	int sizemolecule = molecule.size();
+
+	while(!(swaps == 0 && gap ==1)){
+		if(gap > 1){
+			gap /= 1.3;
+			if (gap ==10 || gap == 9){
+				gap = 11;
+			}
+		}
+
+		int i=0; swaps=0;
+		while(i + gap < sizemolecule){
+			if(molecule[i].atomCoordinates[0] > molecule[i+gap].atomCoordinates[0]){
+
+				atom4swap_tmp = molecule[i];
+				molecule[i] = molecule[i+gap];
+				molecule[i+gap] = atom4swap_tmp;
+
+				swaps += 1; 
+			}
+			i += 1;
+		}
+	}
 }
 /***************************************************************************************/ 
 /***************************************************************************************/ 
