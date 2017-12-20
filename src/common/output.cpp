@@ -10,6 +10,7 @@ using std::endl;
 #include <iomanip>
 using std::left;
 using std::setw;
+using std::setprecision;
 #include <vector>
 using std::vector;
 #include <string>
@@ -93,6 +94,20 @@ bool OutputAlignProgram::saveXYZFile(string filename, vector<Atom> molecule){
 	return true;
 }
 /***************************************************************************************/ 
+void OutputAlignProgram::displayXYZFile(string filename, vector<Atom> molecule){
+	
+	cout << endl << "Molecule from file: " << filename << endl;
+	cout << molecule.size() << endl;
+	cout << endl;
+	for(unsigned int i=0;i<molecule.size();i++){
+
+		cout << setw(5) << left << molecule[i].atomSymbol;
+		cout << setw(15) << setprecision(5) << molecule[i].atomCoordinates[0];
+		cout << setw(15) << setprecision(5) << molecule[i].atomCoordinates[1];
+		cout << setw(15) << setprecision(5) << molecule[i].atomCoordinates[2];
+		cout << endl;
+	}
+}
 /***************************************************************************************/ 
 /***************************************************************************************/ 
 #endif // _OUTPUT_CPP_
