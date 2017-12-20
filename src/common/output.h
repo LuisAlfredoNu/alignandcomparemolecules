@@ -34,6 +34,7 @@ class OutputAlignProgram{
 		void displayDualMatrix(string,vector<double>,vector<double>);
 		void displayFilesNames(string,string);
 		void displayItsTheSame();
+		void displayXYZFile(string,vector<Atom>);
 		bool saveXYZFile(string,vector<Atom>);
 	/***************************************************************************************/ 
 		// Variables
