@@ -36,20 +36,22 @@ int main (int argc, char *argv[])
 		}   
 		cout << "All data is fine ?  " << (statusAllData ? statusanswer="yes" : statusanswer="no") << endl;
 		cout << endl << " Input Data " << endl << endl;
-		cout << "12" << endl;
-		cout << "benzene example" << endl;
-		cout << "  6        0.00000        1.40272        0.00000" << endl;
-		cout << "  1        0.00000        2.49029        0.00000" << endl;
-		cout << "  6       -1.21479        0.70136        0.00000" << endl;
-		cout << "  1       -2.15666        1.24515        0.00000" << endl;
-		cout << "  6       -1.21479       -0.70136        0.00000" << endl;
-		cout << "  1       -2.15666       -1.24515        0.00000" << endl;
-		cout << "  6        0.00000       -1.40272        0.00000" << endl;
-		cout << "  1        0.00000       -2.49029        0.00000" << endl;
-		cout << "  6        1.21479       -0.70136        0.00000" << endl;
-		cout << "  1        2.15666       -1.24515        0.00000" << endl;
-		cout << "  6        1.21479        0.70136        0.00000" << endl;
-		cout << "  1        2.15666        1.24515        0.00000" << endl;
+		cout << " 14 " << endl;
+		cout << " benzene example" << endl;
+		cout << "   6        0.00000        1.40272        0.00000" << endl;
+		cout << "   1        0.00000        2.49029       -1.00000" << endl;
+		cout << "   6       -1.21479        0.70136        0.00000" << endl;
+		cout << "   1       -2.15666        1.24515        0.00000" << endl;
+		cout << "   6       -1.21479       -0.70136        0.00000" << endl;
+		cout << "   1       -2.15666       -1.24515        0.00000" << endl;
+		cout << "   6        0.00000       -1.40272        0.00000" << endl;
+		cout << "   1        0.00000       -2.49029        0.00000" << endl;
+		cout << "   6        1.21479       -0.70136        0.00000" << endl;
+		cout << "   1        2.15666       -1.24515        0.00000" << endl;
+		cout << "   1        0.00000        2.49029        1.00000" << endl;
+		cout << "   6        1.21479        0.70136        0.00000" << endl;
+		cout << "   1        2.15666        1.24515        0.00000" << endl;
+		cout << "   1        0.00000        2.49029        0.00000" << endl;
 		cout << endl << " After read and sorting data" << endl << endl;
 		for(unsigned int i=0;i<molecule.size();i++){
 			cout << "  " << molecule[i].atomNumber;
@@ -66,4 +68,21 @@ int main (int argc, char *argv[])
 }
 
 
+
+cout << " 14 " << endl;
+cout << " benzene example" << endl;
+cout << "   6        0.00000        1.40272        0.00000" << endl;
+cout << "   1        0.00000        2.49029       -1.00000" << endl;
+cout << "   6       -1.21479        0.70136        0.00000" << endl;
+cout << "   1       -2.15666        1.24515        0.00000" << endl;
+cout << "   6       -1.21479       -0.70136        0.00000" << endl;
+cout << "   1       -2.15666       -1.24515        0.00000" << endl;
+cout << "   6        0.00000       -1.40272        0.00000" << endl;
+cout << "   1        0.00000       -2.49029        0.00000" << endl;
+cout << "   6        1.21479       -0.70136        0.00000" << endl;
+cout << "   1        2.15666       -1.24515        0.00000" << endl;
+cout << "   1        0.00000        2.49029        1.00000" << endl;
+cout << "   6        1.21479        0.70136        0.00000" << endl;
+cout << "   1        2.15666        1.24515        0.00000" << endl;
+cout << "   1        0.00000        2.49029        0.00000" << endl;
 
