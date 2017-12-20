@@ -146,6 +146,7 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 
 		int i=0; swaps=0;
 		while(i + gap < sizemolecule){
+			//Sorting by X
 			if(molecule[i].atomCoordinates[0] > molecule[i+gap].atomCoordinates[0]){
 
 				atom4swap_tmp = molecule[i];
@@ -153,6 +154,30 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 				molecule[i+gap] = atom4swap_tmp;
 
 				swaps += 1; 
+			}else{
+				//Sorting by Y
+				if(molecule[i].atomCoordinates[0] == molecule[i+gap].atomCoordinates[0]){
+					if(molecule[i].atomCoordinates[1] > molecule[i+gap].atomCoordinates[1]){
+
+						atom4swap_tmp = molecule[i];
+						molecule[i] = molecule[i+gap];
+						molecule[i+gap] = atom4swap_tmp;
+
+						swaps += 1; 
+					}else{
+						// Sorting by Z
+						if(molecule[i].atomCoordinates[1] == molecule[i+gap].atomCoordinates[1]){
+							if(molecule[i].atomCoordinates[2] > molecule[i+gap].atomCoordinates[2]){
+
+								atom4swap_tmp = molecule[i];
+								molecule[i] = molecule[i+gap];
+								molecule[i+gap] = atom4swap_tmp;
+
+								swaps += 1; 
+							}
+						}
+					}
+				}
 			}
 			i += 1;
 		}
