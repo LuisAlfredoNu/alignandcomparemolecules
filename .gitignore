@@ -19,6 +19,8 @@
 *.dat
 *.txt
 *.owo
+*.tga
+*.png
 
 #specific files
 backup/test/main
