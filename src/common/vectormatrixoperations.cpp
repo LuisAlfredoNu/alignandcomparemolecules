@@ -299,20 +299,28 @@ vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<double> angles,vec
 /***************************************************************************************/  
 vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<vector<double>> matrixrotation,vector<Atom> molecule){
 	vector<Atom> molecule_aligned = molecule;
+	vector<vector<double>> matrixrotation_tras (3,vector<double> (3,0.0));
+	for(int i=0;i<3;i++){
+		matrixrotation_tras[0][i] = matrixrotation[i][0];
+		matrixrotation_tras[1][i] = matrixrotation[i][1];
+		matrixrotation_tras[2][i] = matrixrotation[i][2];
+	}
 	for(unsigned int i=0;i < molecule.size();i++){
 		vector<double> coordinates (3,0.0);
 		vector<double> coordinatesB (3,0.0);
 		for(int j=0; j<3;j++){
-			coordinates[0] += matrixrotation[0][j] * molecule[i].atomCoordinates[j];
-			coordinates[1] += matrixrotation[1][j] * molecule[i].atomCoordinates[j];
-			coordinates[2] += matrixrotation[2][j] * molecule[i].atomCoordinates[j];
+			coordinates[0] += matrixrotation_tras[0][j] * molecule[i].atomCoordinates[j];
+			coordinates[1] += matrixrotation_tras[1][j] * molecule[i].atomCoordinates[j];
+			coordinates[2] += matrixrotation_tras[2][j] * molecule[i].atomCoordinates[j];
 		}
+		/*
 		for(int j=0; j<3;j++){
 			coordinatesB[0] += coordinates[j] * matrixrotation[j][0] ;
 			coordinatesB[1] += coordinates[j] * matrixrotation[j][1] ;
 			coordinatesB[2] += coordinates[j] * matrixrotation[j][2] ;
 		}
-		molecule_aligned[i].setCoordinates(coordinatesB); 
+		*/
+		molecule_aligned[i].setCoordinates(coordinates); 
 	}
 	return molecule_aligned;
 }

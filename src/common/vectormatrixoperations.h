@@ -28,15 +28,15 @@ class VectorAndMatrixOperations{
 		vector<double> alignEigenVectors4Angles(vector<vector<double>>);
 		vector<Atom> rotateMolecule(vector<double> angles,vector<Atom> molecula);
 		vector<Atom> rotateMolecule(vector<vector<double>>,vector<Atom> molecula);
+		vector<double> rotationOperationOverZ(double, vector<double>);
+		vector<double> rotationOperationOverY(double, vector<double>);
+		vector<double> rotationOperationOverX(double, vector<double>);
+		double getAngleBetween2Vectors(vector<double>,vector<double>);
 	/***************************************************************************************/
 	/***************************************************************************************/ 
 	private:
 		double dotProduct(vector<double>,vector<double>);
 		vector<double> crossProduct(vector<double>,vector<double>);
-		vector<double> rotationOperationOverZ(double, vector<double>);
-		vector<double> rotationOperationOverY(double, vector<double>);
-		vector<double> rotationOperationOverX(double, vector<double>);
-		double getAngleBetween2Vectors(vector<double>,vector<double>);
 		//vector<vector<double>> transposeMatrix(vector<vector<double>> matrix);
 		vector<double> anglesEuler(int,vector<vector<double>>);
 		vector<vector<double>> rotationEuler(vector<double>, vector<vector<double>> ); 

@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <iostream>
+using std::cin;
 using std::cout;
 using std::endl;
 using std::left;
@@ -35,9 +36,16 @@ int main (int argc, char *argv[]) {
 
 			VectorAndMatrixOperations matrixOP;
 
-			double phi = 45.0;
-			double theta = 30.0;
-			double psi = 12.0;
+			double phi; 
+			double theta; 
+			double psi; 
+			
+			cout << "Angles for rotation " << endl << "phi = " ;
+			cin >> phi;
+			cout << "theta = " ;
+			cin >> theta;
+			cout << "psi = ";
+			cin >> psi;
 			phi = phi * 3.14159 / 180.0;
 			theta = theta * 3.14159 / 180.0;
 			psi = psi * 3.14159 / 180.0;
@@ -46,27 +54,12 @@ int main (int argc, char *argv[]) {
 			vector<Atom> molecule_B_rotate = matrixOP.rotateMolecule(angles, molecule_A);
 
 			cout << endl << "Coordenates of inital molecule "<< endl;
-			cout << molecule_A.size() << endl << endl;
-			for(unsigned int i=0;i<molecule_A.size();i++){
-				cout << molecule_A[i].atomSymbol << setw(13);
-				cout << molecule_A[i].atomCoordinates[0] <<setw(15) ;
-				cout << molecule_A[i].atomCoordinates[1] <<setw(15) ;
-				cout << molecule_A[i].atomCoordinates[2] ;
-				cout << endl;
-			}
+			output.displayXYZFile(argv[1],molecule_A);
+			
 			cout << endl << "Coordenates of molecule after rotation "<< endl;
-			cout << "\tAngles rotation over Z axis = " << phi << endl;
-			cout << "\tAngles rotation over Y axis = " << theta << endl;
-			cout << "\tAngles rotation over X axis = " << psi << endl;
-			cout << molecule_B_rotate.size() << endl;
-			cout << argv[1] << endl;
-			for(unsigned int i=0;i<molecule_B_rotate.size();i++){
-				cout << molecule_B_rotate[i].atomSymbol << setw(15);
-				cout << molecule_B_rotate[i].atomCoordinates[0] << setw(15);
-				cout << molecule_B_rotate[i].atomCoordinates[1] << setw(15);
-				cout << molecule_B_rotate[i].atomCoordinates[2];
-				cout << endl;
-			}
+			reader.sortingAtoms(molecule_B_rotate);
+			output.displayXYZFile(argv[1],molecule_B_rotate);
+			
 			return EXIT_SUCCESS;
 		}else{
 			cout << endl;
