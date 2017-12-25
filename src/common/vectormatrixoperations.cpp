@@ -376,6 +376,7 @@ vector<double> VectorAndMatrixOperations::anglesEuler(int numangle,vector<vector
 	*/
 	return angles;
 }
+/***************************************************************************************/ 
 vector<vector<double>> VectorAndMatrixOperations::rotationEuler(vector<double> angleseuler,vector<vector<double>> eigenVector_moleculeA){
 	vector<vector<double >> matrixrotation (3,vector<double>(3,0.0));
 
@@ -404,21 +405,27 @@ vector<vector<double>> VectorAndMatrixOperations::rotationEuler(vector<double> a
 
 	return afterrotation_vec;
 }
-/*
-vector<vector<double>> VectorAndMatrixOperations::transposeMatrix(vector<vector<double>> matrix){
+/***************************************************************************************/ 
+vector<Atom> VectorAndMatrixOperations::inversionOfCoordinates(vector<Atom> molecule){
+
+	vector<vector<double>> matrixinvertion (3,vector<double>(3,0.0));
+	matrixinvertion[0][0] = -1;
+	matrixinvertion[1][1] = -1;
+	matrixinvertion[2][2] = -1;
+
+	vector<Atom> molecule_inverse = molecule;
 	
-	vector<vector<double>> transposematrix (3,vector<double>(3,0.0));
-
-	for(int i=0;i<3;i++){
-		for(int j=0;j<3;j++){
-
-
+	for(unsigned int i=0;i < molecule.size();i++){
+		vector<double> coordinates (3,0.0);
+		for(int j=0; j<3;j++){
+			coordinates[0] += matrixinvertion[0][j] * molecule[i].atomCoordinates[j];
+			coordinates[1] += matrixinvertion[1][j] * molecule[i].atomCoordinates[j];
+			coordinates[2] += matrixinvertion[2][j] * molecule[i].atomCoordinates[j];
 		}
+		molecule_inverse[i].setCoordinates(coordinates); 
 	}
-	return transposematrix;
+	return molecule_inverse;
 }
-*/
-
 /***************************************************************************************/ 
 /***************************************************************************************/ 
 #endif // _VECTORMATRIXOPERATIONS_CPP_
