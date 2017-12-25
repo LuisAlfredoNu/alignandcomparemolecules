@@ -67,10 +67,10 @@ void OutputAlignProgram::displayItsTheSame(){
 	scrut.PrintScrStarLine();
 }
 /***************************************************************************************/ 
-bool OutputAlignProgram::saveXYZFile(string filename, vector<Atom> molecule){
+bool OutputAlignProgram::saveXYZFile(string filename,string commnet, vector<Atom> molecule){
 
 	string ofilename = filename.substr(0,(filename.size()-4));
-	ofilename += "_rotated.xyz";
+	ofilename += "_output.xyz";
 	ofstream ofil(ofilename.c_str());
 	
 	if ( !ofil.good() ) {
@@ -81,7 +81,7 @@ bool OutputAlignProgram::saveXYZFile(string filename, vector<Atom> molecule){
 		return false;
 	}
 	ofil << molecule.size() << endl;
-	ofil << filename << " ---> " << ofilename << endl;
+	ofil << filename << " ---> " << ofilename << commnet << endl;
 	for(unsigned int i=0;i<molecule.size();i++){
 
 		ofil << setw(5) << left << molecule[i].atomSymbol;

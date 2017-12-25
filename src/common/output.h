@@ -35,7 +35,7 @@ class OutputAlignProgram{
 		void displayFilesNames(string,string);
 		void displayItsTheSame();
 		void displayXYZFile(string,vector<Atom>);
-		bool saveXYZFile(string,vector<Atom>);
+		bool saveXYZFile(string,string,vector<Atom>);
 	/***************************************************************************************/ 
 		// Variables
 	/***************************************************************************************/ 
