@@ -9,6 +9,8 @@ using std::cerr;
 using std::setw;
 #include <vector>
 using std::vector;
+#include <string>
+using std::string;
 /***************************************************************************************/ 
 #include "screenutils.h"
 #include "readxyzfile.h"
@@ -59,6 +61,10 @@ int main (int argc, char *argv[]) {
 			cout << endl << "Coordenates of molecule after rotation "<< endl;
 			reader.sortingAtoms(molecule_B_rotate);
 			output.displayXYZFile(argv[1],molecule_B_rotate);
+			string filaname = argv[1];
+			filaname += "_rotated"; 
+			string comment = "Molecule rotated";
+			output.saveXYZFile(filaname,comment,molecule_B_rotate);
 			
 			return EXIT_SUCCESS;
 		}else{
