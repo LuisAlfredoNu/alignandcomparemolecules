@@ -60,7 +60,6 @@ int main (int argc, char *argv[]) {
 				matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
 				matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
 
-
 				string title = "Inertia Tensor";
 				output.displayDualMatrix(title,inertiatensor_molecula_A,inertiatensor_molecula_B);
 
@@ -75,17 +74,24 @@ int main (int argc, char *argv[]) {
 					output.displayItsTheSame();
 					vector<Atom> molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A_inCM);
 					vector<Atom> molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B_inCM);
+					
 					reader.sortingAtoms(molecule_A_align);
 					reader.sortingAtoms(molecule_B_align);
+
+					if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align)){
+						cout << "The both molecules are the same "<< endl;
+					}else{
+						cout << "The both molecules are isomers " << endl;
+					}
+
+					cout << endl << "Coordenates of molecule A" << endl;
+					output.saveXYZFile(argv[1],"Molecule A",molecule_A_align);
 					output.displayXYZFile(argv[1],molecule_A_align);
+					
+					cout << endl << "Coordenates of molecule B" << endl;
+					output.saveXYZFile(argv[2],"Molecule B",molecule_B_align);
 					output.displayXYZFile(argv[2],molecule_B_align);
 
-					/*
-						cout << endl << "Coordenates of molecule A" << endl;
-						output.saveXYZFile(argv[1],molecule_A_align);
-						cout << "Coordenates of molecule B" << endl;
-						output.saveXYZFile(argv[2],molecule_B_align);
-					 */
 				}
 				return EXIT_SUCCESS;
 			}else{

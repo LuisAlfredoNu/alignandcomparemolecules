@@ -427,6 +427,24 @@ vector<Atom> VectorAndMatrixOperations::inversionOfCoordinates(vector<Atom> mole
 	return molecule_inverse;
 }
 /***************************************************************************************/ 
+bool VectorAndMatrixOperations::compareCoordinates(vector<Atom> molecule_A, vector<Atom> molecule_B){
+
+	bool is_equal = true;
+	unsigned int maxsize = molecule_A.size();
+	unsigned int i = 0;
+
+	while(is_equal && i < maxsize ){
+
+		if(abs(molecule_A[i].atomCoordinates[0] - molecule_B[i].atomCoordinates[0]) > 0.001) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[1] - molecule_B[i].atomCoordinates[1]) > 0.001) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[2] - molecule_B[i].atomCoordinates[2]) > 0.001) is_equal = false;
+
+		i++;
+	}
+
+	return is_equal;
+}
+/***************************************************************************************/ 
 /***************************************************************************************/ 
 #endif // _VECTORMATRIXOPERATIONS_CPP_
 
