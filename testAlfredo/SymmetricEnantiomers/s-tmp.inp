@@ -1,6 +1,6 @@
 %nproc=4
 %mem=60gb
-#B3LYP/6-31G* fopt test
+#B3LYP/3-21G fopt test
 
 SymmetricEnantiomers/s-tmp.xyz
 
