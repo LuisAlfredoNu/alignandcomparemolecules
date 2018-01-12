@@ -19,6 +19,9 @@ using std::string;
 #include "vectormatrixoperations.h"
 #include "output.h"
 
+/***************************************************************************************/  
+#define PI 3.141592653589
+
 int main (int argc, char *argv[]) {
    
 	ScreenUtils scrut;
@@ -38,33 +41,51 @@ int main (int argc, char *argv[]) {
 
 			VectorAndMatrixOperations matrixOP;
 
-			double phi; 
-			double theta; 
-			double psi; 
-			
-			cout << "Angles for rotation " << endl << "phi = " ;
-			cin >> phi;
-			cout << "theta = " ;
-			cin >> theta;
-			cout << "psi = ";
-			cin >> psi;
-			phi = phi * 3.14159 / 180.0;
-			theta = theta * 3.14159 / 180.0;
-			psi = psi * 3.14159 / 180.0;
-			vector<double> angles = {phi,theta,psi};
+			vector<Atom> molecule_B_operate;
 
-			vector<Atom> molecule_B_rotate = matrixOP.rotateMolecule(angles, molecule_A);
+			int decision = 0;
+			cout << "What kind of operation want?" << endl;
+			cout << "Rotation tap 1, Invertion tap 2" << endl;
+			cin >> decision;
+
+			switch(decision){
+				case 1:{
+					double phi; 
+					double theta; 
+					double psi; 
+					vector<double> angles(3,0.0);
+
+					cout << "Angles for rotation " << endl << "phi = " ;
+					cin >> phi;
+					cout << "theta = " ;
+					cin >> theta;
+					cout << "psi = ";
+					cin >> psi;
+					angles[0] = phi = phi * PI / 180.0;
+					angles[1] = theta = theta * PI / 180.0;
+					angles[2] = psi = psi * PI / 180.0;
+					
+					molecule_B_operate = matrixOP.rotateMolecule(angles, molecule_A);
+					
+						 }break;
+				case 2:{
+					molecule_B_operate = matrixOP.inversionOfCoordinates(molecule_A);
+						 }break;
+				default:
+					cout << "Dont needed to use this program " << endl; 
+
+			}
 
 			cout << endl << "Coordenates of inital molecule "<< endl;
 			output.displayXYZFile(argv[1],molecule_A);
 			
 			cout << endl << "Coordenates of molecule after rotation "<< endl;
-			reader.sortingAtoms(molecule_B_rotate);
-			output.displayXYZFile(argv[1],molecule_B_rotate);
+			reader.sortingAtoms(molecule_B_operate);
+			output.displayXYZFile(argv[1],molecule_B_operate);
 			string filaname = argv[1];
-			filaname += "_rotated"; 
+			filaname += "_operated"; 
 			string comment = "Molecule rotated";
-			output.saveXYZFile(filaname,comment,molecule_B_rotate);
+			output.saveXYZFile(filaname,comment,molecule_B_operate);
 			
 			return EXIT_SUCCESS;
 		}else{
