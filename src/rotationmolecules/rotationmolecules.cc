@@ -66,26 +66,39 @@ int main (int argc, char *argv[]) {
 					angles[2] = psi = psi * PI / 180.0;
 					
 					molecule_B_operate = matrixOP.rotateMolecule(angles, molecule_A);
-					
-						 }break;
+
+					cout << endl << "Coordenates of inital molecule "<< endl;
+					output.displayXYZFile(argv[1],molecule_A);
+
+					cout << endl << "Coordenates of molecule after rotation "<< endl;
+					reader.sortingAtoms(molecule_B_operate);
+					output.displayXYZFile(argv[1],molecule_B_operate);
+					string filaname = argv[1];
+					filaname += "_operated"; 
+					string comment = "Molecule rotated";
+					output.saveXYZFile(filaname,comment,molecule_B_operate);
+		 
+				}break;
 				case 2:{
+
 					molecule_B_operate = matrixOP.inversionOfCoordinates(molecule_A);
-						 }break;
+
+					cout << endl << "Coordenates of inital molecule "<< endl;
+					output.displayXYZFile(argv[1],molecule_A);
+
+					cout << endl << "Coordenates of molecule after inversion "<< endl;
+					reader.sortingAtoms(molecule_B_operate);
+					output.displayXYZFile(argv[1],molecule_B_operate);
+					string filaname = argv[1];
+					filaname += "_operated"; 
+					string comment = "Molecule rotated";
+					output.saveXYZFile(filaname,comment,molecule_B_operate);
+
+				}break;
 				default:
 					cout << "Dont needed to use this program " << endl; 
-
 			}
 
-			cout << endl << "Coordenates of inital molecule "<< endl;
-			output.displayXYZFile(argv[1],molecule_A);
-			
-			cout << endl << "Coordenates of molecule after rotation "<< endl;
-			reader.sortingAtoms(molecule_B_operate);
-			output.displayXYZFile(argv[1],molecule_B_operate);
-			string filaname = argv[1];
-			filaname += "_operated"; 
-			string comment = "Molecule rotated";
-			output.saveXYZFile(filaname,comment,molecule_B_operate);
 			
 			return EXIT_SUCCESS;
 		}else{
