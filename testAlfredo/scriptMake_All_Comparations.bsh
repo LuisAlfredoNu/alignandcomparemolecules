@@ -1,0 +1,30 @@
+#!/bin/bash
+
+echo "list of comparations" > list_Comparations.dat
+for i in $(ls)
+do
+	if [[ -d $i ]]
+	then
+		cd $i/Opt_Geo
+		for iii in $(ls *.xyz)
+		do
+			echo "$i/Opt_Geo/$iii" >> tmp_list.tmp
+		done
+		n_comparations=$(cat tmp_list.tmp|wc -l)
+		for ((ii=$n_comparations;ii>0;ii--))
+		do
+			first_name=$(tail -n $ii tmp_list.tmp | head -n 1)
+			tail -n $(($ii-1)) tmp_list.tmp | awk -v x=$first_name '{print x"\t"$1}' >> ../../list_Comparations.dat
+		done
+		rm tmp_list.tmp
+		cd ../..
+	fi
+done
+
+while read -r line 
+do
+	 ../src/alignandcomparemolecule/alignandcomparemolecule.x $line
+	 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+	 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+	 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+done < list_Comparations.dat
