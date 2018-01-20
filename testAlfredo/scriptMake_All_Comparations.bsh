@@ -3,7 +3,7 @@
 echo "list of comparations" > list_Comparations.dat
 for i in $(ls)
 do
-	if [[ -d $i ]]
+	if [[ -d "$i/Opt_Geo" ]]
 	then
 		cd $i/Opt_Geo
 		for iii in $(ls *.xyz)
@@ -21,10 +21,15 @@ do
 	fi
 done
 
+mkdir -p Comparations
+
 while read -r line 
 do
-	 ../src/alignandcomparemolecule/alignandcomparemolecule.x $line
-	 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-	 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-	 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+	filenameA=$(echo $line | awk '{print $1}')
+	short_filenameA_tmp=${filenameA#*Opt_Geo\/*}
+	short_filenameA=${short_filenameA_tmp%.xyz}
+	filenameB=$(echo $line | awk '{print $2}')
+	short_filenameB_tmp=${filenameB#*Opt_Geo\/*}
+	short_filenameB=${short_filenameB_tmp%.xyz}
+	../src/alignandcomparemolecule/alignandcomparemolecule.x $line > "Comparations/comparations_$short_filenameA-with-$short_filenameB.output"
 done < list_Comparations.dat

@@ -1,0 +1,44 @@
+
+********************************************************************************
+[33mComparation molecules.
+[m********************************************************************************
+
+ Molecule A: SymmetricEnantiomers/Opt_Geo/s-enan_out_G09.xyz                           Molecule B: SymmetricEnantiomers/Opt_Geo/s-enan_rotated_out_G09.xyz
+
+ Inertia Tensor - Molecule A                      Inertia Tensor - Molecule B
+ |         103.707       -1.51142     -1.05403 |  |         103.707       -1.51138     -1.05403 | 
+ |        -1.51142        630.103      1.67204 |  |        -1.51138        630.103      1.67204 | 
+ |        -1.05403        1.67204       722.42 |  |        -1.05403        1.67204       722.42 | 
+
+ EingenVectors - Inertia Tensor - Molecule A      EingenVectors - Inertia Tensor - Molecule B
+ |       -0.999994    -0.00286582  -0.00169581 |  |       -0.999994    -0.00286575  -0.00169582 | 
+ |       0.0028346      -0.999832     0.018136 |  |      0.00283453      -0.999832     0.018136 | 
+ |      -0.0017475      0.0181311     0.999834 |  |      -0.0017475      0.0181311     0.999834 | 
+
+ EingenValues - Inertia Tensor - Molecule A       EingenValues - Inertia Tensor - Molecule B
+ |         103.701        630.077      722.452 |  |         103.701        630.077      722.452 | 
+********************************************************************************
+[32mAre the same molecule
+[m********************************************************************************
+
+Coordenates of molecule A
+
+Molecule from file: SymmetricEnantiomers/Opt_Geo/s-enan_out_G09.xyz
+5
+
+I    -1.4524        0.16318        -0.013729      
+C    0.5052         -0.7902        0.46391        
+H    0.53609        -0.90511       1.5435         
+F    0.59356        -2.0083        -0.17805       
+Br   2.0829         0.34854        -0.025065      
+
+Coordenates of molecule B
+
+Molecule from file: SymmetricEnantiomers/Opt_Geo/s-enan_rotated_out_G09.xyz
+5
+
+I    -1.4524        0.16318        -0.013729      
+C    0.5052         -0.7902        0.46391        
+H    0.53609        -0.90511       1.5435         
+F    0.59356        -2.0083        -0.17805       
+Br   2.0829         0.34854        -0.025065      
