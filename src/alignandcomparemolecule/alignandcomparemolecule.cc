@@ -78,9 +78,11 @@ int main (int argc, char *argv[]) {
 					reader.sortingAtoms(molecule_B_align);
 
 					if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align)){
-						output.displaySameMolecule();
+						//output.displaySameMolecule();
+						cout << "Are the same molecule" << endl;
 					}else{
-						output.displayIsomerMolecule();
+						//output.displayIsomerMolecule();
+						cout << "Are Isomer" << endl;
 					}
 
 					cout << endl << "Coordenates of molecule A" << endl;
@@ -93,7 +95,9 @@ int main (int argc, char *argv[]) {
 
 				}else{
 						
-					output.displayDifferentMolecule();
+					//output.displayDifferentMolecule();
+					cout << "Are different molecules" << endl;
+
 					cout << endl << "Coordenates of molecule A" << endl;
 					//output.saveXYZFile(argv[1],"Molecule A",molecule_A_align);
 					output.displayXYZFile(argv[1],molecule_A_inCM);

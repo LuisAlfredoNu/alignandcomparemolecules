@@ -32,4 +32,5 @@ do
 	short_filenameB_tmp=${filenameB#*Opt_Geo\/*}
 	short_filenameB=${short_filenameB_tmp%.xyz}
 	../src/alignandcomparemolecule/alignandcomparemolecule.x $line > "Comparations/comparations_$short_filenameA-with-$short_filenameB.output"
+	echo $? >> error.tmp
 done < list_Comparations.dat

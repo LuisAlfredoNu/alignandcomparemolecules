@@ -112,14 +112,11 @@ do
 
 	if (( $line_count_second_part == 19))
 	then
+	echo "\textcolor{NavyBlue}{\large $line}"
 	echo "\end{center}"
 	echo "\end{multicols}"
 	fi
 
-	if ((19 < $line_count_second_part && $line_count_second_part < 22   ))
-	then
-	echo $line
-	fi
 
 
 line_count_second_part=$((line_count_second_part+1))
