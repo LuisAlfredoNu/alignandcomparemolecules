@@ -6,6 +6,6 @@
  Molecule A: NeoConformation/Opt_Geo/tert-butylamine_out_G09.xyz                           Molecule B: NeoConformation/Opt_Geo/tetramethylsilane_out_G09.xyz
 
 ********************************************************************************
-[31mError:  The Molecules do not have the same number and/or type of atoms [m
+Are different molecules
 ********************************************************************************
 

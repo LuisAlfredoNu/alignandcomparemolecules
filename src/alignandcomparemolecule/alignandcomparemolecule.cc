@@ -82,7 +82,7 @@ int main (int argc, char *argv[]) {
 						cout << "Are the same molecule" << endl;
 					}else{
 						//output.displayIsomerMolecule();
-						cout << "Are Isomer" << endl;
+						cout << "Are Isomer and Stereoisomers" << endl;
 					}
 
 					cout << endl << "Coordenates of molecule A" << endl;
@@ -96,7 +96,7 @@ int main (int argc, char *argv[]) {
 				}else{
 						
 					//output.displayDifferentMolecule();
-					cout << "Are different molecules" << endl;
+					cout << "Are Isomers" << endl;
 
 					cout << endl << "Coordenates of molecule A" << endl;
 					//output.saveXYZFile(argv[1],"Molecule A",molecule_A_align);
@@ -110,10 +110,12 @@ int main (int argc, char *argv[]) {
 			}else{
 				cout << endl;
 				scrut.PrintScrStarLine();
-				scrut.DisplayErrorMessage(" The Molecules do not have the same number and/or type of atoms ");
+				cout << "Are different molecules" << endl;
+			//	scrut.DisplayErrorMessage(" The Molecules do not have the same number and/or type of atoms ");
 				scrut.PrintScrStarLine();
 				cout << endl;
-				return EXIT_FAILURE;
+			//	return EXIT_FAILURE;
+				return EXIT_SUCCESS;
 			}
 		}else{
 			cout << endl;

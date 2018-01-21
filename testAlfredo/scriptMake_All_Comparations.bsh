@@ -23,6 +23,8 @@ done
 
 mkdir -p Comparations
 
+echo "Errors in the comparation" > error.tmp
+
 while read -r line 
 do
 	filenameA=$(echo $line | awk '{print $1}')
@@ -31,6 +33,16 @@ do
 	filenameB=$(echo $line | awk '{print $2}')
 	short_filenameB_tmp=${filenameB#*Opt_Geo\/*}
 	short_filenameB=${short_filenameB_tmp%.xyz}
-	../src/alignandcomparemolecule/alignandcomparemolecule.x $line > "Comparations/comparations_$short_filenameA-with-$short_filenameB.output"
-	echo $? >> error.tmp
+
+	file_name_comparation="Comparations/comparations_$short_filenameA-with-$short_filenameB.output"
+	../src/alignandcomparemolecule/alignandcomparemolecule.x $line > $file_name_comparation
+	
+	error_of_comparation=$?
+
+	echo $error_of_comparation >> error.tmp
+	if (( $error_of_comparation ))
+	then
+		echo "Error in comparation $file_name_comparation"
+		rm $file_name_comparation
+	fi
 done < list_Comparations.dat
