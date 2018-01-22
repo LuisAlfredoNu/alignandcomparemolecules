@@ -1,4 +1,70 @@
 #!/bin/bash
+print_vmd_script(){
+
+file_name=$1
+
+cat << END_VMD_SCRIPT
+#!/usr/local/bin/vmd
+# VMD script written by save_state \$Revision: 1.47 $
+# VMD version: 1.9.3
+set viewplist {}
+set fixedlist {}
+# Display settings
+display projection   Orthographic
+display nearclip set 0.000000
+display depthcue   off
+display shadows on
+display ambientocclusion off
+display aoambient 0.800000
+display aodirect 0.300000
+display dof off
+display dof_fnumber 64.000000
+display dof_focaldist 0.700000
+mol new $file_name type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+mol rename $file_name
+# done with molecule 0
+proc vmdrestoremycolors {} {
+  set colorcmds {
+    {color Display {Background} white}
+    {color Display {BackgroundTop} black}
+    {color Display {BackgroundBot} blue2}
+    {color Display {FPS} black}
+  }
+  foreach colcmd \$colorcmds {
+    set val [catch {eval \$colcmd}]
+  }
+}
+vmdrestoremycolors
+END_VMD_SCRIPT
+}
+generate_jpg_from_vmd(){
+	file_name=$1
+	file_name_vmd_view=${file_name%.xyz}.vmd
+	file_name_for_render=${file_name%.xyz}.render
+
+	print_vmd_script $file_name > $file_name_vmd_view
+
+	tachyon="/usr/local/lib/vmd/tachyon_LINUXAMD64"
+
+	vmd_commands="axes location off \n render Tachyon $name_for_render"
+	printf "$command" | vmd -e $file_name_vmd_view  -size 1600 1600 -dispdev text -eofexit
+	$tachyon -rescale_lights 2.0 -add_skylight 0.0 $file_name_for_render -o $file_name_for_render.tga -aasamples 8
+	convert $file_name_for_render.tga ${file_name_for_render%.render.tga}.jpg
+
+	mkdir -p ImagesFromVMD
+
+	mv ${file_name_for_render%.render.tga}.jpg ImagesFromVMD
+
+}
 
 echo "list of comparations" > list_Comparations.dat
 for i in $(ls)
