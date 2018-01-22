@@ -13,10 +13,19 @@ do
 		do
 			if (( $line_count_firts_part == 7 ))
 			then
+			tmptitle=${i%*_folder*} 
+			title=${tmptitle#comparations_*}
+			file_name_base=${i#*folder_*}
+			echo
+			echo "\vtab[-2cm]"
+			echo "\begin{center}"
+			echo "{\large $title}"
+			echo "\end{center}"
 			echo "\begin{multicols}{2}"
 			echo "\begin{center}"
 			echo "Molecule A \\\\ "
-			tmpname=${i%*-with-*}; echo ${tmpname#comparations_*} 
+			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparations_*}|sed 's/\_/\\\_/g' 
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparations_*}.jpg}"
 			echo "\\\\"
 			echo "Inertia Tensor - Molecule A \\\\"
 			echo "\vtab"
@@ -70,7 +79,9 @@ do
 			then
 			echo
 			echo "Molecule B \\\\ "
-			tmpname=${i#*-with-*}; echo ${tmpname%.output}
+			file_name_base=${i#*folder_*}
+			tmpname=${file_name_base#*-with-*}; echo ${tmpname%.output}|sed 's/\_/\\\_/g'
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname%.output}.jpg}"
 			echo "\\\\"
 			echo "Inertia Tensor - Molecule B \\\\"
 			echo "\vtab"
@@ -134,16 +145,22 @@ do
 		do
 			if (( $line_count_when_are_total_different == 7 ))
 			then
+			tmptitle=${i%*_folder*} 
+			title=${tmptitle#comparations_*}
+			file_name_base=${i#*folder_*}
+			echo "{\Large $title}"
 			echo "\begin{multicols}{2}"
 			echo "\begin{center}"
 			echo "Molecule A \\\\ "
-			tmpname=${i%*-with-*}; echo ${tmpname#comparations_*} 
+			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparations_*}|sed 's/\_/\\\_/g' 
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparations_*}.jpg}"
 			echo "\vtab"
 			echo
 			echo "\\columnbreak"
 			echo
 			echo "Molecule B \\\\ "
-			tmpname=${i#*-with-*}; echo ${tmpname%.output}
+			tmpname=${file_name_base#*-with-*}; echo ${tmpname%.output}|sed 's/\_/\\\_/g'
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname%.output}.jpg}"
 			echo "\vtab"
 			fi
 			
