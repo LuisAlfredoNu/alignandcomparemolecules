@@ -11,6 +11,8 @@ set viewplist {}
 set fixedlist {}
 # Display settings
 display projection   Orthographic
+display height       4.000000
+display distance     -2.000000
 display nearclip set 0.000000
 display depthcue   off
 display shadows on
@@ -55,41 +57,45 @@ generate_jpg_from_vmd(){
 
 	tachyon="/usr/local/lib/vmd/tachyon_LINUXAMD64"
 
-	vmd_commands="axes location off \n render Tachyon $name_for_render"
-	printf "$command" | vmd -e $file_name_vmd_view  -size 1600 1600 -dispdev text -eofexit
+	vmd_commands="axes location off \n render Tachyon $file_name_for_render"
+	echo -e $vmd_commands | vmd -e $file_name_vmd_view  -size 1600 1600 -dispdev text -eofexit
 	$tachyon -rescale_lights 2.0 -add_skylight 0.0 $file_name_for_render -o $file_name_for_render.tga -aasamples 8
 	convert $file_name_for_render.tga ${file_name_for_render%.render.tga}.jpg
 
 	mkdir -p ImagesFromVMD
 
 	mv ${file_name_for_render%.render.tga}.jpg ImagesFromVMD
+	mv $file_name_vmd_view ImagesFromVMD
+
+	rm $file_name_for_render
+	rm $file_name_for_render.tga
 
 }
 
+##############################33
+# Corpus of script
+##############################33
+
 echo "list of comparations" > list_Comparations.dat
-for i in $(ls)
+
+for i in $(ls *.xyz)
 do
-	if [[ -d "$i/Opt_Geo" ]]
-	then
-		cd $i/Opt_Geo
-		for iii in $(ls *.xyz)
-		do
-			echo "$i/Opt_Geo/$iii" >> tmp_list.tmp
-		done
-		n_comparations=$(cat tmp_list.tmp|wc -l)
-		for ((ii=$n_comparations;ii>0;ii--))
-		do
-			first_name=$(tail -n $ii tmp_list.tmp | head -n 1)
-			tail -n $(($ii-1)) tmp_list.tmp | awk -v x=$first_name '{print x"\t"$1}' >> ../../list_Comparations.dat
-		done
-		rm tmp_list.tmp
-		cd ../..
-	fi
+
+	echo "$i" >> tmp_list.tmp
+	generate_jpg_from_vmd $i
+
 done
 
-mkdir -p Comparations
+n_comparations=$(cat tmp_list.tmp|wc -l)
+for ((ii=$n_comparations;ii>0;ii--))
+do
+	first_name=$(tail -n $ii tmp_list.tmp | head -n 1)
+	tail -n $(($ii-1)) tmp_list.tmp | awk -v x=$first_name '{print x"\t"$1}' >> list_Comparations.dat
+done
 
-echo "Errors in the comparation" > error.tmp
+rm tmp_list.tmp
+
+mkdir -p Comparations
 
 while read -r line 
 do
@@ -101,11 +107,10 @@ do
 	short_filenameB=${short_filenameB_tmp%.xyz}
 
 	file_name_comparation="Comparations/comparations_$short_filenameA-with-$short_filenameB.output"
-	../src/alignandcomparemolecule/alignandcomparemolecule.x $line > $file_name_comparation
+	~/Programacion/alignAndCompMol/src/alignandcomparemolecule/alignandcomparemolecule.x $line > $file_name_comparation
 	
 	error_of_comparation=$?
 
-	echo $error_of_comparation >> error.tmp
 	if (( $error_of_comparation ))
 	then
 		echo "Error in comparation $file_name_comparation"
