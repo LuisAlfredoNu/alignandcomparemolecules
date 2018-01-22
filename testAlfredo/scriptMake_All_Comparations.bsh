@@ -50,8 +50,8 @@ END_VMD_SCRIPT
 }
 generate_jpg_from_vmd(){
 	file_name=$1
-	file_name_vmd_view=${file_name%.xyz}.vmd
-	file_name_for_render=${file_name%.xyz}.render
+	file_name_vmd_view="${file_name%.xyz}.vmd"
+	file_name_for_render="${file_name%.xyz}"
 
 	print_vmd_script $file_name > $file_name_vmd_view
 
@@ -60,7 +60,7 @@ generate_jpg_from_vmd(){
 	vmd_commands="axes location off \n render Tachyon $file_name_for_render"
 	echo -e $vmd_commands | vmd -e $file_name_vmd_view  -size 1600 1600 -dispdev text -eofexit
 	$tachyon -rescale_lights 2.0 -add_skylight 0.0 $file_name_for_render -o $file_name_for_render.tga -aasamples 8
-	convert $file_name_for_render.tga ${file_name_for_render%.render.tga}.jpg
+	convert "$file_name_for_render.tga" "${file_name%.xyz}.jpg"
 
 	mkdir -p ImagesFromVMD
 
