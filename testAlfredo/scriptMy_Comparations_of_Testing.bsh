@@ -1,0 +1,22 @@
+#!/bin/bash
+
+mkdir -p Comparations
+mkdir -p Comparations/ImagesFromVMD
+for i in $(ls)
+do
+	if [[ -d "$i/Opt_Geo" ]]
+	then
+		cd $i/Opt_Geo/
+		~/Programacion/alignAndCompMol/testAlfredo/scriptMake_All_Comparations.bsh
+		cd Comparations/
+		for ii in $(ls *.output)
+		do
+			base_file_name=${ii#comparations_}
+			cp $ii ../../../Comparations/"comparations_"$i"_folder_"$base_file_name
+		done
+		cd ..
+		cp ImagesFromVMD/*.jpg ../../Comparations/ImagesFromVMD/.
+
+		cd ../..
+	fi
+done
