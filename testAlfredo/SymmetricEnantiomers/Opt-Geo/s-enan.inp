@@ -1,0 +1,14 @@
+%nproc=4
+%mem=60gb
+#B3LYP/3-21G fopt test freq
+
+SymmetricEnantiomers/s-enan.xyz
+
+0 1
+C		0.025		0.013		1.095
+F		0.020		0.011		-0.264
+Br		-0.906		-1.567		1.742
+I		1.993		-0.018		1.776
+H		-0.549		0.877		1.438
+
+
