@@ -2,18 +2,13 @@
 
 for i in $(ls)
 do
-	if [[ -d $i ]]
+	if [[ -d "$i/Opt_Geo_2" ]]
 	then
-		cd $i
-		mv done Opt_Geo
-		cd Opt_Geo
+		cd $i/Opt_Geo_2
 		for ii in $(ls *.log)
 		do
 			extractcartesian2XYZ $ii
 		done
-		cd ..
-		mkdir -p No_Opt_Geo
-		mv *.* No_Opt_Geo
-		cd ..
+		cd ../..
 	fi
 done

@@ -90,8 +90,9 @@ int main (int argc, char *argv[]) {
 					reader.sortingAtoms(molecule_B_operate);
 					output.displayXYZFile(argv[1],molecule_B_operate);
 					string filaname = argv[1];
-					filaname += "_operated"; 
-					string comment = "Molecule rotated";
+					filaname = filaname.substr(0,filaname.size()-4);
+					filaname += "_invertion.xyz"; 
+					string comment = "Molecule invertion";
 					output.saveXYZFile(filaname,comment,molecule_B_operate);
 
 				}break;
