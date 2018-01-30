@@ -107,7 +107,7 @@ do
 	short_filenameB=${short_filenameB_tmp%.xyz}
 
 	file_name_comparation="Comparations/comparations_$short_filenameA-with-$short_filenameB.output"
-	~/Programacion/alignAndCompMol/src/alignandcomparemolecule/alignandcomparemolecule.x $line > $file_name_comparation
+	~/Programacion/alignandcomparemolecules/src/alignandcomparemolecule/alignandcomparemolecule.x $line > $file_name_comparation
 	
 	error_of_comparation=$?
 

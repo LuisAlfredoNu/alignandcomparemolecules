@@ -7,7 +7,7 @@ do
 	if [[ -d "$i/Opt_Geo" ]]
 	then
 		cd $i/Opt_Geo/
-		~/Programacion/alignAndCompMol/testAlfredo/scriptMake_All_Comparations.bsh
+		~/Programacion/alignandcomparemolecules/testAlfredo/scriptMake_All_Comparations.bsh
 		cd Comparations/
 		for ii in $(ls *.output)
 		do
@@ -20,3 +20,9 @@ do
 		cd ../..
 	fi
 done
+cd Comparations
+~/Programacion/alignandcomparemolecules/testAlfredo/Comparations/zz-translato2Latex.bsh > allResult.tex
+cp allResult.tex ~/Documentos/reportprofes/.
+mkdir -p ~/Documentos/reportprofes/Images/ImagesFromVMD/.
+cp ImagesFromVMD/*  ~/Documentos/reportprofes/Images/ImagesFromVMD/.
+

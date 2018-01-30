@@ -4,6 +4,8 @@
 beg_tabular="\begin{tabular}{|c c c|}"
 end_tabular="\end{tabular}"
 
+number_of_comparation=1
+
 for i in $(ls *.output)
 do
 	if (( $(cat $i|wc -l) > 11  ))
@@ -19,7 +21,7 @@ do
 			echo
 			echo "\vtab[-2cm]"
 			echo "\begin{center}"
-			echo "{\large $title}"
+			echo "{\large $title \tab Número $number_of_comparation}"
 			echo "\end{center}"
 			echo "\begin{multicols}{2}"
 			echo "\begin{center}"
@@ -148,7 +150,7 @@ do
 			tmptitle=${i%*_folder*} 
 			title=${tmptitle#comparations_*}
 			file_name_base=${i#*folder_*}
-			echo "{\Large $title}"
+			echo "{\Large $title \tab Número $number_of_comparation}"
 			echo "\begin{multicols}{2}"
 			echo "\begin{center}"
 			echo "Molecule A \\\\ "
@@ -184,4 +186,5 @@ do
 	echo "\newpage"
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	number_of_comparation=$((number_of_comparation+1))
 done
