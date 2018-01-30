@@ -1,0 +1,13 @@
+HEADER
+REMARK Spartan ES exported M001
+HETATM    1  C   UNK     0001       0.025   0.013   1.095
+HETATM    2  F   UNK  0001       0.020   0.011  -0.264
+HETATM    3 Br   UNK  0001      -0.906  -1.567   1.742
+HETATM    4  I   UNK  0001       1.993  -0.018   1.776
+HETATM    5  H   UNK  0001      -0.549   0.877   1.438
+CONECT    1    2    3    4    5
+CONECT    2    1
+CONECT    3    1
+CONECT    4    1
+CONECT    5    1
+END
