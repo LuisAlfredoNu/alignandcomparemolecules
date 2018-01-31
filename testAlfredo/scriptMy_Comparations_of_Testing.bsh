@@ -2,20 +2,24 @@
 
 mkdir -p Comparations
 mkdir -p Comparations/ImagesFromVMD
+
+rm Comparations/comparations_*
+rm Comparations/ImagesFromVMD/*.png
+
 for i in $(ls)
 do
-	if [[ -d "$i/Opt_Geo" ]]
+	if [[ -d "$i/Opt_Geo_2" ]]
 	then
-		cd $i/Opt_Geo/
+		cd $i/Opt_Geo_2/
 		~/Programacion/alignandcomparemolecules/testAlfredo/scriptMake_All_Comparations.bsh
 		cd Comparations/
-		for ii in $(ls *.output)
+		for ii in $(ls *.alignOutput)
 		do
 			base_file_name=${ii#comparations_}
 			cp $ii ../../../Comparations/"comparations_"$i"_folder_"$base_file_name
 		done
 		cd ..
-		cp ImagesFromVMD/*.jpg ../../Comparations/ImagesFromVMD/.
+		cp *.png ../../Comparations/ImagesFromVMD/.
 
 		cd ../..
 	fi

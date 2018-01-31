@@ -6,7 +6,7 @@ end_tabular="\end{tabular}"
 
 number_of_comparation=1
 
-for i in $(ls *.output)
+for i in $(ls *.alignOutput)
 do
 	if (( $(cat $i|wc -l) > 11  ))
 	then
@@ -27,7 +27,7 @@ do
 			echo "\begin{center}"
 			echo "Molecule A \\\\ "
 			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparations_*}|sed 's/\_/\\\_/g' 
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparations_*}.jpg}"
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparations_*}.png}"
 			echo "\\\\"
 			echo "Inertia Tensor - Molecule A \\\\"
 			echo "\vtab"
@@ -82,8 +82,8 @@ do
 			echo
 			echo "Molecule B \\\\ "
 			file_name_base=${i#*folder_*}
-			tmpname=${file_name_base#*-with-*}; echo ${tmpname%.output}|sed 's/\_/\\\_/g'
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname%.output}.jpg}"
+			tmpname=${file_name_base#*-with-*}; echo ${tmpname%.alignOutput}|sed 's/\_/\\\_/g'
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname%.alignOutput}.png}"
 			echo "\\\\"
 			echo "Inertia Tensor - Molecule B \\\\"
 			echo "\vtab"
@@ -155,14 +155,14 @@ do
 			echo "\begin{center}"
 			echo "Molecule A \\\\ "
 			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparations_*}|sed 's/\_/\\\_/g' 
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparations_*}.jpg}"
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparations_*}.png}"
 			echo "\vtab"
 			echo
 			echo "\\columnbreak"
 			echo
 			echo "Molecule B \\\\ "
-			tmpname=${file_name_base#*-with-*}; echo ${tmpname%.output}|sed 's/\_/\\\_/g'
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname%.output}.jpg}"
+			tmpname=${file_name_base#*-with-*}; echo ${tmpname%.alignOutput}|sed 's/\_/\\\_/g'
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname%.alignOutput}.png}"
 			echo "\vtab"
 			fi
 			
