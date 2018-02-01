@@ -26,8 +26,8 @@ do
 			echo "\begin{multicols}{2}"
 			echo "\begin{center}"
 			echo "Molecule A \\\\ "
-			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparations_*}|sed 's/\_/\\\_/g' 
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparations_*}.png}"
+			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparation_*}|sed 's/\_/\\\_/g' 
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparation_*}.png}"
 			echo "\\\\"
 			echo "Inertia Tensor - Molecule A \\\\"
 			echo "\vtab"
@@ -154,8 +154,8 @@ do
 			echo "\begin{multicols}{2}"
 			echo "\begin{center}"
 			echo "Molecule A \\\\ "
-			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparations_*}|sed 's/\_/\\\_/g' 
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparations_*}.png}"
+			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparation_*}|sed 's/\_/\\\_/g' 
+			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparation_*}.png}"
 			echo "\vtab"
 			echo
 			echo "\\columnbreak"
