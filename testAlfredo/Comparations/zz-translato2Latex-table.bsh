@@ -1,0 +1,36 @@
+#!/bin/bash
+
+number_of_comparation=1
+
+get_path_1(){
+	name_comparation=$1
+	folder=$(echo ${name_comparation%*folder*}  | awk -F "_" '{print "../"$2"/Opt_Geo_2/"}')
+	file_tmp=${name_comparation#*folder_comparation_*}
+	file_tmp_2=${file_tmp%*-with-*}
+	echo $folder${file_tmp_2%*_out_G09*}".log"
+}
+get_path_2(){
+	name_comparation=$1
+	folder=$(echo ${name_comparation%*folder*}  | awk -F "_" '{print "../"$2"/Opt_Geo_2/"}')
+	file_tmp=${name_comparation#*folder_comparation_*}
+	file_tmp_2=${file_tmp#*-with-*}
+	echo $folder${file_tmp_2%*_out_G09*}".log"
+}
+extract_SCF_from_log(){
+	file_log=$1
+	grep -n "SCF Done:" $file_log |tail -n 1 | awk '{print $6}'
+}
+extract_Freq_from_log(){
+	file_log=$1
+	grep -n "Frequencies --" $file_log | head -n 1| awk '{print $4}'
+}
+
+for i in $(ls *.alignOutput)
+do
+
+extract_SCF_from_log $(get_path_1 $i)
+extract_Freq_from_log $(get_path_1 $i)
+extract_SCF_from_log $(get_path_2 $i)
+extract_Freq_from_log $(get_path_2 $i)
+
+done
