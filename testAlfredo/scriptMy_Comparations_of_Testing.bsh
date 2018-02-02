@@ -3,7 +3,7 @@
 mkdir -p Comparations
 mkdir -p Comparations/ImagesFromVMD
 
-rm Comparations/comparations_*
+rm Comparations/*.alignOutput
 rm Comparations/ImagesFromVMD/*.png
 
 for i in $(ls)

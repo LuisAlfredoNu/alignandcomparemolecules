@@ -79,10 +79,10 @@ int main (int argc, char *argv[]) {
 
 					if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align)){
 						//output.displaySameMolecule();
-						cout << "Are the same molecule" << endl;
+						cout << "Equal" << endl;
 					}else{
 						//output.displayIsomerMolecule();
-						cout << "Are Isomer and Stereoisomers" << endl;
+						cout << "Stereoisomer" << endl;
 					}
 
 					cout << endl << "Coordenates of molecule A" << endl;
@@ -96,7 +96,7 @@ int main (int argc, char *argv[]) {
 				}else{
 						
 					//output.displayDifferentMolecule();
-					cout << "Are Isomers" << endl;
+					cout << "Different" << endl;
 
 					cout << endl << "Coordenates of molecule A" << endl;
 					//output.saveXYZFile(argv[1],"Molecule A",molecule_A_align);
@@ -110,7 +110,7 @@ int main (int argc, char *argv[]) {
 			}else{
 				cout << endl;
 				scrut.PrintScrStarLine();
-				cout << "Are different molecules" << endl;
+				cout << "Different" << endl;
 			//	scrut.DisplayErrorMessage(" The Molecules do not have the same number and/or type of atoms ");
 				scrut.PrintScrStarLine();
 				cout << endl;

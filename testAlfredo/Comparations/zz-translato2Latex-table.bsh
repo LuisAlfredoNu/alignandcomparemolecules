@@ -1,7 +1,17 @@
 #!/bin/bash
 
-number_of_comparation=1
-
+get_name_1(){
+	name_comparation=$1
+	file_tmp=${name_comparation#*folder_comparation_*}
+	file_tmp_2=${file_tmp%*-with-*}
+	echo $file_tmp_2|sed 's/\_/\\\_/g'
+}
+get_name_2(){
+	name_comparation=$1
+	file_tmp=${name_comparation#*folder_comparation_*}
+	file_tmp_2=${file_tmp#*-with-*}
+	echo ${file_tmp_2%*.alig*}|sed 's/\_/\\\_/g'
+}
 get_path_1(){
 	name_comparation=$1
 	folder=$(echo ${name_comparation%*folder*}  | awk -F "_" '{print "../"$2"/Opt_Geo_2/"}')
@@ -24,13 +34,60 @@ extract_Freq_from_log(){
 	file_log=$1
 	grep -n "Frequencies --" $file_log | head -n 1| awk '{print $4}'
 }
+extract_result_align(){
+	file_alignOutput=$1
+	if (( $(cat $file_alignOutput|wc -l) > 13  )); then
+		awk '{if(NR==20) print $0}' $file_alignOutput
+	else 
+		awk '{if(NR== 9) print $0}' $file_alignOutput
+	fi
+}
+manual_result(){
+	file_comparation=$i
+	file_manual_comparation="$file_comparation.manual"
+	if [[ -f $file_manual_comparation ]];then
+		manual_result=$(cat $file_manual_comparation)
+	else
+		echo "Without comparation" > $file_manual_comparation
+		manual_result=$(cat $file_manual_comparation)
+	fi
+
+	program_result=$(extract_result_align $file_comparation)
+
+	if [[ $manual_result == $program_result ]];then
+
+		echo "\multirow{4}{*}{$manual_result} & \multirow{4}{*}{$program_result}"
+	else
+		echo "\multirow{4}{*}{\textcolor{Red}{\bf $manual_result}} & \multirow{4}{*}{\textcolor{Red}{\bf $program_result}}"
+
+	fi
+}
+
+number_of_comparations=1
+
+echo "\tab[-2cm]" > table_allResult.tex
 
 for i in $(ls *.alignOutput)
 do
 
-extract_SCF_from_log $(get_path_1 $i)
-extract_Freq_from_log $(get_path_1 $i)
-extract_SCF_from_log $(get_path_2 $i)
-extract_Freq_from_log $(get_path_2 $i)
+if (( number_of_comparations%6==1 ));then
+echo "\tab[-2cm]" >> table_allResult.tex
+echo "\begin{tabular}{c|m{8cm}|c|c}" >> table_allResult.tex
+echo "\# & Moléculas & Restultado esperado & Resultado programa \\\\ \hline\hline" >> table_allResult.tex
+fi
+echo "\multirow{4}{*}{\tab[2mm] $number_of_comparations \tab[2mm]} & $(get_name_1 $i) &" >> table_allResult.tex
+echo $(manual_result $i) >> table_allResult.tex
+echo "\\\\" >> table_allResult.tex
+echo "& E = $(extract_SCF_from_log $(get_path_1 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_1 $i))   &    &  \\\\ \cline{2-2}">> table_allResult.tex
+echo "& $(get_name_2 $i)   &    &    \\\\">> table_allResult.tex
+echo "& E = $(extract_SCF_from_log $(get_path_2 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_2 $i))   &    &  \\\\ \hline">> table_allResult.tex
+
+if (( number_of_comparations%6==0 ));then
+echo "\end{tabular}" >> table_allResult.tex
+echo "\newpage" >> table_allResult.tex
+fi
+number_of_comparations=$((number_of_comparations+1))
 
 done
+
+echo "\end{tabular}" >> table_allResult.tex
