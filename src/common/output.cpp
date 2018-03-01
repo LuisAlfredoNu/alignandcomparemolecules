@@ -70,7 +70,7 @@ void OutputAlignProgram::displayItsTheSame(){
 bool OutputAlignProgram::saveXYZFile(string filename,string commnet, vector<Atom> molecule){
 
 	string ofilename = filename.substr(0,(filename.size()-4));
-	ofilename += "_output.xyz";
+	ofilename += "_align.xyz";
 	ofstream ofil(ofilename.c_str());
 	
 	if ( !ofil.good() ) {

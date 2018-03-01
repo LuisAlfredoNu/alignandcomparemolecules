@@ -43,7 +43,20 @@ int main (int argc, char *argv[]) {
 
 				vector<Atom> molecule_A_inCM = molecularOP.moveCM2Origin(molecule_A);
 				vector<Atom> molecule_B_inCM = molecularOP.moveCM2Origin(molecule_B);
+/*
+               string filaname_moleculeA = argv[1];
+               filaname_moleculeA = filaname_moleculeA.substr(0,filaname_moleculeA.size()-4);
+               filaname_moleculeA += "_in_CM.xyz";
+               string comment = "Move to Center of mass";
 
+					output.saveXYZFile(filaname_moleculeA,"Molecule A",molecule_A_inCM);
+               
+					string filaname_moleculeB = argv[2];
+               filaname_moleculeB = filaname_moleculeB.substr(0,filaname_moleculeB.size()-4);
+               filaname_moleculeB += "_in_CM.xyz";
+
+					output.saveXYZFile(filaname_moleculeB,"Molecule B",molecule_B_inCM);
+*/
 				inertiatensor_molecula_A = molecularOP.inertiaTensor(molecule_A_inCM);
 				inertiatensor_molecula_B = molecularOP.inertiaTensor(molecule_B_inCM);
 
@@ -86,11 +99,11 @@ int main (int argc, char *argv[]) {
 					}
 
 					cout << endl << "Coordenates of molecule A" << endl;
-					//output.saveXYZFile(argv[1],"Molecule A",molecule_A_align);
+					output.saveXYZFile(argv[1],"Molecule A",molecule_A_align);
 					output.displayXYZFile(argv[1],molecule_A_align);
 					
 					cout << endl << "Coordenates of molecule B" << endl;
-					//output.saveXYZFile(argv[2],"Molecule B",molecule_B_align);
+					output.saveXYZFile(argv[2],"Molecule B",molecule_B_align);
 					output.displayXYZFile(argv[2],molecule_B_align);
 
 				}else{

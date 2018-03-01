@@ -21,7 +21,8 @@
 *.owo
 *.tga
 *.png
-*_output.xyz
+#*_output.xyz
+*.alignOutput
 
 #specific files
 backup/test/main
