@@ -49,7 +49,7 @@ void OutputAlignProgram::displayFilesNames(string file1,string file2){
 
 	cout << endl;
 	scrut.PrintScrStarLine();
-	scrut.SetScrGreenBoldFont();
+	scrut.SetScrYellowBoldFont();
 	cout << "Comparation molecules." << endl;
 	scrut.SetScrNormalFont();
 	scrut.PrintScrStarLine();
@@ -70,7 +70,7 @@ void OutputAlignProgram::displayItsTheSame(){
 bool OutputAlignProgram::saveXYZFile(string filename,string commnet, vector<Atom> molecule){
 
 	string ofilename = filename.substr(0,(filename.size()-4));
-	ofilename += "_output.xyz";
+	ofilename += "_align.xyz";
 	ofstream ofil(ofilename.c_str());
 	
 	if ( !ofil.good() ) {
@@ -107,6 +107,33 @@ void OutputAlignProgram::displayXYZFile(string filename, vector<Atom> molecule){
 		cout << setw(15) << setprecision(5) << molecule[i].atomCoordinates[2];
 		cout << endl;
 	}
+}
+/***************************************************************************************/ 
+void OutputAlignProgram::displaySameMolecule(){
+	
+	scrut.PrintScrStarLine();
+	scrut.SetScrGreenBoldFont();
+	cout << "Are the same molecule" << endl;
+	scrut.SetScrNormalFont();
+	scrut.PrintScrStarLine();
+}
+/***************************************************************************************/ 
+void OutputAlignProgram::displayDifferentMolecule(){
+	
+	scrut.PrintScrStarLine();
+	scrut.SetScrRedBoldFont();
+	cout << "Are different molecule" << endl;
+	scrut.SetScrNormalFont();
+	scrut.PrintScrStarLine();
+}
+/***************************************************************************************/ 
+void OutputAlignProgram::displayIsomerMolecule(){
+	
+	scrut.PrintScrStarLine();
+	scrut.SetScrBlueBoldFont();
+	cout << "Are Isomers" << endl;
+	scrut.SetScrNormalFont();
+	scrut.PrintScrStarLine();
 }
 /***************************************************************************************/ 
 /***************************************************************************************/ 

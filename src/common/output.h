@@ -36,6 +36,10 @@ class OutputAlignProgram{
 		void displayItsTheSame();
 		void displayXYZFile(string,vector<Atom>);
 		bool saveXYZFile(string,string,vector<Atom>);
+
+		void displaySameMolecule();
+		void displayDifferentMolecule();
+		void displayIsomerMolecule();
 	/***************************************************************************************/ 
 		// Variables
 	/***************************************************************************************/ 
