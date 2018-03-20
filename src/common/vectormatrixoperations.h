@@ -28,6 +28,7 @@ class VectorAndMatrixOperations{
 
 		vector<Atom> rotateMolecule(vector<double> angles,vector<Atom> molecule);
 		vector<Atom> rotateMolecule(vector<vector<double>>,vector<Atom> molecule);
+		vector<Atom> rotateNormalMolecule(vector<vector<double>>,vector<Atom> molecule);
 		vector<Atom> inversionOfCoordinates(vector<Atom> molecule);
 		bool compareCoordinates(vector<Atom>,vector<Atom>);
 		

@@ -72,24 +72,71 @@ int main (int argc, char *argv[]) {
 				if(matrixOP.compareEigenValues(eigvalues_molecule_A,eigvalues_molecule_B)){
 
 					output.displayItsTheSame();
+				
 					vector<Atom> molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A_inCM);
-					vector<Atom> molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B_inCM);
-					
+					vector<Atom> molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_B_inCM);
+
 					reader.sortingAtoms(molecule_A_align);
 					reader.sortingAtoms(molecule_B_align);
 
 					if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align)){
-						cout << "The both molecules are the same "<< endl;
+						cout << "The both molecules are the same 00 "<< endl;
 					}else{
-						cout << "The both molecules are isomers " << endl;
-					}
+						
+						inertiatensor_molecula_A = molecularOP.inertiaTensor(molecule_A_align);
+						inertiatensor_molecula_B = molecularOP.inertiaTensor(molecule_B_align);
 
+						matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
+						matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
+						
+						vector<vector<double>> reflection_X(3,vector<double>(3,0.0));
+						reflection_X[0][0] = -1.0;
+						reflection_X[1][1] = 1.0;
+						reflection_X[2][2] = 1.0;
+						vector<vector<double>> reflection_Y(3,vector<double>(3,0.0));
+						reflection_Y[0][0] = 1.0;
+						reflection_Y[1][1] = -1.0;
+						reflection_Y[2][2] = 1.0;
+						vector<vector<double>> reflection_Z(3,vector<double>(3,0.0));
+						reflection_Z[0][0] = 1.0;
+						reflection_Z[1][1] = 1.0;
+						reflection_Z[2][2] = -1.0;
+				string title = "Inertia Tensor";
+				output.displayDualMatrix(title,inertiatensor_molecula_A,inertiatensor_molecula_B);
+				title = "EingenVectors - Inertia Tensor";
+				output.displayDualMatrix(title,eigvectors_molecule_A,eigvectors_molecule_B);
+
+
+						vector<vector<double>> reflections(3,vector<double>(3,0.0));
+						for(int i=0;i<3;++i){
+							if(eigvectors_molecule_A[i][i] == eigvectors_molecule_B[i][i]){
+								reflections[i][i] = 1.0;
+							}else{ 
+								reflections[i][i] = eigvectors_molecule_A[i][i];
+							}
+						}
+
+						vector<Atom> molecule_B_align_second_rot = matrixOP.rotateNormalMolecule(eigvectors_molecule_B,molecule_B_align);
+						molecule_B_align = molecule_B_align_second_rot;
+
+				 molecule_A_align = molecularOP.moveCM2Origin(molecule_A_align);
+				 molecule_B_align = molecularOP.moveCM2Origin(molecule_B_align);
+						reader.sortingAtoms(molecule_A_align);
+						reader.sortingAtoms(molecule_B_align);
+
+						if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align)){
+							cout << "The both molecules are the same 11 "<< endl;
+						}else{
+							cout << "The both molecules are isomers " << endl;
+						}
+					}
+	
 					cout << endl << "Coordenates of molecule A" << endl;
 					output.saveXYZFile(argv[1],"Molecule A",molecule_A_align);
 					output.displayXYZFile(argv[1],molecule_A_align);
 					
 					cout << endl << "Coordenates of molecule B" << endl;
-					output.saveXYZFile(argv[2],"Molecule B",molecule_B_align);
+					output.saveXYZFile(argv[2],"MolBcule B",molecule_B_align);
 					output.displayXYZFile(argv[2],molecule_B_align);
 
 				}
@@ -97,10 +144,10 @@ int main (int argc, char *argv[]) {
 			}else{
 				cout << endl;
 				scrut.PrintScrStarLine();
-				scrut.DisplayErrorMessage(" The Molecules do not have the same number and/or type of atoms ");
+				scrut.DisplayErrorMessage(" The Molecules are differents ");
 				scrut.PrintScrStarLine();
 				cout << endl;
-				return EXIT_FAILURE;
+				return EXIT_SUCCESS;
 			}
 		}else{
 			cout << endl;
