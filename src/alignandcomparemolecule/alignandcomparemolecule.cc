@@ -74,7 +74,7 @@ int main (int argc, char *argv[]) {
 					output.displayItsTheSame();
 				
 					vector<Atom> molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A_inCM);
-					vector<Atom> molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_B_inCM);
+					vector<Atom> molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B_inCM);
 
 					reader.sortingAtoms(molecule_A_align);
 					reader.sortingAtoms(molecule_B_align);
@@ -82,45 +82,18 @@ int main (int argc, char *argv[]) {
 					if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align)){
 						cout << "The both molecules are the same 00 "<< endl;
 					}else{
-						
+				
+						vector<vector<double>> change2_A_basis = matrixOP.changeBasisEigenVec(eigvectors_molecule_A,eigvectors_molecule_B);
+						vector<Atom> molecule_B_align_second_rotation = matrixOP.rotateMolecule(change2_A_basis,molecule_B_inCM);
+
 						inertiatensor_molecula_A = molecularOP.inertiaTensor(molecule_A_align);
-						inertiatensor_molecula_B = molecularOP.inertiaTensor(molecule_B_align);
+						inertiatensor_molecula_B = molecularOP.inertiaTensor(molecule_B_align_second_rotation);
 
 						matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
 						matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
 						
-						vector<vector<double>> reflection_X(3,vector<double>(3,0.0));
-						reflection_X[0][0] = -1.0;
-						reflection_X[1][1] = 1.0;
-						reflection_X[2][2] = 1.0;
-						vector<vector<double>> reflection_Y(3,vector<double>(3,0.0));
-						reflection_Y[0][0] = 1.0;
-						reflection_Y[1][1] = -1.0;
-						reflection_Y[2][2] = 1.0;
-						vector<vector<double>> reflection_Z(3,vector<double>(3,0.0));
-						reflection_Z[0][0] = 1.0;
-						reflection_Z[1][1] = 1.0;
-						reflection_Z[2][2] = -1.0;
-				string title = "Inertia Tensor";
-				output.displayDualMatrix(title,inertiatensor_molecula_A,inertiatensor_molecula_B);
-				title = "EingenVectors - Inertia Tensor";
-				output.displayDualMatrix(title,eigvectors_molecule_A,eigvectors_molecule_B);
-
-
-						vector<vector<double>> reflections(3,vector<double>(3,0.0));
-						for(int i=0;i<3;++i){
-							if(eigvectors_molecule_A[i][i] == eigvectors_molecule_B[i][i]){
-								reflections[i][i] = 1.0;
-							}else{ 
-								reflections[i][i] = eigvectors_molecule_A[i][i];
-							}
-						}
-
-						vector<Atom> molecule_B_align_second_rot = matrixOP.rotateNormalMolecule(eigvectors_molecule_B,molecule_B_align);
-						molecule_B_align = molecule_B_align_second_rot;
-
-				 molecule_A_align = molecularOP.moveCM2Origin(molecule_A_align);
-				 molecule_B_align = molecularOP.moveCM2Origin(molecule_B_align);
+						molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B_align_second_rotation);
+					
 						reader.sortingAtoms(molecule_A_align);
 						reader.sortingAtoms(molecule_B_align);
 

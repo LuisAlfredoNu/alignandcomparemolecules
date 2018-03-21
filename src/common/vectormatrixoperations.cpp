@@ -325,26 +325,19 @@ vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<vector<double>> ma
 	return molecule_aligned;
 }
 /***************************************************************************************/ 
-vector<Atom> VectorAndMatrixOperations::rotateNormalMolecule(vector<vector<double>> matrixrotation,vector<Atom> molecule){
-	vector<Atom> molecule_aligned = molecule;
-	for(unsigned int i=0;i < molecule.size();i++){
-		vector<double> coordinates (3,0.0);
-		vector<double> coordinatesB (3,0.0);
-		for(int j=0; j<3;j++){
-			coordinates[0] += matrixrotation[0][j] * molecule[i].atomCoordinates[j];
-			coordinates[1] += matrixrotation[1][j] * molecule[i].atomCoordinates[j];
-			coordinates[2] += matrixrotation[2][j] * molecule[i].atomCoordinates[j];
+vector<vector<double>> VectorAndMatrixOperations::changeBasisEigenVec(vector<vector<double>> basisA,vector<vector<double>> basisB){
+	
+	vector<vector<double>> changed_basis(3,vector<double>(3,0.0));
+
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			for(int k=0;k<3;k++){
+				changed_basis[i][j] += basisA[i][k] * basisB[k][j]; 
+			}
 		}
-		/*
-		for(int j=0; j<3;j++){
-			coordinatesB[0] += coordinates[j] * matrixrotation[j][0] ;
-			coordinatesB[1] += coordinates[j] * matrixrotation[j][1] ;
-			coordinatesB[2] += coordinates[j] * matrixrotation[j][2] ;
-		}
-		*/
-		molecule_aligned[i].setCoordinates(coordinates); 
 	}
-	return molecule_aligned;
+
+	return changed_basis;
 }
 /***************************************************************************************/ 
 vector<double> VectorAndMatrixOperations::anglesEuler(int numangle,vector<vector<double>> eigenVector_moleculeA){
