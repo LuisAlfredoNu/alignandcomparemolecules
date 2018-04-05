@@ -90,6 +90,32 @@ vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<double> angles,vec
 	return molecule_aligned;
 }
 /***************************************************************************************/  
+vector<Atom> VectorAndMatrixOperations::rotateMolecule2(vector<vector<double>> matrixrotation,vector<Atom> molecule){
+	vector<Atom> molecule_aligned = molecule;
+	vector<vector<double>> matrixrotation_tras (3,vector<double> (3,0.0));
+	for(int i=0;i<3;i++){
+		matrixrotation_tras[0][i] = matrixrotation[i][0];
+		matrixrotation_tras[1][i] = matrixrotation[i][1];
+		matrixrotation_tras[2][i] = matrixrotation[i][2];
+	}
+	for(unsigned int i=0;i < molecule.size();i++){
+		vector<double> coordinates (3,0.0);
+		vector<double> coordinatesB (3,0.0);
+		for(int j=0; j<3;j++){
+			coordinates[0] += matrixrotation_tras[0][j] * molecule[i].atomCoordinates[j];
+			coordinates[1] += matrixrotation_tras[1][j] * molecule[i].atomCoordinates[j];
+			coordinates[2] += matrixrotation_tras[2][j] * molecule[i].atomCoordinates[j];
+		}
+		for(int j=0; j<3;j++){
+			coordinatesB[0] += coordinates[j] * matrixrotation[j][0] ;
+			coordinatesB[1] += coordinates[j] * matrixrotation[j][1] ;
+			coordinatesB[2] += coordinates[j] * matrixrotation[j][2] ;
+		}
+		molecule_aligned[i].setCoordinates(coordinates); 
+	}
+	return molecule_aligned;
+}
+/***************************************************************************************/  
 vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<vector<double>> matrixrotation,vector<Atom> molecule){
 	vector<Atom> molecule_aligned = molecule;
 	vector<vector<double>> matrixrotation_tras (3,vector<double> (3,0.0));
@@ -165,7 +191,7 @@ vector<vector<double>> VectorAndMatrixOperations::changeBasisEigenVec(vector<vec
 	for(int i=0;i<3;i++){
 		for(int j=0;j<3;j++){
 			for(int k=0;k<3;k++){
-				changed_basis[i][j] += basisA[i][k] * basisB[k][j]; 
+				changed_basis[i][j] += basisA[i][k] * basisB[j][k]; 
 			}
 		}
 	}
@@ -179,6 +205,8 @@ vector<vector<double>> VectorAndMatrixOperations::changeBasisEigenVec(vector<vec
  * All rotation is counter clockwise
  */
 vector<double> VectorAndMatrixOperations::rotationOperationOverZ(double theta,vector<double> vector2rotate){
+
+	theta = theta * M_PI / 180.0;
 	vector<vector<double>> rotation (3,vector<double> (3,0.0));
 	rotation[0][0] = cos(theta ); 
 	rotation[0][1] = sin(theta);
@@ -201,6 +229,7 @@ vector<double> VectorAndMatrixOperations::rotationOperationOverZ(double theta,ve
 }
 /***************************************************************************************/ 
 vector<double> VectorAndMatrixOperations::rotationOperationOverY(double phi,vector<double> vector2rotate){
+	phi = phi * M_PI / 180.0;
 	vector<vector<double>> rotation (3,vector<double> (3,0.0));
 	rotation[0][0] = cos(phi); 
 	rotation[0][1] = 0.0;
@@ -223,6 +252,7 @@ vector<double> VectorAndMatrixOperations::rotationOperationOverY(double phi,vect
 }
 /***************************************************************************************/ 
 vector<double> VectorAndMatrixOperations::rotationOperationOverX(double psi,vector<double> vector2rotate){
+	psi = psi * M_PI / 180.0;
 	vector<vector<double>> rotation (3,vector<double> (3,0.0));
 	rotation[0][0] = 1.0;
 	rotation[0][1] = 0.0;
