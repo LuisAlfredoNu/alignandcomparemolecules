@@ -61,9 +61,9 @@ int main (int argc, char *argv[]) {
 					cin >> theta;
 					cout << "psi = ";
 					cin >> psi;
-					angles[0] = phi = phi * PI / 180.0;
-					angles[1] = theta = theta * PI / 180.0;
-					angles[2] = psi = psi * PI / 180.0;
+					angles[0] = phi ;
+					angles[1] = theta ;
+					angles[2] = psi ;
 					
 					molecule_B_operate = matrixOP.rotateMolecule(angles, molecule_A);
 
