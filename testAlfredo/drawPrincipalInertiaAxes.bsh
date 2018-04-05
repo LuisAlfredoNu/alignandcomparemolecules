@@ -1,0 +1,160 @@
+#!/bin/bash
+
+# If VMD was a personalizate installation, please find the library of tachyon_LINUXAMD64 or equivalent 
+# 		and put the path and command for using VMD in the next two lines
+
+vmd_line_command="vmd"
+
+#####################################################################
+#--------------------------------------------------------------   Fdx
+#####################################################################
+#--------------------------------------------------------------   Fdx
+#####################################################################
+
+the_prog_name=$0
+cmdl_argv=($@)
+cmdl_argc=${#cmdl_argv[@]}
+
+#####################################################################
+
+print_vmd_script(){
+
+file_name_molecule_A=$1
+file_name_molecule_B=$2
+all_vectors=$3
+top_or_nop=$4
+
+if [ "$top_or_nop" == "end" ] 
+then
+	echo $top_or_nop
+	echo "End"
+	file_name_molecule_A_aling="${file_name_molecule_A%.xyz}_align.xyz"
+	file_name_molecule_B_aling="${file_name_molecule_B%.xyz}_align.xyz"
+else
+	echo $top_or_nop
+	echo "Start"
+	file_name_molecule_A_aling=$file_name_molecule_A
+	file_name_molecule_B_aling=$file_name_molecule_B
+fi
+
+vector_1A=$(echo $all_vectors | awk '{print $1" "$2" "$3}')
+vector_2A=$(echo $all_vectors | awk '{print $4" "$5" "$6}')
+vector_3A=$(echo $all_vectors | awk '{print $7" "$8" "$9}')
+
+vector_1B=$(echo $all_vectors | awk '{print $10" "$11" "$12}')
+vector_2B=$(echo $all_vectors | awk '{print $13" "$14" "$15}')
+vector_3B=$(echo $all_vectors | awk '{print $16" "$17" "$18}')
+
+cat << END_VMD_SCRIPT
+#!/usr/local/bin/vmd
+# VMD script written by save_state \$Revision: 1.47 $
+# VMD version: 1.9.3
+set viewplist {}
+set fixedlist {}
+# Display settings
+display projection   Orthographic
+display height       4.000000
+display distance     -2.000000
+display nearclip set 0.000000
+display depthcue   off
+display shadows off
+display ambientocclusion off
+display aoambient 0.800000
+display aodirect 0.300000
+display dof off
+display dof_fnumber 64.000000
+display dof_focaldist 0.700000
+mol new $file_name_molecule_A_aling type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+draw color blue
+draw cylinder {0 0 0} {$vector_1A} radius 0.05
+draw color red
+draw cylinder {0 0 0} {$vector_2A} radius 0.05
+draw color green
+draw cylinder {0 0 0} {$vector_3A} radius 0.05
+mol rename molecule_A_$file_name_molecule_A_aling
+# done with molecule 0
+mol new $file_name_molecule_B_aling type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+draw color blue3
+draw cylinder {0 0 0} {$vector_1B} radius 0.05
+draw color red3
+draw cylinder {0 0 0} {$vector_2B} radius 0.05
+draw color green3
+draw cylinder {0 0 0} {$vector_3B} radius 0.05
+mol rename molecule_B_$file_name_molecule_B_aling
+# done with molecule 0
+END_VMD_SCRIPT
+}
+#####################################################################
+get_data_from_output_align(){
+	file_molecule_A=$1
+	file_molecule_B=$2
+	top_or_nop=$3
+
+	file_output="${RANDOM}.tmptmp"
+
+	~/Programacion/alignandcomparemolecules/src/alignandcomparemolecule/alignandcomparemolecule.x $file_molecule_A $file_molecule_B > $file_output
+
+	if [ "$top_or_nop" == "end" ] 
+	then
+		number_line=$(grep -n "New lenght of EinVec" $file_output |tail -n 1| sed 's;\([0-9]\):\(.*\);\1;')
+	else
+		number_line=$(grep -n "New lenght of EinVec" $file_output |head -n 1| sed 's;\([0-9]\):\(.*\);\1;')
+
+	fi
+
+
+	vector1=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $2}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $3}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $4}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $7}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $8}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $9}' $file_output | tr "\n" " ")
+
+	echo $vector1
+	rm $file_output
+
+}
+#####################################################################
+#     Corpus of the Script
+#####################################################################
+
+
+start_or_end="start"
+#Checks the consistency of the argument list
+if [ $# -lt 2 ]; then
+	echo "Error: input filename missing (Try -h for more information.)."
+	exit 2
+fi
+
+if [ ! -f $file_name_xyz_molecule_A ] && [ ! -f $file_name_xyz_molecule_B ]; then
+	echo "Error: input filename missing (Try -h for more information.)."
+	exit 2
+fi
+
+file_name_xyz_molecule_A=$1
+file_name_xyz_molecule_B=$2
+start_or_end=$3
+
+vectors=$(get_data_from_output_align $file_name_xyz_molecule_A $file_name_xyz_molecule_B $start_or_end)
+print_vmd_script $file_name_xyz_molecule_A $file_name_xyz_molecule_B "$vectors" $start_or_end > test_eignevec.vmd 
+
+echo
+	
