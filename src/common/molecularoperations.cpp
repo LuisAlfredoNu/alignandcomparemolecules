@@ -53,6 +53,9 @@ vector<vector<double>> MolecularOperations::inertiaTensor(vector<Atom> molecule)
 					matrix[i][j] += molecule[im].atomWeight * molecule[im].atomCoordinates[i] * molecule[im].atomCoordinates[j] ;
 				matrix[i][j] = -matrix[i][j];
 			}
+			if(matrix[i][j]< 1.0e-12 && matrix[i][j] > -1.0e-12){
+				matrix[i][j] = 0.0e-16; 
+			}
 		}
 	}
 	return matrix;
