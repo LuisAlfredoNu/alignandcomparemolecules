@@ -39,6 +39,7 @@ class VectorAndMatrixOperations{
 		double getAngleBetween2Vectors(vector<double>,vector<double>);
 		vector<double> alignEigenVectors4Angles(vector<vector<double>>);
 
+		vector<vector<double>> incrementLengthVector(double,vector<vector<double>>);
 	/***************************************************************************************/
 	/***************************************************************************************/ 
 	private:

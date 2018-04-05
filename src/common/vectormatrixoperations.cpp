@@ -22,19 +22,158 @@ using std::setw;
 /***************************************************************************************/  
 
 VectorAndMatrixOperations::VectorAndMatrixOperations(){ }
+/***************************************************************************************/ 
+void VectorAndMatrixOperations::eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues){ 
+	double array_initialmatrix[3][3];
+	double array_eigvectors[3][3];
+	double array_eigvalues[3]; 
+
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			array_initialmatrix[i][j] = initialmatrix[i][j];
+		}
+	}
+
+	eigen_decomposition3(array_initialmatrix,array_eigvectors,array_eigvalues);
+
+	vector<vector<double>> transpose_eigvectors(3,vector<double>(3,0.0));
+
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+		eigvectors[i][j] = array_eigvectors[i][j];
+		transpose_eigvectors[i][j] = array_eigvectors[i][j];
+		}
+		eigvalues[i] = array_eigvalues[i];
+	}
+
+	vector<vector<double>> pre_diagmatrix(3,vector<double>(3,0.0));
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			for(int k=0;k<3;k++){
+				pre_diagmatrix[i][j] += transpose_eigvectors[i][k] * initialmatrix[k][j];  
+			}
+		}
+	}
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			for(int k=0;k<3;k++){
+				diagmatrix[i][j] += pre_diagmatrix[i][k]* eigvectors[k][j];  
+			}
+		}
+	}
+}
+/***************************************************************************************/ 
+bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_moleculeA, vector<double> eigenValues_moleculeB){
+	bool is_equal = true;
+	double epsilon = 0.5;
+	double diffvalues = 0.0;
+
+	for(int i=0;i<3;i++){
+		diffvalues = eigenValues_moleculeA[i] - eigenValues_moleculeB[i];
+		diffvalues = abs(diffvalues);
+		if(diffvalues > epsilon) is_equal = false;
+	}
+	return is_equal;
+}
 /***************************************************************************************/  
-double VectorAndMatrixOperations::dotProduct(vector<double> vectorA, vector<double> vectorB){
-	double resultdotproduct = 0.0;
-	for(int xyz=0;xyz<3;xyz++) resultdotproduct += vectorA[xyz] * vectorB[xyz];
-	return resultdotproduct;
+/***************************************************************************************/  
+/***************************************************************************************/ 
+vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<double> angles,vector<Atom> molecule){
+	vector<Atom> molecule_aligned = molecule;
+	for(unsigned int i=0;i < molecule.size();i++){
+
+		molecule_aligned[i].setCoordinates(rotationOperationOverX(angles[0],molecule[i].atomCoordinates));
+		molecule_aligned[i].setCoordinates(rotationOperationOverY(angles[1],molecule_aligned[i].atomCoordinates));
+		molecule_aligned[i].setCoordinates(rotationOperationOverZ(angles[2],molecule_aligned[i].atomCoordinates));
+	}
+
+	return molecule_aligned;
 }
-vector<double> VectorAndMatrixOperations::crossProduct(vector<double> vectorA, vector<double> vectorB){
-	vector<double> crossproduct (3,0.0);
-	crossproduct[0] = vectorA[1]*vectorB[2] - vectorA[2]*vectorB[1]; 
-	crossproduct[1] = vectorA[2]*vectorB[0] - vectorA[0]*vectorB[2]; 
-	crossproduct[2] = vectorA[0]*vectorB[1] - vectorA[1]*vectorB[0]; 
-	return crossproduct;
+/***************************************************************************************/  
+vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<vector<double>> matrixrotation,vector<Atom> molecule){
+	vector<Atom> molecule_aligned = molecule;
+	vector<vector<double>> matrixrotation_tras (3,vector<double> (3,0.0));
+	for(int i=0;i<3;i++){
+		matrixrotation_tras[0][i] = matrixrotation[i][0];
+		matrixrotation_tras[1][i] = matrixrotation[i][1];
+		matrixrotation_tras[2][i] = matrixrotation[i][2];
+	}
+	for(unsigned int i=0;i < molecule.size();i++){
+		vector<double> coordinates (3,0.0);
+		vector<double> coordinatesB (3,0.0);
+		for(int j=0; j<3;j++){
+			coordinates[0] += matrixrotation_tras[0][j] * molecule[i].atomCoordinates[j];
+			coordinates[1] += matrixrotation_tras[1][j] * molecule[i].atomCoordinates[j];
+			coordinates[2] += matrixrotation_tras[2][j] * molecule[i].atomCoordinates[j];
+		}
+		/*
+		for(int j=0; j<3;j++){
+			coordinatesB[0] += coordinates[j] * matrixrotation[j][0] ;
+			coordinatesB[1] += coordinates[j] * matrixrotation[j][1] ;
+			coordinatesB[2] += coordinates[j] * matrixrotation[j][2] ;
+		}
+		*/
+		molecule_aligned[i].setCoordinates(coordinates); 
+	}
+	return molecule_aligned;
 }
+/***************************************************************************************/ 
+vector<Atom> VectorAndMatrixOperations::inversionOfCoordinates(vector<Atom> molecule){
+
+	vector<vector<double>> matrixinvertion (3,vector<double>(3,0.0));
+	matrixinvertion[0][0] = -1;
+	matrixinvertion[1][1] = -1;
+	matrixinvertion[2][2] = -1;
+
+	vector<Atom> molecule_inverse = molecule;
+	
+	for(unsigned int i=0;i < molecule.size();i++){
+		vector<double> coordinates (3,0.0);
+		for(int j=0; j<3;j++){
+			coordinates[0] += matrixinvertion[0][j] * molecule[i].atomCoordinates[j];
+			coordinates[1] += matrixinvertion[1][j] * molecule[i].atomCoordinates[j];
+			coordinates[2] += matrixinvertion[2][j] * molecule[i].atomCoordinates[j];
+		}
+		molecule_inverse[i].setCoordinates(coordinates); 
+	}
+	return molecule_inverse;
+}
+/***************************************************************************************/ 
+bool VectorAndMatrixOperations::compareCoordinates(vector<Atom> molecule_A, vector<Atom> molecule_B){
+
+	bool is_equal = true;
+	unsigned int maxsize = molecule_A.size();
+	unsigned int i = 0;
+
+	while(is_equal && i < maxsize ){
+
+		if(abs(molecule_A[i].atomCoordinates[0] - molecule_B[i].atomCoordinates[0]) > 0.001) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[1] - molecule_B[i].atomCoordinates[1]) > 0.001) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[2] - molecule_B[i].atomCoordinates[2]) > 0.001) is_equal = false;
+
+		i++;
+	}
+
+	return is_equal;
+}
+/***************************************************************************************/ 
+/***************************************************************************************/ 
+vector<vector<double>> VectorAndMatrixOperations::changeBasisEigenVec(vector<vector<double>> basisA,vector<vector<double>> basisB){
+	
+	vector<vector<double>> changed_basis(3,vector<double>(3,0.0));
+
+	for(int i=0;i<3;i++){
+		for(int j=0;j<3;j++){
+			for(int k=0;k<3;k++){
+				changed_basis[i][j] += basisA[i][k] * basisB[k][j]; 
+			}
+		}
+	}
+
+	return changed_basis;
+}
+/***************************************************************************************/  
+/***************************************************************************************/  
 /*
  * For rotation operation 
  * All rotation is counter clockwise
@@ -118,59 +257,6 @@ double VectorAndMatrixOperations::getAngleBetween2Vectors(vector<double> vectorA
 	angle = acos(dotProduct(vectorA,vectorB) / (magnitudVec01*magnitudVec02)) ;
 
 	return angle;
-}
-/***************************************************************************************/ 
-void VectorAndMatrixOperations::eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues){ 
-	double array_initialmatrix[3][3];
-	double array_eigvectors[3][3];
-	double array_eigvalues[3]; 
-
-	for(int i=0;i<3;i++){
-		for(int j=0;j<3;j++){
-			array_initialmatrix[i][j] = initialmatrix[i][j];
-		}
-	}
-
-	eigen_decomposition3(array_initialmatrix,array_eigvectors,array_eigvalues);
-
-	vector<vector<double>> transpose_eigvectors(3,vector<double>(3,0.0));
-
-	for(int i=0;i<3;i++){
-		for(int j=0;j<3;j++){
-		eigvectors[i][j] = array_eigvectors[i][j];
-		transpose_eigvectors[i][j] = array_eigvectors[i][j];
-		}
-		eigvalues[i] = array_eigvalues[i];
-	}
-
-	vector<vector<double>> pre_diagmatrix(3,vector<double>(3,0.0));
-	for(int i=0;i<3;i++){
-		for(int j=0;j<3;j++){
-			for(int k=0;k<3;k++){
-				pre_diagmatrix[i][j] += transpose_eigvectors[i][k] * initialmatrix[k][j];  
-			}
-		}
-	}
-	for(int i=0;i<3;i++){
-		for(int j=0;j<3;j++){
-			for(int k=0;k<3;k++){
-				diagmatrix[i][j] += pre_diagmatrix[i][k]* eigvectors[k][j];  
-			}
-		}
-	}
-}
-/***************************************************************************************/ 
-bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_moleculeA, vector<double> eigenValues_moleculeB){
-	bool is_equal = true;
-	double epsilon = 0.5;
-	double diffvalues = 0.0;
-
-	for(int i=0;i<3;i++){
-		diffvalues = eigenValues_moleculeA[i] - eigenValues_moleculeB[i];
-		diffvalues = abs(diffvalues);
-		if(diffvalues > epsilon) is_equal = false;
-	}
-	return is_equal;
 }
 /***************************************************************************************/ 
 vector<double> VectorAndMatrixOperations::alignEigenVectors4Angles(vector<vector<double>> eigenVector_molecule){
@@ -284,60 +370,39 @@ vector<double> VectorAndMatrixOperations::alignEigenVectors4Angles(vector<vector
 	}
 */
 }
-/***************************************************************************************/ 
-vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<double> angles,vector<Atom> molecule){
-	vector<Atom> molecule_aligned = molecule;
-	for(unsigned int i=0;i < molecule.size();i++){
-
-		molecule_aligned[i].setCoordinates(rotationOperationOverX(angles[0],molecule[i].atomCoordinates));
-		molecule_aligned[i].setCoordinates(rotationOperationOverY(angles[1],molecule_aligned[i].atomCoordinates));
-		molecule_aligned[i].setCoordinates(rotationOperationOverZ(angles[2],molecule_aligned[i].atomCoordinates));
+/***************************************************************************************/  
+vector<vector<double>> VectorAndMatrixOperations::incrementLengthVector(double new_lenght,vector<vector<double>> eigenVector_molecule){	
+	vector<vector<double>> new_coordinates (3,vector<double> (3,0.0));
+	for(int j=0;j<3;j++){
+		double r = 0.0;
+		
+		for(int i=0;i<3;i++){
+			r += eigenVector_molecule[j][i] * eigenVector_molecule[j][i];
+		}
+		r = sqrt(r);
+		double theta = acos(eigenVector_molecule[j][2]/r);
+		double phi = atan2(eigenVector_molecule[j][1],eigenVector_molecule[j][0]);
+	
+		new_coordinates[j][0] = (new_lenght + r) * sin(theta) * cos(phi);
+		new_coordinates[j][1] = (new_lenght + r) * sin(theta) * sin(phi);
+		new_coordinates[j][2] = (new_lenght + r) * cos(theta);
 	}
-
-	return molecule_aligned;
+	return new_coordinates;
 }
 /***************************************************************************************/  
-vector<Atom> VectorAndMatrixOperations::rotateMolecule(vector<vector<double>> matrixrotation,vector<Atom> molecule){
-	vector<Atom> molecule_aligned = molecule;
-	vector<vector<double>> matrixrotation_tras (3,vector<double> (3,0.0));
-	for(int i=0;i<3;i++){
-		matrixrotation_tras[0][i] = matrixrotation[i][0];
-		matrixrotation_tras[1][i] = matrixrotation[i][1];
-		matrixrotation_tras[2][i] = matrixrotation[i][2];
-	}
-	for(unsigned int i=0;i < molecule.size();i++){
-		vector<double> coordinates (3,0.0);
-		vector<double> coordinatesB (3,0.0);
-		for(int j=0; j<3;j++){
-			coordinates[0] += matrixrotation_tras[0][j] * molecule[i].atomCoordinates[j];
-			coordinates[1] += matrixrotation_tras[1][j] * molecule[i].atomCoordinates[j];
-			coordinates[2] += matrixrotation_tras[2][j] * molecule[i].atomCoordinates[j];
-		}
-		/*
-		for(int j=0; j<3;j++){
-			coordinatesB[0] += coordinates[j] * matrixrotation[j][0] ;
-			coordinatesB[1] += coordinates[j] * matrixrotation[j][1] ;
-			coordinatesB[2] += coordinates[j] * matrixrotation[j][2] ;
-		}
-		*/
-		molecule_aligned[i].setCoordinates(coordinates); 
-	}
-	return molecule_aligned;
+/***************************************************************************************/  
+/***************************************************************************************/  
+double VectorAndMatrixOperations::dotProduct(vector<double> vectorA, vector<double> vectorB){
+	double resultdotproduct = 0.0;
+	for(int xyz=0;xyz<3;xyz++) resultdotproduct += vectorA[xyz] * vectorB[xyz];
+	return resultdotproduct;
 }
-/***************************************************************************************/ 
-vector<vector<double>> VectorAndMatrixOperations::changeBasisEigenVec(vector<vector<double>> basisA,vector<vector<double>> basisB){
-	
-	vector<vector<double>> changed_basis(3,vector<double>(3,0.0));
-
-	for(int i=0;i<3;i++){
-		for(int j=0;j<3;j++){
-			for(int k=0;k<3;k++){
-				changed_basis[i][j] += basisA[i][k] * basisB[k][j]; 
-			}
-		}
-	}
-
-	return changed_basis;
+vector<double> VectorAndMatrixOperations::crossProduct(vector<double> vectorA, vector<double> vectorB){
+	vector<double> crossproduct (3,0.0);
+	crossproduct[0] = vectorA[1]*vectorB[2] - vectorA[2]*vectorB[1]; 
+	crossproduct[1] = vectorA[2]*vectorB[0] - vectorA[0]*vectorB[2]; 
+	crossproduct[2] = vectorA[0]*vectorB[1] - vectorA[1]*vectorB[0]; 
+	return crossproduct;
 }
 /***************************************************************************************/ 
 vector<double> VectorAndMatrixOperations::anglesEuler(int numangle,vector<vector<double>> eigenVector_moleculeA){
@@ -419,45 +484,6 @@ vector<vector<double>> VectorAndMatrixOperations::rotationEuler(vector<double> a
 
 
 	return afterrotation_vec;
-}
-/***************************************************************************************/ 
-vector<Atom> VectorAndMatrixOperations::inversionOfCoordinates(vector<Atom> molecule){
-
-	vector<vector<double>> matrixinvertion (3,vector<double>(3,0.0));
-	matrixinvertion[0][0] = -1;
-	matrixinvertion[1][1] = -1;
-	matrixinvertion[2][2] = -1;
-
-	vector<Atom> molecule_inverse = molecule;
-	
-	for(unsigned int i=0;i < molecule.size();i++){
-		vector<double> coordinates (3,0.0);
-		for(int j=0; j<3;j++){
-			coordinates[0] += matrixinvertion[0][j] * molecule[i].atomCoordinates[j];
-			coordinates[1] += matrixinvertion[1][j] * molecule[i].atomCoordinates[j];
-			coordinates[2] += matrixinvertion[2][j] * molecule[i].atomCoordinates[j];
-		}
-		molecule_inverse[i].setCoordinates(coordinates); 
-	}
-	return molecule_inverse;
-}
-/***************************************************************************************/ 
-bool VectorAndMatrixOperations::compareCoordinates(vector<Atom> molecule_A, vector<Atom> molecule_B){
-
-	bool is_equal = true;
-	unsigned int maxsize = molecule_A.size();
-	unsigned int i = 0;
-
-	while(is_equal && i < maxsize ){
-
-		if(abs(molecule_A[i].atomCoordinates[0] - molecule_B[i].atomCoordinates[0]) > 0.001) is_equal = false;
-		if(abs(molecule_A[i].atomCoordinates[1] - molecule_B[i].atomCoordinates[1]) > 0.001) is_equal = false;
-		if(abs(molecule_A[i].atomCoordinates[2] - molecule_B[i].atomCoordinates[2]) > 0.001) is_equal = false;
-
-		i++;
-	}
-
-	return is_equal;
 }
 /***************************************************************************************/ 
 /***************************************************************************************/ 
