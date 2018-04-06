@@ -110,7 +110,7 @@ get_data_from_output_align(){
 
 	file_output="${RANDOM}.tmptmp"
 
-	~/Programacion/alignandcomparemolecules/src/alignandcomparemolecule/alignandcomparemolecule.x $file_molecule_A $file_molecule_B > $file_output
+	~/Programacion/alignandcomparemolecules/src/alignandcomparemolecule/alignandcomparemolecule.x -m -l 2.0 -c -s $file_molecule_A $file_molecule_B > $file_output
 
 	if [ "$top_or_nop" == "end" ] 
 	then
