@@ -47,24 +47,20 @@ void OutputAlignProgram::displayDualMatrix(string title,vector<double> matrixA,v
 /***************************************************************************************/ 
 void OutputAlignProgram::displayFilesNames(string file1,string file2){
 
-	cout << endl;
-	scrut.PrintScrStarLine();
 	scrut.SetScrYellowBoldFont();
-	cout << "Comparation molecules." << endl;
+	cout << " Comparation molecules: ";
 	scrut.SetScrNormalFont();
-	scrut.PrintScrStarLine();
-	cout << endl << " Molecule A: "<< file1 << setw(file1.size()+(-file1.size() - 11 + 50));
+	cout << " Molecule A: "<< file1 << "\t\t";
 	cout << " Molecule B: "<< file2 << endl;
 
 }
 /***************************************************************************************/ 
-void OutputAlignProgram::displayItsTheSame(){
+void OutputAlignProgram::displayResult(string result){
 	
-	scrut.PrintScrStarLine();
 	scrut.SetScrGreenBoldFont();
-	cout << "Have the same EigenValues" << endl;
+	cout << " Result: "; 
 	scrut.SetScrNormalFont();
-	scrut.PrintScrStarLine();
+	cout << result << endl;
 }
 /***************************************************************************************/ 
 bool OutputAlignProgram::saveXYZFile(string filename,string commnet, vector<Atom> molecule){
@@ -135,6 +131,22 @@ void OutputAlignProgram::displayIsomerMolecule(){
 	scrut.SetScrNormalFont();
 	scrut.PrintScrStarLine();
 }
+/***************************************************************************************/ 
+void OutputAlignProgram::displayInertiaTensorEigenVecEigenVal(vector<vector<double>> inertiatensor_molecula_A,vector<vector<double>> inertiatensor_molecula_B,vector<vector<double>> eigvectors_molecule_A,vector<vector<double>> eigvectors_molecule_B,vector<double> eigvalues_molecule_A,vector<double> eigvalues_molecule_B){
+
+	scrut.PrintScrStarLine();
+	string title;
+	title = "Inertia Tensor";
+	displayDualMatrix(title,inertiatensor_molecula_A,inertiatensor_molecula_B);
+
+	title = "EingenVectors - Inertia Tensor";
+	displayDualMatrix(title,eigvectors_molecule_A,eigvectors_molecule_B);
+
+	title = "EingenValues - Inertia Tensor";
+	displayDualMatrix(title,eigvalues_molecule_A,eigvalues_molecule_B);
+	scrut.PrintScrStarLine();
+}
+
 /***************************************************************************************/ 
 /***************************************************************************************/ 
 #endif // _OUTPUT_CPP_

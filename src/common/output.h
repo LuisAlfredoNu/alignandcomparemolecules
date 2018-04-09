@@ -33,13 +33,18 @@ class OutputAlignProgram{
 		void displayDualMatrix(string,vector<vector<double>>,vector<vector<double>>);
 		void displayDualMatrix(string,vector<double>,vector<double>);
 		void displayFilesNames(string,string);
-		void displayItsTheSame();
+		void displayResult(string);
 		void displayXYZFile(string,vector<Atom>);
 		bool saveXYZFile(string,string,vector<Atom>);
 
 		void displaySameMolecule();
 		void displayDifferentMolecule();
 		void displayIsomerMolecule();
+	/***************************************************************************************/ 
+
+
+		void displayInertiaTensorEigenVecEigenVal(vector<vector<double>>,vector<vector<double>> ,vector<vector<double>> ,vector<vector<double>> ,vector<double> ,vector<double>);
+
 	/***************************************************************************************/ 
 		// Variables
 	/***************************************************************************************/ 
