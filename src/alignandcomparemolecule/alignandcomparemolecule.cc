@@ -98,19 +98,56 @@ int main (int argc, char *argv[]) {
 					}else{
 
 						vector<double> angles (3,0.0);
-						bool is_same_after_rotation_in_Z = false;
-						vector<Atom> molecule_B_align_second_rotation;
+						bool is_same_after_rotations = false;
+						vector<Atom> molecule_B_align_second_rotation = molecule_B_align;
+						vector<Atom> molecule_B_align_second_rotation_final;
+						
 
-						while(! is_same_after_rotation_in_Z){
+						int contador=0;
+						for(int i=0;i<4;++i){
+
+							for(int j=0;j<4;++j){
+
+								for(int k=0;k<4;++k){
+					
+									reader.sortingAtoms(molecule_B_align_second_rotation);
+									if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align_second_rotation)){
+										molecule_B_align = molecule_B_align_second_rotation;
+										is_same_after_rotations = true;
+									}
+									angles[0] = 0.0;
+									angles[1] = 0.0;
+									angles[2] = 90.0;
+
+									molecule_B_align_second_rotation = matrixOP.rotateMolecule(angles,molecule_B_align_second_rotation);
+								}
+								angles[0] = 0.0;
+								angles[1] = 90.0;
+								angles[2] = 0.0;
+
+								molecule_B_align_second_rotation = matrixOP.rotateMolecule(angles,molecule_B_align_second_rotation);
+							}
+							angles[0] = 0.0;
+							angles[1] = 0.0;
+							angles[2] = 90.0;
+
+							molecule_B_align_second_rotation = matrixOP.rotateMolecule(angles,molecule_B_align_second_rotation);
+						}
+						/*
+							vector<double> angles (3,0.0);
+							bool is_same_after_rotation_in_Z = false;
+							vector<Atom> molecule_B_align_second_rotation;
+
+							while(! is_same_after_rotation_in_Z){
 
 							angles[2] += 90.0;
 							molecule_B_align_second_rotation = matrixOP.rotateMolecule(angles,molecule_B_align);
 
 							if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align_second_rotation) || angles[2] == 270.0)
-								is_same_after_rotation_in_Z = true;
-						}
-						molecule_B_align = molecule_B_align_second_rotation;
-						/*
+							is_same_after_rotation_in_Z = true;
+							}
+
+							molecule_B_align = molecule_B_align_second_rotation;
 							vector<vector<double>> change2_A_basis = matrixOP.changeBasisEigenVec(eigvectors_molecule_A,eigvectors_molecule_B);
 							vector<Atom> molecule_B_align_second_rotation = matrixOP.rotateMolecule2(change2_A_basis,molecule_B_inCM);
 
