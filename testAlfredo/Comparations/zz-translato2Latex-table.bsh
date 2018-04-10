@@ -37,9 +37,9 @@ extract_Freq_from_log(){
 extract_result_align(){
 	file_alignOutput=$1
 	if (( $(cat $file_alignOutput|wc -l) > 13  )); then
-		awk '{if(NR==20) print $0}' $file_alignOutput
+		awk '{if(NR==20) print $1}' $file_alignOutput
 	else 
-		awk '{if(NR== 9) print $0}' $file_alignOutput
+		awk '{if(NR== 9) print $1}' $file_alignOutput
 	fi
 }
 manual_result(){

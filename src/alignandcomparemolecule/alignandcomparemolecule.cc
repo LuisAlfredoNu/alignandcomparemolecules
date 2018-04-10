@@ -81,13 +81,14 @@ int main (int argc, char *argv[]) {
 
 				title = "EingenValues - Inertia Tensor";
 				output.displayDualMatrix(title,eigvalues_molecule_A,eigvalues_molecule_B);
+					
+				vector<Atom> molecule_A_align;	
+				vector<Atom> molecule_B_align;
 
 				if(matrixOP.compareEigenValues(eigvalues_molecule_A,eigvalues_molecule_B)){
 
-					output.displayItsTheSame();
-
-					vector<Atom> molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A_inCM);
-					vector<Atom> molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B_inCM);
+					molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A_inCM);
+					molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B_inCM);
 
 					reader.sortingAtoms(molecule_A_align);
 					reader.sortingAtoms(molecule_B_align);
