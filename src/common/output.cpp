@@ -109,6 +109,25 @@ void OutputAlignProgram::displayXYZFile(string filename, vector<Atom> molecule){
 	}
 }
 /***************************************************************************************/ 
+void OutputAlignProgram::display_booth_XYZFile(string filenameA,string filenameB, vector<Atom> moleculeA, vector<Atom> moleculeB){
+	
+	cout << endl << "Molecule A: "<< setw(38) << filenameA  << "Molecule B: " << filenameB << endl;
+	cout <<  setw(50) << moleculeA.size()  << moleculeB.size() <<  endl;
+	cout << endl;
+	for(unsigned int i=0;i<moleculeA.size();i++){
+
+		cout << setw(5) << left << moleculeA[i].atomSymbol ;
+		cout << setw(15) << setprecision(7) << moleculeA[i].atomCoordinates[0];
+		cout << setw(15) << setprecision(7) << moleculeA[i].atomCoordinates[1];
+		cout << setw(15) << setprecision(7) << moleculeA[i].atomCoordinates[2];
+		cout << setw(5) << left << moleculeB[i].atomSymbol ;
+		cout << setw(15) << setprecision(7) << moleculeB[i].atomCoordinates[0];
+		cout << setw(15) << setprecision(7) << moleculeB[i].atomCoordinates[1];
+		cout << setw(15) << setprecision(7) << moleculeB[i].atomCoordinates[2];
+		cout << endl;
+	}
+}
+/***************************************************************************************/ 
 void OutputAlignProgram::displaySameMolecule(){
 	
 	scrut.PrintScrStarLine();
