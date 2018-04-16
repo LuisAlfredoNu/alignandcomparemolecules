@@ -65,12 +65,23 @@ void VectorAndMatrixOperations::eigenVectorValues(vector<vector<double>> initial
 /***************************************************************************************/ 
 bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_moleculeA, vector<double> eigenValues_moleculeB){
 	bool is_equal = true;
-	double epsilon = 0.5;
+	double epsilon = 0.001;
 	double diffvalues = 0.0;
+	double bigValue = 0.0;
+
+	if(eigenValues_moleculeA[2] < eigenValues_moleculeB[2]){ bigValue=eigenValues_moleculeB[2]; }
+	else{ bigValue=eigenValues_moleculeA[2];}
+
+	vector<double> relativevalues_A (3,0.0);
+	vector<double> relativevalues_B (3,0.0);
 
 	for(int i=0;i<3;i++){
-		diffvalues = eigenValues_moleculeA[i] - eigenValues_moleculeB[i];
-		diffvalues = abs(diffvalues);
+		relativevalues_A[i]=eigenValues_moleculeA[i] / bigValue;
+		relativevalues_B[i]=eigenValues_moleculeB[i] / bigValue;
+	}
+
+	for(int i=0;i<3;i++){
+		diffvalues = abs(relativevalues_A[i] - relativevalues_B[i]);
 		if(diffvalues > epsilon) is_equal = false;
 	}
 	return is_equal;
