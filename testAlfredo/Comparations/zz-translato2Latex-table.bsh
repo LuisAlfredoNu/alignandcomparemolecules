@@ -36,37 +36,33 @@ extract_Freq_from_log(){
 }
 extract_result_align(){
 	file_alignOutput=$1
-	if (( $(cat $file_alignOutput|wc -l) > 13  )); then
-		awk '{if(NR==20) print $1}' $file_alignOutput
-	else 
-		awk '{if(NR== 9) print $1}' $file_alignOutput
-	fi
+
+	grep -n "Result" $file_alignOutput | awk '{print $4}'
 }
 manual_result(){
-	file_comparation=$i
+	file_comparation=$1
 	file_manual_comparation="$file_comparation.manual"
 	if [[ -f $file_manual_comparation ]];then
-		manual_result=$(cat $file_manual_comparation)
+		manual_result_out=$(cat $file_manual_comparation)
 	else
 		echo "Without comparation" > $file_manual_comparation
-		manual_result=$(cat $file_manual_comparation)
+		manual_result_out=$(cat $file_manual_comparation)
 	fi
 
 	program_result=$(extract_result_align $file_comparation)
 
-	if [[ $manual_result == $program_result ]];then
+	if [[ $manual_result_out == $program_result ]];then
 
-		echo "\multirow{4}{*}{$manual_result} & \multirow{4}{*}{$program_result}"
+		echo "\multirow{4}{*}{$manual_result_out} & \multirow{4}{*}{$program_result}"
 	else
-		echo "\multirow{4}{*}{\textcolor{Red}{\bf $manual_result}} & \multirow{4}{*}{\textcolor{Red}{\bf $program_result}}"
+		echo "\multirow{4}{*}{\textcolor{Red}{\bf $manual_result_out}} & \multirow{4}{*}{\textcolor{Red}{\bf $program_result}}"
 
 	fi
 }
 
 number_of_comparations=1
 
-echo "\tab[-2cm]" > table_allResult.tex
-
+echo " %%%%%%%%%%%%%%%%%%%%" > table_allResult.tex
 for i in $(ls *.alignOutput)
 do
 

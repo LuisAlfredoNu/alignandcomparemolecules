@@ -60,7 +60,7 @@ void OutputAlignProgram::displayResult(string result){
 	scrut.SetScrGreenBoldFont();
 	cout << " Result: "; 
 	scrut.SetScrNormalFont();
-	cout << result << endl;
+	cout << " " << result << endl;
 }
 /***************************************************************************************/ 
 bool OutputAlignProgram::saveXYZFile(string filename,string commnet, vector<Atom> molecule){

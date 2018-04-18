@@ -1,190 +1,196 @@
 #!/bin/bash
 
+##############################################
+find_line_inertia_tensor(){
+	name_file_tensor=$1
+	grep -n "Inertia Tensor" $name_file_tensor | head -n 1 | sed 's;\([0-9]\):\(.*\);\1;'
+}
+##############################################
+find_line_EingenVectors(){
+	name_file_tensor=$1
+	grep -n "EingenVectors" $name_file_tensor | head -n 1 | sed 's;\([0-9]\):\(.*\);\1;'
+}
+##############################################
+find_line_EingenValues(){
+	name_file_tensor=$1
+	grep -n "EingenValues" $name_file_tensor | head -n 1 | sed 's;\([0-9]\):\(.*\);\1;'
+}
+##############################################
+find_result(){
+	name_file_result=$1
+	grep -n "Result" $name_file_result | awk '{print $4}'
+}
+##############################################
+matrix3x1(){
 
-beg_tabular="\begin{tabular}{|c c c|}"
-end_tabular="\end{tabular}"
+	name_file_matrix=$1
+	initial_line_matrix=$2
+	molecule_label_matrix=$3
 
-number_of_comparation=1
+	echo "\begin{tabular}{|c c c|}"
+	
+	if [ $molecule_label_matrix == "A" ]
+	then
+	cat $name_file_matrix | head -n $(( initial_line_matrix+1 )) | tail -n 1 | awk '{print $2 "\t & \t" $3 "\t & \t" $4 "\t \\\\"}'
+	elif [ $molecule_label_matrix == "B" ]
+	then
+	cat $name_file_matrix | head -n $(( initial_line_matrix+1 )) | tail -n 1 | awk '{print $7 "\t & \t" $8 "\t & \t" $9 "\t \\\\"}'
+	fi
 
+	echo "\end{tabular}"
+}
+##############################################
+matrix3x3(){
+
+	name_file_matrix=$1
+	initial_line_matrix=$2
+	molecule_label_matrix=$3
+
+	echo "\begin{tabular}{|c c c|}"
+	
+	if [ $molecule_label_matrix == "A" ]
+	then
+	cat $name_file_matrix | head -n $(( initial_line_matrix+3 )) | tail -n 3 | head -n 2 | awk '{print $2 "\t & \t" $3 "\t & \t" $4 "\t \\\\"}'
+	cat $name_file_matrix | head -n $(( initial_line_matrix+3 )) | tail -n 1 | awk '{print $2 "\t & \t" $3 "\t & \t" $4 }'
+	elif [ $molecule_label_matrix == "B" ]
+	then
+	cat $name_file_matrix | head -n $(( initial_line_matrix+3 )) | tail -n 3 | head -n 2 | awk '{print $7 "\t & \t" $8 "\t & \t" $9 "\t \\\\"}'
+	cat $name_file_matrix | head -n $(( initial_line_matrix+3 )) | tail -n 1 | awk '{print $7 "\t & \t" $8 "\t & \t" $9 }'
+	fi
+
+	echo "\end{tabular}"
+}
+##############################################
+latex_title(){
+name_file_latex=$1
+number_of_comparation=$2
+
+tmptitle=${name_file_latex%*_folder*}
+title=${tmptitle#comparations_*}
+
+cat << LATEX_TITLE
+
+\vtab[-2cm]
+\begin{center}
+{\large $title \tab Número $number_of_comparation}
+\end{center}
+\begin{multicols}{2}
+\begin{center}
+LATEX_TITLE
+
+}
+##############################################
+latex_molecule_matrix(){
+
+name_file_molecule=$1
+molecule_label=$2
+
+file_name_base=${name_file_molecule#*folder_*}
+if [ $molecule_label == "A" ]
+then
+	tmpname=${file_name_base%*-with-*}
+	name_molecule=$(echo ${tmpname#comparation_*}|sed 's/\_/\\\_/g')
+	image_molecule="${tmpname#comparation_*}.png"
+elif [ $molecule_label == "B" ]
+then
+	tmpname=${file_name_base#*-with-*}
+	name_molecule=$(echo ${tmpname%.alignOutput}|sed 's/\_/\\\_/g')
+	image_molecule=${tmpname%.alignOutput}.png
+fi
+
+cat << LATEX_MOLECULE_01
+
+Molecule $molecule_label \\\\ 
+$name_molecule
+\includegraphics[width=8cm]{Images/ImagesFromVMD/$image_molecule}
+\\\\
+Inertia Tensor - Molecule $molecule_label \\\\
+\vtab
+
+LATEX_MOLECULE_01
+matrix3x3 $name_file_molecule $(find_line_inertia_tensor $name_file_molecule) $molecule_label
+cat << LATEX_MOLECULE_02
+
+\vtab
+ EingenVectors - Molecule $molecule_label     \\\\
+\vtab
+LATEX_MOLECULE_02
+matrix3x3 $name_file_molecule $(find_line_EingenVectors $name_file_molecule) $molecule_label
+cat << LATEX_MOLECULE_03
+
+\vtab
+ EingenValues - Molecule $molecule_label     \\\\
+\vtab
+LATEX_MOLECULE_03
+matrix3x1 $name_file_molecule $(find_line_EingenValues $name_file_molecule) $molecule_label
+}
+##############################################
+latex_molecule_different(){
+
+name_file_molecule=$1
+molecule_label=$2
+
+file_name_base=${name_file_molecule#*folder_*}
+if [ $molecule_label == "A" ]
+then
+	tmpname=${file_name_base%*-with-*}
+	name_molecule=$(echo ${tmpname#comparation_*}|sed 's/\_/\\\_/g')
+	image_molecule="${tmpname#comparation_*}.png"
+elif [ $molecule_label == "B" ]
+then
+	tmpname=${file_name_base#*-with-*}
+	name_molecule=$(echo ${tmpname%.alignOutput}|sed 's/\_/\\\_/g')
+	image_molecule=${tmpname%.alignOutput}.png
+fi
+
+cat << LATEX_MOLECULE_01
+Molecule $molecule_label \\\\ 
+$name_molecule
+\includegraphics[width=8cm]{Images/ImagesFromVMD/$image_molecule}
+\\\\
+\vtab
+
+LATEX_MOLECULE_01
+}
+##############################################
+latex_tail(){
+cat << LATEX_TAIL
+
+\end{center}
+\end{multicols}
+\begin{center}
+\vtab
+\vtab
+\textcolor{NavyBlue}{\Large $(find_result $1)}
+\end{center}
+
+LATEX_TAIL
+}
+##############################################
+# Corpus script
+##############################################
+
+number_of_comparation=1 
 for i in $(ls *.alignOutput)
 do
-	if (( $(cat $i|wc -l) > 11  ))
-	then
-		line_count_firts_part=0
-		while read line
-		do
-			if (( $line_count_firts_part == 7 ))
-			then
-			tmptitle=${i%*_folder*} 
-			title=${tmptitle#comparations_*}
-			file_name_base=${i#*folder_*}
-			echo
-			echo "\vtab[-2cm]"
-			echo "\begin{center}"
-			echo "{\large $title \tab Número $number_of_comparation}"
-			echo "\end{center}"
-			echo "\begin{multicols}{2}"
-			echo "\begin{center}"
-			echo "Molecule A \\\\ "
-			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparation_*}|sed 's/\_/\\\_/g' 
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparation_*}.png}"
-			echo "\\\\"
-			echo "Inertia Tensor - Molecule A \\\\"
-			echo "\vtab"
-			echo "$beg_tabular"
-			fi
-			
-			if ((7<$line_count_firts_part && $line_count_firts_part < 10 ))
-			then
-			echo $line  | awk '{print $2 "\t & \t" $3 "\t & \t" $4 "\t \\\\"}'
-			fi
-			if (( $line_count_firts_part == 10 ))
-			then
-			echo $line  | awk '{print $2 "\t & \t" $3 "\t & \t" $4}'
-			echo "$end_tabular"
-			echo
-			echo "\vtab"
-			echo " EingenVectors - Molecule A     \\\\"
-			echo "\vtab"
-			echo "$beg_tabular"
-			fi
-		
-			if ((12<$line_count_firts_part && $line_count_firts_part < 15 ))
-			then
-			echo $line  | awk '{print $2 "\t & \t" $3 "\t & \t" $4 "\t \\\\"}'
-			fi
-			if (( $line_count_firts_part == 15 ))
-			then
-			echo $line  | awk '{print $2 "\t & \t" $3 "\t & \t" $4}'
-			echo "$end_tabular"
-			echo
-			echo "\vtab"
-			echo " EingenValues - Molecule A     \\\\"
-			echo "\vtab"
-			echo "$beg_tabular"
-			fi
-			
-			if (( $line_count_firts_part == 18 ))
-			then
-			echo $line  | awk '{print $2 "\t & \t" $3 "\t & \t" $4}'
-			echo "$end_tabular"
-			echo "\\columnbreak"
-			fi
-		
-			line_count_firts_part=$((line_count_firts_part+1))
-		done < $i  # Finish the first while
-		
-		line_count_second_part=0
-		while read line
-		do
-			if (( $line_count_second_part == 7 ))
-			then
-			echo
-			echo "Molecule B \\\\ "
-			file_name_base=${i#*folder_*}
-			tmpname=${file_name_base#*-with-*}; echo ${tmpname%.alignOutput}|sed 's/\_/\\\_/g'
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname%.alignOutput}.png}"
-			echo "\\\\"
-			echo "Inertia Tensor - Molecule B \\\\"
-			echo "\vtab"
-			echo "$beg_tabular"
-			fi
-			
-			if ((7<$line_count_second_part && $line_count_second_part < 10 ))
-			then
-			echo $line  | awk '{print $7 "\t & \t" $8 "\t & \t" $9 "\t \\\\"}'
-			fi
-			if (( $line_count_second_part == 10 ))
-			then
-			echo $line  | awk '{print $7 "\t & \t" $8 "\t & \t" $9}'
-			echo "$end_tabular"
-			echo
-			echo "\vtab"
-			echo " EingenVectors - Molecule B     \\\\"
-			echo "\vtab"
-			echo "$beg_tabular"
-			fi
-		
-			if ((12<$line_count_second_part && $line_count_second_part < 15 ))
-			then
-			echo $line  | awk '{print $7 "\t & \t" $8 "\t & \t" $9 "\t \\\\"}'
-			fi
-			if (( $line_count_second_part == 15 ))
-			then
-			echo $line  | awk '{print $7 "\t & \t" $8 "\t & \t" $9}'
-			echo "$end_tabular"
-			echo
-			echo "\vtab"
-			echo " EingenValues - Molecule B     \\\\"
-			echo "\vtab"
-			echo "$beg_tabular"
-			fi
-			
-			if (( $line_count_second_part == 18 ))
-			then
-			echo $line  | awk '{print $7 "\t & \t" $8 "\t & \t" $9}'
-			echo "$end_tabular"
-			fi
-		
-			if (( $line_count_second_part == 19))
-			then
-			echo
-			echo "\end{center}"
-			echo "\end{multicols}"
-			echo "\begin{center}"
-			echo "\vtab"
-			echo "\vtab"
-			echo "\textcolor{NavyBlue}{\Large $line}"
-			echo "\end{center}"
-			fi
-		
-			line_count_second_part=$((line_count_second_part+1))
-		done < $i #End the second while
-	elif (( $(cat $i | wc -l) == 11  ))
-	then 
-		line_count_when_are_total_different=0
-		while read line
-		do
-			if (( $line_count_when_are_total_different == 7 ))
-			then
-			tmptitle=${i%*_folder*} 
-			title=${tmptitle#comparations_*}
-			file_name_base=${i#*folder_*}
-			echo "{\Large $title \tab Número $number_of_comparation}"
-			echo "\begin{multicols}{2}"
-			echo "\begin{center}"
-			echo "Molecule A \\\\ "
-			tmpname=${file_name_base%*-with-*}; echo ${tmpname#comparation_*}|sed 's/\_/\\\_/g' 
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname#comparation_*}.png}"
-			echo "\vtab"
-			echo
-			echo "\\columnbreak"
-			echo
-			echo "Molecule B \\\\ "
-			tmpname=${file_name_base#*-with-*}; echo ${tmpname%.alignOutput}|sed 's/\_/\\\_/g'
-			echo "\includegraphics[width=8cm]{Images/ImagesFromVMD/${tmpname%.alignOutput}.png}"
-			echo "\vtab"
-			fi
-			
-			if (( $line_count_when_are_total_different == 8 ))
-			then
-			echo "\end{center}"
-			echo "\end{multicols}"
-			echo "\begin{center}"
-			echo "\vtab"
-			echo "\vtab"
-			echo "\textcolor{NavyBlue}{\large $line}"
-			echo "\end{center}"
-			fi
+	name_file_corpus=$i
+	result=$(find_result $name_file_corpus)
 
-			line_count_when_are_total_different=$((line_count_when_are_total_different+1))
-		done < $i #End the second while
+	if [ ! $result == "Different" ]
+	then 
+		latex_title $name_file_corpus $number_of_comparation
+		latex_molecule_matrix $name_file_corpus "A"
+		echo "\\columnbreak"
+		latex_molecule_matrix $name_file_corpus "B"
+		latex_tail $name_file_corpus
+	else
+		latex_title $name_file_corpus $number_of_comparation
+		latex_molecule_different $name_file_corpus "A"
+		echo "\\columnbreak"
+		latex_molecule_different $name_file_corpus "B"
+		latex_tail $name_file_corpus
 	
 	fi
-	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-	echo "\newpage"
-	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+	echo " \newpage"
 	number_of_comparation=$((number_of_comparation+1))
 done
