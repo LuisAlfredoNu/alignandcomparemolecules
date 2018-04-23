@@ -134,6 +134,8 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 
 	int swaps = 1;
 	int gap = molecule.size();
+	double epsilonZ = 0.001;
+	double epsilonY = 0.00001;
 	int sizemolecule = molecule.size();
 
 	while(!(swaps == 0 && gap ==1)){
@@ -146,8 +148,8 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 
 		int i=0; swaps=0;
 		while(i + gap < sizemolecule){
-			//Sorting by X
-			if(molecule[i].atomCoordinates[2] > molecule[i+gap].atomCoordinates[2]){
+			//Sorting by Z
+			if((molecule[i].atomCoordinates[2] > molecule[i+gap].atomCoordinates[2]) && (abs(molecule[i].atomCoordinates[2] - molecule[i+gap].atomCoordinates[2]) > epsilonZ)){
 
 				atom4swap_tmp = molecule[i];
 				molecule[i] = molecule[i+gap];
@@ -156,8 +158,8 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 				swaps += 1; 
 			}else{
 				//Sorting by Y
-				if(molecule[i].atomCoordinates[2] == molecule[i+gap].atomCoordinates[2]){
-					if(molecule[i].atomCoordinates[1] > molecule[i+gap].atomCoordinates[1]){
+				if(abs(molecule[i].atomCoordinates[2] - molecule[i+gap].atomCoordinates[2]) < epsilonZ ){
+					if(molecule[i].atomCoordinates[1] > molecule[i+gap].atomCoordinates[1] && (abs(molecule[i].atomCoordinates[1] - molecule[i+gap].atomCoordinates[1]) > epsilonY)){
 
 						atom4swap_tmp = molecule[i];
 						molecule[i] = molecule[i+gap];
@@ -165,9 +167,9 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 
 						swaps += 1; 
 					}else{
-						// Sorting by Z
-						if(molecule[i].atomCoordinates[1] == molecule[i+gap].atomCoordinates[1]){
-							if(molecule[i].atomCoordinates[0] > molecule[i+gap].atomCoordinates[0]){
+						// Sorting by X
+						if(abs(molecule[i].atomCoordinates[1] - molecule[i+gap].atomCoordinates[1]) < epsilonY){
+							if(molecule[i].atomCoordinates[0] > molecule[i+gap].atomCoordinates[0] ){
 
 								atom4swap_tmp = molecule[i];
 								molecule[i] = molecule[i+gap];
@@ -181,7 +183,31 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 			}
 			i += 1;
 		}
-	}
+	}/*
+	swaps = 1;
+	gap = 4;
+	while(!(swaps == 0 && gap ==1)){
+		if(gap > 1){
+			gap /= 1.3;
+			if (gap ==10 || gap == 9){
+				gap = 11;
+			}
+		}
+
+		int i=0; swaps=0;
+		while(i + gap < sizemolecule){
+			//Sorting by Z
+			if(molecule[i].atomCoordinates[2] > molecule[i+gap].atomCoordinates[2]){
+
+				atom4swap_tmp = molecule[i];
+				molecule[i] = molecule[i+gap];
+				molecule[i+gap] = atom4swap_tmp;
+
+				swaps += 1; 
+			}
+			i += 1;
+		}
+	}*/
 }
 /***************************************************************************************/ 
 /***************************************************************************************/ 
