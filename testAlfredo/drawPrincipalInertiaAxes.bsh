@@ -45,6 +45,9 @@ vector_1B=$(echo $all_vectors | awk '{print $10" "$11" "$12}')
 vector_2B=$(echo $all_vectors | awk '{print $13" "$14" "$15}')
 vector_3B=$(echo $all_vectors | awk '{print $16" "$17" "$18}')
 
+result=$(echo $all_vectors | awk '{print $19}')
+
+
 cat << END_VMD_SCRIPT
 #!/usr/local/bin/vmd
 # VMD script written by save_state \$Revision: 1.47 $
@@ -64,6 +67,7 @@ display aodirect 0.300000
 display dof off
 display dof_fnumber 64.000000
 display dof_focaldist 0.700000
+draw text {5 0 0} "$result"
 mol new $file_name_molecule_A_aling type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
 mol delrep 0 top
 mol representation CPK 1.000000 0.400000 150.000000 150.000000
@@ -128,6 +132,8 @@ get_data_from_output_align(){
 	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $8}' $file_output | tr "\n" " ")
 	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $9}' $file_output | tr "\n" " ")
 
+	vector1+=$(grep -n "Result" $file_output | awk '{print $4}')
+
 	echo $vector1
 	rm $file_output
 
@@ -155,6 +161,4 @@ start_or_end=$3
 
 vectors=$(get_data_from_output_align $file_name_xyz_molecule_A $file_name_xyz_molecule_B $start_or_end)
 print_vmd_script $file_name_xyz_molecule_A $file_name_xyz_molecule_B "$vectors" $start_or_end > test_eignevec.vmd 
-
-echo
 	
