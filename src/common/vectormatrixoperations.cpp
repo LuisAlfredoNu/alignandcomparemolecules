@@ -13,6 +13,8 @@ using std::vector;
 #include <iomanip>
 using std::setw;
 #include <math.h>
+#include <cmath>
+using std::abs;
 #define PI 	3.141592653589793
 /***************************************************************************************/ 
 #include"eig2-4.h"
@@ -187,7 +189,6 @@ bool VectorAndMatrixOperations::compareCoordinates(vector<Atom> molecule_A, vect
 		if(abs(molecule_A[i].atomCoordinates[0] - molecule_B[i].atomCoordinates[0]) > 0.001) is_equal = false;
 		if(abs(molecule_A[i].atomCoordinates[1] - molecule_B[i].atomCoordinates[1]) > 0.001) is_equal = false;
 		if(abs(molecule_A[i].atomCoordinates[2] - molecule_B[i].atomCoordinates[2]) > 0.001) is_equal = false;
-
 		i++;
 	}
 
