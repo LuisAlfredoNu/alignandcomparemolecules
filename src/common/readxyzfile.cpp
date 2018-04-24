@@ -11,6 +11,8 @@ using std::ios;
 using std::vector;
 #include <string>
 using std::string;
+#include <cmath>
+using std::abs;
 /***************************************************************************************/ 
 #include "readxyzfile.h"
 /***************************************************************************************/  
@@ -129,14 +131,57 @@ bool ReadXYZFile::statusAllData(vector<Atom> molecule){
 /***************************************************************************************/ 
 void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 
+	// Select witch axe sort firts 
+	int sizemolecule = molecule.size();
+	vector<double> max_r (3,0.0);
+	vector<double> min_r (3,0.0);
+
+	for(int i = 0;i < sizemolecule;i++){	
+		if(max_r[0] < molecule[i].atomCoordinates[0]) max_r[0] = molecule[i].atomCoordinates[0];
+		if(max_r[1] < molecule[i].atomCoordinates[1]) max_r[1] = molecule[i].atomCoordinates[1];
+		if(max_r[2] < molecule[i].atomCoordinates[2]) max_r[2] = molecule[i].atomCoordinates[2];
+		                                                     
+		if(min_r[0] > molecule[i].atomCoordinates[0]) min_r[0] = molecule[i].atomCoordinates[0];
+		if(min_r[1] > molecule[i].atomCoordinates[1]) min_r[1] = molecule[i].atomCoordinates[1];
+		if(min_r[2] > molecule[i].atomCoordinates[2]) min_r[2] = molecule[i].atomCoordinates[2];
+	}
+
+	vector<double> range_r (3,0.0);
+	for(int i = 0;i<3;i++) range_r[i] = max_r[i] - min_r[i];
+
+	vector<int> order2compare (3,0);
+	double max = range_r[0], min = range_r[0];
+
+	for(int i = 0;i<3;i++){
+		if(max < range_r[i]){
+			max = range_r[i];
+			order2compare[0] = i;
+		}
+		if(min > range_r[i]){
+			min = range_r[i];
+			order2compare[2] = i;
+		}
+	}
+	for(int i = 0;i<3;i++){
+		if(max > range_r[i] && range_r[i] > min)
+			order2compare[1] = i;
+	}
+/*
+	cout << "Order of range " << endl;
+	cout << " range 0 = "<< range_r[0] ; 
+	cout << " range 1 = "<< range_r[1] ; 
+	cout << " range 2 = "<< range_r[2] << endl ;
+	cout << " order 0 = "<< order2compare[0];
+	cout << " order 1 = "<< order2compare[1];
+	cout << " order 2 = "<< order2compare[2] << endl;
+*/
 	// Here I adapt the Comb sort algorithm from Wikipedia  
 	Atom atom4swap_tmp;
 
 	int swaps = 1;
 	int gap = molecule.size();
-	double epsilonZ = 0.001;
-	double epsilonY = 0.00001;
-	int sizemolecule = molecule.size();
+	double epsilonZ = 0.0001;
+	double epsilonY = 0.0001;
 
 	while(!(swaps == 0 && gap ==1)){
 		if(gap > 1){
@@ -148,8 +193,9 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 
 		int i=0; swaps=0;
 		while(i + gap < sizemolecule){
+
 			//Sorting by Z
-			if((molecule[i].atomCoordinates[2] > molecule[i+gap].atomCoordinates[2]) && (abs(molecule[i].atomCoordinates[2] - molecule[i+gap].atomCoordinates[2]) > epsilonZ)){
+			if((molecule[i].atomCoordinates[order2compare[0]] > molecule[i+gap].atomCoordinates[order2compare[0]]) && (abs(molecule[i].atomCoordinates[order2compare[0]] - molecule[i+gap].atomCoordinates[order2compare[0]]) > epsilonZ)){
 
 				atom4swap_tmp = molecule[i];
 				molecule[i] = molecule[i+gap];
@@ -158,8 +204,8 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 				swaps += 1; 
 			}else{
 				//Sorting by Y
-				if(abs(molecule[i].atomCoordinates[2] - molecule[i+gap].atomCoordinates[2]) < epsilonZ ){
-					if(molecule[i].atomCoordinates[1] > molecule[i+gap].atomCoordinates[1] && (abs(molecule[i].atomCoordinates[1] - molecule[i+gap].atomCoordinates[1]) > epsilonY)){
+				if(abs(molecule[i].atomCoordinates[order2compare[0]] - molecule[i+gap].atomCoordinates[order2compare[0]]) < epsilonZ ){
+					if(molecule[i].atomCoordinates[order2compare[1]] > molecule[i+gap].atomCoordinates[order2compare[1]] && (abs(molecule[i].atomCoordinates[order2compare[1]] - molecule[i+gap].atomCoordinates[order2compare[1]]) > epsilonY)){
 
 						atom4swap_tmp = molecule[i];
 						molecule[i] = molecule[i+gap];
@@ -168,8 +214,8 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 						swaps += 1; 
 					}else{
 						// Sorting by X
-						if(abs(molecule[i].atomCoordinates[1] - molecule[i+gap].atomCoordinates[1]) < epsilonY){
-							if(molecule[i].atomCoordinates[0] > molecule[i+gap].atomCoordinates[0] ){
+						if(abs(molecule[i].atomCoordinates[order2compare[1]] - molecule[i+gap].atomCoordinates[order2compare[1]]) < epsilonY){
+							if(molecule[i].atomCoordinates[order2compare[2]] > molecule[i+gap].atomCoordinates[order2compare[2]] ){
 
 								atom4swap_tmp = molecule[i];
 								molecule[i] = molecule[i+gap];
@@ -183,31 +229,7 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 			}
 			i += 1;
 		}
-	}/*
-	swaps = 1;
-	gap = 4;
-	while(!(swaps == 0 && gap ==1)){
-		if(gap > 1){
-			gap /= 1.3;
-			if (gap ==10 || gap == 9){
-				gap = 11;
-			}
-		}
-
-		int i=0; swaps=0;
-		while(i + gap < sizemolecule){
-			//Sorting by Z
-			if(molecule[i].atomCoordinates[2] > molecule[i+gap].atomCoordinates[2]){
-
-				atom4swap_tmp = molecule[i];
-				molecule[i] = molecule[i+gap];
-				molecule[i+gap] = atom4swap_tmp;
-
-				swaps += 1; 
-			}
-			i += 1;
-		}
-	}*/
+	}
 }
 /***************************************************************************************/ 
 /***************************************************************************************/ 
