@@ -53,10 +53,37 @@ manual_result(){
 
 	if [[ $manual_result_out == $program_result ]];then
 
-		echo "\multirow{4}{*}{$manual_result_out} & \multirow{4}{*}{$program_result}"
+		echo "\multirow{3}{*}{$manual_result_out} & \multirow{3}{*}{$program_result}"
 	else
-		echo "\multirow{4}{*}{\textcolor{Red}{\bf $manual_result_out}} & \multirow{4}{*}{\textcolor{Red}{\bf $program_result}}"
+		echo "\multirow{3}{*}{\textcolor{Red}{\bf $manual_result_out}} & \multirow{3}{*}{\textcolor{Red}{\bf $program_result}}"
 
+	fi
+}
+extract_rms_align(){
+	file_alignOutput=$1
+
+	program_result=$(extract_result_align $file_alignOutput)
+	values_rms=$(grep -n "RMS" $file_alignOutput | awk '{print $3}'| sed 's/e/E/')
+	
+	if [[ $program_result == "Equal" ]] 
+	then	
+		if (( $(echo $values_rms'>'0.001 | bc -l) )) 
+		then 
+			echo "{\textcolor{Red}{ RMS = $values_rms}}}"
+		elif (( $(echo $values_rms'<'0.001 | bc -l) ))
+		then 
+			echo "{ RMS = $values_rms}}"
+		fi
+	
+	elif [[ $program_result == "Stereoisomer" ]]
+	then 
+		if (( $(echo $values_rms'>'0.001 | bc -l) ))
+		then echo " {RMS = $values_rms}}"
+		elif (( $(echo $values_rms'<'0.001 | bc -l) ))
+		then echo "{\textcolor{Red}{ RMS = $values_rms}}}"
+		fi
+	else
+		echo " {RMS = $values_rms}}"
 	fi
 }
 
@@ -75,8 +102,10 @@ echo "\multirow{4}{*}{\tab[2mm] $number_of_comparations \tab[2mm]} & $(get_name_
 echo $(manual_result $i) >> table_allResult.tex
 echo "\\\\" >> table_allResult.tex
 echo "& E = $(extract_SCF_from_log $(get_path_1 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_1 $i))   &    &  \\\\ \cline{2-2}">> table_allResult.tex
-echo "& $(get_name_2 $i)   &    &    \\\\">> table_allResult.tex
-echo "& E = $(extract_SCF_from_log $(get_path_2 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_2 $i))   &    &  \\\\ \hline">> table_allResult.tex
+echo "& $(get_name_2 $i)   & \multicolumn{2}{c}{\multirow{3}{*}" >> table_allResult.tex
+extract_rms_align $i >> table_allResult.tex     
+echo "\\\\">> table_allResult.tex
+echo "& E = $(extract_SCF_from_log $(get_path_2 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_2 $i))   &    \multicolumn{2}{c}{}  \\\\ \hline">> table_allResult.tex
 
 if (( number_of_comparations%6==0 ));then
 echo "\end{tabular}" >> table_allResult.tex
