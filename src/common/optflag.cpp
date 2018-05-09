@@ -19,6 +19,7 @@ OptFlags::OptFlags()	{
 	vector_increase_length = 0.0;
 	display_output_coordenates =false;
 	save_output_coordenates = false;
+	display_rms = false;
 };
 /***************************************************************************************/ 
 void OptFlags::getOptions(int &argc, char** &argv){
@@ -48,6 +49,9 @@ void OptFlags::getOptions(int &argc, char** &argv){
 				case 's':
 					save_output_coordenates = true;
 					break;
+				case 'r':
+					display_rms = true;
+					break;
 				case 'h':
 					printHelpMenu(argc,argv);
 					exit(1);
@@ -73,7 +77,8 @@ void OptFlags::printHelpMenu(int &argc, char** &argv){
 		  << "            \t  and eigenvalues of inertia tensor." << endl
         << "  -l n      \tDisplay on screen the coordinates of eigenvector with n increase of them length " << endl
         << "  -c        \tDisplay on screen the coordinates of atoms after all procces " << endl
-        << "  -s        \tSave the coordinates of atoms after all procces in XYZ file with *_align.xyz terminataion " << endl;
+        << "  -s        \tSave the coordinates of atoms after all procces in XYZ file with *_align.xyz terminataion " << endl
+        << "  -r        \tDisplay on screen the RMS of the comparation of both molecules " << endl;
    cout << "  -h        \tDisplay the help menu.\n\n";
 }
 

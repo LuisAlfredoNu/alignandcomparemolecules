@@ -183,6 +183,10 @@ int main (int argc, char *argv[]) {
 					output.displayDualMatrix(title,new_eigvectors_molecule_A,new_eigvectors_molecule_B);
 				}
 
+				if(optflags.display_rms)
+					cout << "RMS = " << matrixOP.RMS4Comparations(molecule_A_align,molecule_B_align) << endl;
+				
+
 				if(optflags.display_output_coordenates){
 					output.display_booth_XYZFile(filename_molecule_A,filename_molecule_B,molecule_A_align,molecule_B_align);
 				

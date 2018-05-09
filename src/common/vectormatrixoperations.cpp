@@ -432,6 +432,23 @@ vector<vector<double>> VectorAndMatrixOperations::incrementLengthVector(double n
 	return new_coordinates;
 }
 /***************************************************************************************/  
+double VectorAndMatrixOperations::RMS4Comparations(vector<Atom> molecule_A, vector<Atom> molecule_B){
+	
+	double rms_comparative = 0.0;
+	int Natoms = molecule_A.size();
+
+	for(int i = 0; i < Natoms; i++){
+		for(int xyz = 0; xyz < 3; xyz++){
+
+			rms_comparative = (molecule_A[i].atomCoordinates[xyz] - molecule_B[i].atomCoordinates[xyz]) * (molecule_A[i].atomCoordinates[xyz] - molecule_B[i].atomCoordinates[xyz]);
+		}
+	}
+	rms_comparative /= (double)Natoms;
+	rms_comparative = sqrt(rms_comparative);
+
+	return rms_comparative;
+}
+/***************************************************************************************/  
 /***************************************************************************************/  
 /***************************************************************************************/  
 double VectorAndMatrixOperations::dotProduct(vector<double> vectorA, vector<double> vectorB){
