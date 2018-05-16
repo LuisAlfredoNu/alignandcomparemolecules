@@ -32,13 +32,14 @@ int main (int argc, char *argv[]) {
 	vector<Atom> molecule_B;
 
 	ReadXYZFile reader;
+	MolecularOperations molecularOP;
+	VectorAndMatrixOperations matrixOP;
 
 	bool statusAllData_molecule_A = reader.getValuesFromFile(filename_molecule_A,molecule_A);
 	bool statusAllData_molecule_B = reader.getValuesFromFile(filename_molecule_B,molecule_B);
 
 	if(statusAllData_molecule_A && statusAllData_molecule_B){
 
-		MolecularOperations molecularOP;
 
 		if(molecularOP.haveSameTypeNumAtoms(molecule_A,molecule_B)){
 
@@ -59,7 +60,6 @@ int main (int argc, char *argv[]) {
 			vector<vector<double>> eigvectors_molecule_B(3,vector<double>(3,0.0));
 			vector<double> eigvalues_molecule_B(3,0.0);
 
-			VectorAndMatrixOperations matrixOP;
 
 			matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
 			matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
@@ -199,11 +199,15 @@ int main (int argc, char *argv[]) {
 			}else{
 				string result = "Different ";
 				output.displayResult(result);
+				if(optflags.display_rms)
+					cout << "RMS = " << matrixOP.RMS4Comparations(molecule_A_inCM,molecule_B_inCM) << endl;
 				return EXIT_SUCCESS;
 			}
 		}else{
 			string result = "Different ";
 			output.displayResult(result);
+				if(optflags.display_rms)
+					cout << "RMS = " << matrixOP.RMS4Comparations(molecule_A,molecule_B) << endl;
 			return EXIT_SUCCESS;
 		}
 	}else{
