@@ -130,6 +130,7 @@ latex_molecule_different(){
 name_file_molecule=$1
 molecule_label=$2
 
+
 file_name_base=${name_file_molecule#*folder_*}
 if [ $molecule_label == "A" ]
 then
@@ -143,6 +144,11 @@ then
 	image_molecule=${tmpname%.alignOutput}.png
 fi
 
+if grep -q "Inertia Tensor" $name_file_molecule
+then	
+	latex_molecule_matrix $name_file_molecule $molecule_label
+else
+
 cat << LATEX_MOLECULE_01
 Molecule $molecule_label \\\\ 
 $name_molecule
@@ -151,6 +157,7 @@ $name_molecule
 \vtab
 
 LATEX_MOLECULE_01
+fi
 }
 ##############################################
 latex_tail(){

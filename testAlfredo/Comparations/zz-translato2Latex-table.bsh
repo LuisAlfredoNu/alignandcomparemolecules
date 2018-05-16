@@ -28,11 +28,21 @@ get_path_2(){
 }
 extract_SCF_from_log(){
 	file_log=$1
-	grep -n "SCF Done:" $file_log |tail -n 1 | awk '{print $6}'
+	if [[ -f $file_log ]]
+	then
+		grep -n "SCF Done:" $file_log |tail -n 1 | awk '{print $6}'
+	else
+		echo No Data
+	fi
 }
 extract_Freq_from_log(){
 	file_log=$1
-	grep -n "Frequencies --" $file_log | head -n 1| awk '{print $4}'
+	if [[ -f $file_log ]]
+	then
+		grep -n "Frequencies --" $file_log | head -n 1| awk '{print $4}'
+	else
+		echo No Data
+	fi
 }
 extract_result_align(){
 	file_alignOutput=$1
