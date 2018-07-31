@@ -27,7 +27,7 @@ done
 cd Comparations
 ~/Programacion/alignandcomparemolecules/testAlfredo/Comparations/zz-translato2Latex.bsh > allResult.tex
 ~/Programacion/alignandcomparemolecules/testAlfredo/Comparations/zz-translato2Latex-table.bsh
-cp *.tex ~/Documentos/reportprofes/.
-mkdir -p ~/Documentos/reportprofes/Images/ImagesFromVMD/.
-cp ImagesFromVMD/*  ~/Documentos/reportprofes/Images/ImagesFromVMD/.
+cp *.tex ~/Documentos/Tesis/reportprofes/.
+mkdir -p ~/Documentos/Tesis/reportprofes/Images/ImagesFromVMD/.
+cp ImagesFromVMD/*  ~/Documentos/Tesis/reportprofes/Images/ImagesFromVMD/.
 
