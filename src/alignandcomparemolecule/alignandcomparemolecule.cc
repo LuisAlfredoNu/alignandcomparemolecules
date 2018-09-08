@@ -117,6 +117,17 @@ int main (int argc, char *argv[]) {
 								angles[2] = 90.0;
 
 								molecule_B_align_second_rotation = matrixOP.rotateMolecule(angles,molecule_B_align_second_rotation);
+/*************************************************************************************** 
+								string tmp_filename_molcule_B = filename_molecule_B.substr(0,(filename_molecule_B.size()-4));
+								tmp_filename_molcule_B += "_X_";
+								tmp_filename_molcule_B += std::to_string(i*90);
+								tmp_filename_molcule_B += "_Y_";
+								tmp_filename_molcule_B += std::to_string(j*90);
+								tmp_filename_molcule_B += "_Z_";
+								tmp_filename_molcule_B += std::to_string(k*90);
+								tmp_filename_molcule_B += ".xyz";
+								output.saveXYZFile(tmp_filename_molcule_B,"Molecule B",molecule_B_align_second_rotation);
+/***************************************************************************************/ 
 							}
 							angles[0] = 0.0;
 							angles[1] = 90.0;
