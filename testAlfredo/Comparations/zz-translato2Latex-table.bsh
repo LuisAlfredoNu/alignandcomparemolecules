@@ -103,7 +103,9 @@ echo " %%%%%%%%%%%%%%%%%%%%" > table_allResult.tex
 for i in $(ls *.alignOutput)
 do
 
-if (( number_of_comparations%6==1 ));then
+if (( number_of_comparations%7==1 ));then
+echo  >> table_allResult.tex
+echo "\vtab[-2cm]" >> table_allResult.tex
 echo "\tab[-2cm]" >> table_allResult.tex
 echo "\begin{tabular}{c|m{8cm}|c|c}" >> table_allResult.tex
 echo "\# & Moléculas & Restultado esperado & Resultado programa \\\\ \hline\hline" >> table_allResult.tex
@@ -117,7 +119,7 @@ extract_rms_align $i >> table_allResult.tex
 echo "\\\\">> table_allResult.tex
 echo "& E = $(extract_SCF_from_log $(get_path_2 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_2 $i))   &    \multicolumn{2}{c}{}  \\\\ \hline">> table_allResult.tex
 
-if (( number_of_comparations%6==0 ));then
+if (( number_of_comparations%7==0 ));then
 echo "\end{tabular}" >> table_allResult.tex
 echo "\newpage" >> table_allResult.tex
 fi
