@@ -102,7 +102,7 @@ cat << LATEX_MOLECULE_01
 
 Molecule $molecule_label \\\\ 
 $name_molecule
-\includegraphics[width=8cm]{Images/ImagesFromVMD/$image_molecule}
+\includegraphics[width=8cm]{../Comparations/ImagesFromVMD/$image_molecule}
 \\\\
 Inertia Tensor - Molecule $molecule_label \\\\
 \vtab
@@ -152,7 +152,7 @@ else
 cat << LATEX_MOLECULE_01
 Molecule $molecule_label \\\\ 
 $name_molecule
-\includegraphics[width=8cm]{Images/ImagesFromVMD/$image_molecule}
+\includegraphics[width=8cm]{../Comparations/ImagesFromVMD/$image_molecule}
 \\\\
 \vtab
 

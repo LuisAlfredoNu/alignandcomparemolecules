@@ -11,7 +11,9 @@ mkdir -p ImagesFromVMD
 for i in $(ls *.xyz)
 do
 	echo "$i" >> tmp_list.tmp
-getPNGofXYZ -b white -x 600 -y 600 $i 
+   if [[ ! -f ${i%.xyz}.png  ]];then
+      getPNGofXYZ -b white -x 600 -y 600 $i 
+   fi
 done
 
 n_comparations=$(cat tmp_list.tmp|wc -l)
