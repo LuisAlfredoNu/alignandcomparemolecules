@@ -7,6 +7,8 @@
 #include <iostream>
 using std::cout;
 using std::endl;
+#include <cstdlib>
+using std::exit;
 #include <iomanip>
 using std::left;
 using std::setw;
@@ -165,7 +167,19 @@ void OutputAlignProgram::displayInertiaTensorEigenVecEigenVal(vector<vector<doub
 	displayDualMatrix(title,eigvalues_molecule_A,eigvalues_molecule_B);
 	scrut.PrintScrStarLine();
 }
+/***************************************************************************************/ 
+void OutputAlignProgram::correctInputData(bool status_data_molecule_A, bool status_data_molecule_B){
 
+   if(!(status_data_molecule_A && status_data_molecule_B)){
+      cout << endl;
+      scrut.PrintScrStarLine();
+      scrut.DisplayErrorMessage(" Problems to read input files ");
+      scrut.PrintScrStarLine();
+      cout << endl;
+
+      exit(EXIT_FAILURE);
+   }
+}
 /***************************************************************************************/ 
 /***************************************************************************************/ 
 #endif // _OUTPUT_CPP_
