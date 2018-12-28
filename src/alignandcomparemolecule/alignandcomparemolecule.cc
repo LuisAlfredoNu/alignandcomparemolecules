@@ -17,8 +17,6 @@ using std::vector;
 
 int main (int argc, char *argv[]) {
 
-	ScreenUtils scrut;
-
 	OptFlags optflags;
 	optflags.getOptions(argc,argv);
 
@@ -62,7 +60,6 @@ int main (int argc, char *argv[]) {
       matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
       matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
 
-      string title;
 
       if(optflags.display_inertia_tensor)
          output.displayInertiaTensorEigenVecEigenVal(inertiatensor_molecula_A,inertiatensor_molecula_B,eigvectors_molecule_A,eigvectors_molecule_B,eigvalues_molecule_A,eigvalues_molecule_B);
@@ -72,6 +69,7 @@ int main (int argc, char *argv[]) {
          vector<vector<double>> new_eigvectors_molecule_A = matrixOP.incrementLengthVector(new_lenght,eigvectors_molecule_A);
          vector<vector<double>> new_eigvectors_molecule_B = matrixOP.incrementLengthVector(new_lenght,eigvectors_molecule_B);
 
+         string title;
          title = "New lenght of EinVec ";
          title += std::to_string(new_lenght);
          output.displayDualMatrix(title,new_eigvectors_molecule_A,new_eigvectors_molecule_B);
@@ -92,59 +90,12 @@ int main (int argc, char *argv[]) {
             string result = "Equal 00 ";
             output.displayResult(result);
          }else{
-
-            vector<double> angles (3,0.0);
-            vector<Atom> molecule_B_align_second_rotation = molecule_B_align;
-            vector<Atom> molecule_B_align_second_rotation_final;
-
-            for(int i=0;i<4;++i){
-
-               for(int j=0;j<4;++j){
-
-                  for(int k=0;k<4;++k){
-
-                     reader.sortingAtoms(molecule_B_align_second_rotation);
-                     if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align_second_rotation)){
-                        molecule_B_align = molecule_B_align_second_rotation;
-                     }
-                     angles[0] = 0.0;
-                     angles[1] = 0.0;
-                     angles[2] = 90.0;
-
-                     molecule_B_align_second_rotation = matrixOP.rotateMolecule(angles,molecule_B_align_second_rotation);
-                     /*************************************************************************************** 
-                       string tmp_filename_molcule_B = filename_molecule_B.substr(0,(filename_molecule_B.size()-4));
-                       tmp_filename_molcule_B += "_X_";
-                       tmp_filename_molcule_B += std::to_string(i*90);
-                       tmp_filename_molcule_B += "_Y_";
-                       tmp_filename_molcule_B += std::to_string(j*90);
-                       tmp_filename_molcule_B += "_Z_";
-                       tmp_filename_molcule_B += std::to_string(k*90);
-                       tmp_filename_molcule_B += ".xyz";
-                       output.saveXYZFile(tmp_filename_molcule_B,"Molecule B",molecule_B_align_second_rotation);
-                     /***************************************************************************************/ 
-                  }
-                  angles[0] = 0.0;
-                  angles[1] = 90.0;
-                  angles[2] = 0.0;
-
-                  molecule_B_align_second_rotation = matrixOP.rotateMolecule(angles,molecule_B_align_second_rotation);
-               }
-               angles[0] = 0.0;
-               angles[1] = 0.0;
-               angles[2] = 90.0;
-
-               molecule_B_align_second_rotation = matrixOP.rotateMolecule(angles,molecule_B_align_second_rotation);
-            }
-
-            reader.sortingAtoms(molecule_A_align);
-            reader.sortingAtoms(molecule_B_align);
-
-            if(matrixOP.compareCoordinates(molecule_A_align,molecule_B_align)){
+            bool find_equal = matrixOP.permutationBequalA(molecule_A_align,molecule_B_align);
+            if(find_equal){
                string result = "Equal 11 ";
                output.displayResult(result);
             }else{
-               string result = "Stereoisomer ";
+               string result = "Enantiomers ";
                output.displayResult(result);
             }
          }
@@ -162,6 +113,7 @@ int main (int argc, char *argv[]) {
             vector<vector<double>> new_eigvectors_molecule_A = matrixOP.incrementLengthVector(new_lenght,eigvectors_molecule_A);
             vector<vector<double>> new_eigvectors_molecule_B = matrixOP.incrementLengthVector(new_lenght,eigvectors_molecule_B);
 
+            string title;
             title = "New lenght of EinVec ";
             title += std::to_string(new_lenght);
             output.displayDualMatrix(title,new_eigvectors_molecule_A,new_eigvectors_molecule_B);
