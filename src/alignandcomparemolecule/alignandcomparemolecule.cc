@@ -24,7 +24,7 @@ int main (int argc, char *argv[]) {
 	string filename_molecule_B = argv[argc-1];
 
 	OutputAlignProgram output;
-	output.displayFilesNames(filename_molecule_A,filename_molecule_B);
+	output.displayFilesNames(optflags.quiet_version,filename_molecule_A,filename_molecule_B);
 
 	vector<Atom> molecule_A;
 	vector<Atom> molecule_B;
@@ -126,7 +126,7 @@ int main (int argc, char *argv[]) {
    }
    if(optflags.display_rms)
       output.displayRMSD(RMSD);
-   output.displayResult(result);
+   output.displayResult(optflags.quiet_version,result);
    return EXIT_SUCCESS;
 }
 

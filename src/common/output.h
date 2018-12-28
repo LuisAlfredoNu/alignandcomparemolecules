@@ -32,8 +32,8 @@ class OutputAlignProgram{
 
 		void displayDualMatrix(string,vector<vector<double>>,vector<vector<double>>);
 		void displayDualMatrix(string,vector<double>,vector<double>);
-		void displayFilesNames(string,string);
-		void displayResult(string);
+		void displayFilesNames(bool,string,string);
+		void displayResult(bool,string);
 		void displayXYZFile(string,vector<Atom>);
 		void display_booth_XYZFile(string,string,vector<Atom>,vector<Atom>);
 		bool saveXYZFile(string,string,vector<Atom>);

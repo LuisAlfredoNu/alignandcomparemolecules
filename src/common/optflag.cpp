@@ -20,6 +20,7 @@ OptFlags::OptFlags()	{
 	display_output_coordenates =false;
 	save_output_coordenates = false;
 	display_rms = false;
+   quiet_version = false;
 };
 /***************************************************************************************/ 
 void OptFlags::getOptions(int &argc, char** &argv){
@@ -52,6 +53,9 @@ void OptFlags::getOptions(int &argc, char** &argv){
 				case 'r':
 					display_rms = true;
 					break;
+            case 'q':
+               quiet_version = true;
+               break;
 				case 'h':
 					printHelpMenu(argc,argv);
 					exit(1);
@@ -63,6 +67,13 @@ void OptFlags::getOptions(int &argc, char** &argv){
 			}
 		}
 	}
+   if(quiet_version){
+      display_inertia_tensor = false;
+      display_large_eigenvector = false;
+      display_output_coordenates = false;
+      save_output_coordenates = false;
+      display_rms = false;
+   }
 }
 /***************************************************************************************/  
 void OptFlags::printHelpMenu(int &argc, char** &argv){

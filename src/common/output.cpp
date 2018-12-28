@@ -49,22 +49,25 @@ void OutputAlignProgram::displayDualMatrix(string title,vector<double> matrixA,v
 		cout << " | " << setw(15) << matrixB[0] << setw(15) << matrixB[1] << setw(13) << matrixB[2] << " | " << endl;
 }
 /***************************************************************************************/ 
-void OutputAlignProgram::displayFilesNames(string file1,string file2){
+void OutputAlignProgram::displayFilesNames(bool quiet,string file1,string file2){
 
-	scrut.SetScrYellowBoldFont();
-	cout << " Comparation molecules: ";
-	scrut.SetScrNormalFont();
-	cout << " Molecule A: "<< file1 << "\t\t";
-	cout << " Molecule B: "<< file2 << endl;
-
+   if (!quiet){
+	   scrut.SetScrYellowBoldFont();
+   	cout << " Comparation molecules: ";
+	   scrut.SetScrNormalFont();
+	   cout << " Molecule A: "<< file1 << "\t\t";
+	   cout << " Molecule B: "<< file2 << endl;
+   }
 }
 /***************************************************************************************/ 
-void OutputAlignProgram::displayResult(string result){
+void OutputAlignProgram::displayResult(bool quiet,string result){
 	
-	scrut.SetScrGreenBoldFont();
-	cout << " Result: "; 
-	scrut.SetScrNormalFont();
-	cout << " " << result << endl;
+   if(quiet){ cout << result << endl;}else{
+	   scrut.SetScrGreenBoldFont();
+	   cout << " Result: "; 
+	   scrut.SetScrNormalFont();
+	   cout << " " << result << endl;
+   }
 }
 /***************************************************************************************/ 
 bool OutputAlignProgram::saveXYZFile(string filename,string commnet, vector<Atom> molecule){
