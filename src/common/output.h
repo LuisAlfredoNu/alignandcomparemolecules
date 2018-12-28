@@ -42,6 +42,8 @@ class OutputAlignProgram{
 		void displayDifferentMolecule();
 		void displayIsomerMolecule();
       void correctInputData(bool,bool);
+
+      void displayRMSD(double);
 	/***************************************************************************************/ 
 
 

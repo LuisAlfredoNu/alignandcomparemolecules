@@ -120,7 +120,7 @@ int main (int argc, char *argv[]) {
          }
 
          if(optflags.display_rms)
-            cout << "RMS = " << matrixOP.RMS4Comparations(molecule_A_align,molecule_B_align) << endl;
+            output.displayRMSD(matrixOP.RMS4Comparations(molecule_A_align,molecule_B_align));
 
          if(optflags.display_output_coordenates){
             output.display_booth_XYZFile(filename_molecule_A,filename_molecule_B,molecule_A_align,molecule_B_align);
@@ -135,14 +135,14 @@ int main (int argc, char *argv[]) {
          string result = "Different ";
          output.displayResult(result);
          if(optflags.display_rms)
-            cout << "RMS = " << matrixOP.RMS4Comparations(molecule_A_inCM,molecule_B_inCM) << endl;
+            output.displayRMSD(matrixOP.RMS4Comparations(molecule_A_inCM,molecule_B_inCM));
          return EXIT_SUCCESS;
       }
    }else{
       string result = "Different ";
       output.displayResult(result);
       if(optflags.display_rms)
-         cout << "RMS = " << matrixOP.RMS4Comparations(molecule_A,molecule_B) << endl;
+            output.displayRMSD(matrixOP.RMS4Comparations(molecule_A,molecule_B));
       return EXIT_SUCCESS;
    }
 }

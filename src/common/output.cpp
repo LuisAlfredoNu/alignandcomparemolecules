@@ -181,6 +181,14 @@ void OutputAlignProgram::correctInputData(bool status_data_molecule_A, bool stat
    }
 }
 /***************************************************************************************/ 
+void OutputAlignProgram::displayRMSD(double RMSD){
+   scrut.PrintScrStarLine();
+	scrut.SetScrRedBoldFont();
+	cout << " RMSD "; 
+	scrut.SetScrNormalFont();
+	cout << "= " << RMSD << endl;
+}
+/***************************************************************************************/ 
 /***************************************************************************************/ 
 #endif // _OUTPUT_CPP_
 
