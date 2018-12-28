@@ -60,7 +60,7 @@ void OutputAlignProgram::displayResult(string result){
 	scrut.SetScrGreenBoldFont();
 	cout << " Result: "; 
 	scrut.SetScrNormalFont();
-	cout << result << endl;
+	cout << " " << result << endl;
 }
 /***************************************************************************************/ 
 bool OutputAlignProgram::saveXYZFile(string filename,string commnet, vector<Atom> molecule){
@@ -81,9 +81,9 @@ bool OutputAlignProgram::saveXYZFile(string filename,string commnet, vector<Atom
 	for(unsigned int i=0;i<molecule.size();i++){
 
 		ofil << setw(5) << left << molecule[i].atomSymbol;
-		ofil << setw(15)<< left << molecule[i].atomCoordinates[0];
-		ofil << setw(15)<< left << molecule[i].atomCoordinates[1];
-		ofil << setw(15)<< left << molecule[i].atomCoordinates[2];
+		ofil << setw(19)<< left << setprecision(12) << molecule[i].atomCoordinates[0];
+		ofil << setw(19)<< left << setprecision(12) << molecule[i].atomCoordinates[1];
+		ofil << setw(19)<< left << setprecision(12) << molecule[i].atomCoordinates[2];
 		ofil << endl;
 	}
 	cout << "Output file XYZ " << ofilename << endl;
@@ -98,9 +98,28 @@ void OutputAlignProgram::displayXYZFile(string filename, vector<Atom> molecule){
 	for(unsigned int i=0;i<molecule.size();i++){
 
 		cout << setw(5) << left << molecule[i].atomSymbol;
-		cout << setw(15) << setprecision(5) << molecule[i].atomCoordinates[0];
-		cout << setw(15) << setprecision(5) << molecule[i].atomCoordinates[1];
-		cout << setw(15) << setprecision(5) << molecule[i].atomCoordinates[2];
+		cout << setw(15) << left << setprecision(5) << molecule[i].atomCoordinates[0];
+		cout << setw(15) << left << setprecision(5) << molecule[i].atomCoordinates[1];
+		cout << setw(15) << left << setprecision(5) << molecule[i].atomCoordinates[2];
+		cout << endl;
+	}
+}
+/***************************************************************************************/ 
+void OutputAlignProgram::display_booth_XYZFile(string filenameA,string filenameB, vector<Atom> moleculeA, vector<Atom> moleculeB){
+	
+	cout << endl << "Molecule A: "<< setw(38) << filenameA  << "Molecule B: " << filenameB << endl;
+	cout <<  setw(50) << left << moleculeA.size()  << moleculeB.size() <<  endl;
+	cout << endl;
+	for(unsigned int i=0;i<moleculeA.size();i++){
+
+		cout << setw(5) << left << moleculeA[i].atomSymbol ;
+		cout << setw(15)<< left  << setprecision(7) << moleculeA[i].atomCoordinates[0];
+		cout << setw(15)<< left  << setprecision(7) << moleculeA[i].atomCoordinates[1];
+		cout << setw(15)<< left  << setprecision(7) << moleculeA[i].atomCoordinates[2];
+		cout << setw(5) << left << moleculeB[i].atomSymbol ;
+		cout << setw(15)<< left  << setprecision(7) << moleculeB[i].atomCoordinates[0];
+		cout << setw(15)<< left  << setprecision(7) << moleculeB[i].atomCoordinates[1];
+		cout << setw(15)<< left  << setprecision(7) << moleculeB[i].atomCoordinates[2];
 		cout << endl;
 	}
 }

@@ -41,6 +41,7 @@ class VectorAndMatrixOperations{
 		vector<double> alignEigenVectors4Angles(vector<vector<double>>);
 
 		vector<vector<double>> incrementLengthVector(double,vector<vector<double>>);
+		double RMS4Comparations(vector<Atom> molecule_A, vector<Atom> molecule_B);
 	/***************************************************************************************/
 	/***************************************************************************************/ 
 	private:

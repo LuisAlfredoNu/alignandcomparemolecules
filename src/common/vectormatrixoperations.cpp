@@ -13,6 +13,8 @@ using std::vector;
 #include <iomanip>
 using std::setw;
 #include <math.h>
+#include <cmath>
+using std::abs;
 #define PI 	3.141592653589793
 /***************************************************************************************/ 
 #include"eig2-4.h"
@@ -65,12 +67,23 @@ void VectorAndMatrixOperations::eigenVectorValues(vector<vector<double>> initial
 /***************************************************************************************/ 
 bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_moleculeA, vector<double> eigenValues_moleculeB){
 	bool is_equal = true;
-	double epsilon = 0.5;
+	double epsilon = 0.001;
 	double diffvalues = 0.0;
+	double bigValue = 0.0;
+
+	if(eigenValues_moleculeA[2] < eigenValues_moleculeB[2]){ bigValue=eigenValues_moleculeB[2]; }
+	else{ bigValue=eigenValues_moleculeA[2];}
+
+	vector<double> relativevalues_A (3,0.0);
+	vector<double> relativevalues_B (3,0.0);
 
 	for(int i=0;i<3;i++){
-		diffvalues = eigenValues_moleculeA[i] - eigenValues_moleculeB[i];
-		diffvalues = abs(diffvalues);
+		relativevalues_A[i]=eigenValues_moleculeA[i] / bigValue;
+		relativevalues_B[i]=eigenValues_moleculeB[i] / bigValue;
+	}
+
+	for(int i=0;i<3;i++){
+		diffvalues = abs(relativevalues_A[i] - relativevalues_B[i]);
 		if(diffvalues > epsilon) is_equal = false;
 	}
 	return is_equal;
@@ -176,7 +189,6 @@ bool VectorAndMatrixOperations::compareCoordinates(vector<Atom> molecule_A, vect
 		if(abs(molecule_A[i].atomCoordinates[0] - molecule_B[i].atomCoordinates[0]) > 0.001) is_equal = false;
 		if(abs(molecule_A[i].atomCoordinates[1] - molecule_B[i].atomCoordinates[1]) > 0.001) is_equal = false;
 		if(abs(molecule_A[i].atomCoordinates[2] - molecule_B[i].atomCoordinates[2]) > 0.001) is_equal = false;
-
 		i++;
 	}
 
@@ -418,6 +430,23 @@ vector<vector<double>> VectorAndMatrixOperations::incrementLengthVector(double n
 		new_coordinates[j][2] = (new_lenght + r) * cos(theta);
 	}
 	return new_coordinates;
+}
+/***************************************************************************************/  
+double VectorAndMatrixOperations::RMS4Comparations(vector<Atom> molecule_A, vector<Atom> molecule_B){
+	
+	double rms_comparative = 0.0;
+	int Natoms = molecule_A.size();
+
+	for(int i = 0; i < Natoms; i++){
+		for(int xyz = 0; xyz < 3; xyz++){
+
+			rms_comparative = (molecule_A[i].atomCoordinates[xyz] - molecule_B[i].atomCoordinates[xyz]) * (molecule_A[i].atomCoordinates[xyz] - molecule_B[i].atomCoordinates[xyz]);
+		}
+	}
+	rms_comparative /= (double)Natoms;
+	rms_comparative = sqrt(rms_comparative);
+
+	return rms_comparative;
 }
 /***************************************************************************************/  
 /***************************************************************************************/  

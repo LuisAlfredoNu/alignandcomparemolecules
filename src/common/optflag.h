@@ -13,6 +13,7 @@ class OptFlags{
 		double vector_increase_length;
 		bool display_output_coordenates;
 		bool save_output_coordenates;
+		bool display_rms;
 
 		void getOptions(int &argc, char** &argv);
 		void printHelpMenu(int &argc, char** &argv); 
