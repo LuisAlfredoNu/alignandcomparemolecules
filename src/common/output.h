@@ -44,6 +44,8 @@ class OutputAlignProgram{
       void correctInputData(bool,bool);
 
       void displayRMSD(double);
+      void displayLargeEigenVectors(double,vector<vector<double>>,vector<vector<double>>);
+
 	/***************************************************************************************/ 
 
 
