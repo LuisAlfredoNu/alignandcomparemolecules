@@ -14,6 +14,7 @@ class OptFlags{
 		bool display_output_coordenates;
 		bool save_output_coordenates;
 		bool display_rms;
+      bool quiet_version;
 
 		void getOptions(int &argc, char** &argv);
 		void printHelpMenu(int &argc, char** &argv); 

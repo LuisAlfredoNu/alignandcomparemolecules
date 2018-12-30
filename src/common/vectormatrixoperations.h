@@ -7,14 +7,13 @@
  *
  */
 /***************************************************************************************/  
-#include "atomsinmolecule.h"
 #ifndef _VECTORMATRIXOPERATIONS_H_
 #define _VECTORMATRIXOPERATIONS_H_
 
 #include <vector>
 using std::vector;
 /***************************************************************************************/ 
-#include "atomsinmolecule.h"
+#include "vectormatrixoperations.h"
 /***************************************************************************************/ 
 /***************************************************************************************/ 
 
@@ -25,12 +24,14 @@ class VectorAndMatrixOperations{
 	/***************************************************************************************/ 
 		void eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues);
 		bool compareEigenValues(vector<double>, vector<double>);
+      bool proveEigenValDegeneracy(vector<double>);
 
 		vector<Atom> rotateMolecule(vector<double> angles,vector<Atom> molecule);
 		vector<Atom> rotateMolecule(vector<vector<double>>,vector<Atom> molecule);
 		vector<Atom> rotateMolecule2(vector<vector<double>>,vector<Atom> molecule);
 		vector<Atom> inversionOfCoordinates(vector<Atom> molecule);
 		bool compareCoordinates(vector<Atom>,vector<Atom>);
+		bool permutationBequalA(vector<Atom>,vector<Atom>);
 		
 		vector<vector<double>> changeBasisEigenVec(vector<vector<double>>,vector<vector<double>>);
 		

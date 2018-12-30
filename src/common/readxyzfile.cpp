@@ -31,7 +31,7 @@ bool ReadXYZFile::getValuesFromFile(string filename, vector<Atom> & molecule){
 	XYZFile.open(filename.c_str(),ios::in);
 
 	if (!(XYZFile.good())) {
-		cout << "Error: File " << filename << "could not be opened...\n";
+		cout << "Error: File " << filename << " could not be opened...\n";
 #if DEBUG
 		cout << __FILE__ << ", line: " << __LINE__ << endl;
 #endif
@@ -40,6 +40,10 @@ bool ReadXYZFile::getValuesFromFile(string filename, vector<Atom> & molecule){
 	}
 
 	Natoms = getNumofAtoms(XYZFile);
+   if(!open_without_problems){
+      cout << "Error: File " << filename << " does not have the XYZ format..." << endl;
+      return false;
+   }
 	molecule.resize(Natoms);
 	getDataAtoms(XYZFile,molecule);
 	sortingAtoms(molecule);
@@ -69,7 +73,6 @@ void ReadXYZFile::getDataAtoms(ifstream &file, vector<Atom>& molecule){
 	string symbol;
 	vector<double> vectorposition (3);
 			
-	
 	int i = 0;
 	if(typeDataNumOChar(file)){
 		file.seekg(begindata_pos);
