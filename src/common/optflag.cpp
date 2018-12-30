@@ -28,7 +28,7 @@ void OptFlags::getOptions(int &argc, char** &argv){
 	if (argc<2) {
       cout << endl;
       scrut.PrintScrStarLine();
-      scrut.DisplayErrorMessage("Dont input files in arguments ");
+      scrut.DisplayErrorMessage("Two input files are needed!!! ");
       cout << "\t Example:" << argv[0] <<" file_A.xyz file_B.xyz  "<< endl;
       scrut.PrintScrStarLine();
       cout << endl;
@@ -83,13 +83,12 @@ void OptFlags::printHelpMenu(int &argc, char** &argv){
 
 	cout << endl;
    cout << "\nUsage:\n\n\t" << progname << " -flag ... -flag moleculeA.xyz moleculeB.xyz \n\n";
-   cout << "Where moleculeA.xyz and moleculeB.xyz is the input structure in file type XYZ, \n\t and options can be:\n\n"
-        << "  -m        \tDisplay on screen the inertia tensor, eigenvectors of inertia tensor" << endl
-		  << "            \t  and eigenvalues of inertia tensor." << endl
-        << "  -l n      \tDisplay on screen the coordinates of eigenvector with n increase of them length " << endl
-        << "  -c        \tDisplay on screen the coordinates of atoms after all procces " << endl
-        << "  -s        \tSave the coordinates of atoms after all procces in XYZ file with *_align.xyz terminataion " << endl
-        << "  -r        \tDisplay on screen the RMS of the comparation of both molecules " << endl;
+   cout << "Where moleculeA.xyz and moleculeB.xyz contain the input structures. The files must be of type XYZ, and options can be:\n\n"
+        << "  -m        \tDisplays the inertia tensor on screen, the eigenvectors of the inertia tensor and its eigenvalues." << endl
+        << "  -c        \tDisplays the coordinates of molecules after all alignment processes have been performed. " << endl
+        << "  -s        \tSaves the coordinates of the atoms at the end of the processes in XYZ file with \"_align.xyz\" appended to the file name. " << endl
+        << "  -r        \tDisplays the RMSD between molecules" << endl
+        << "  -q        \tQuiet output version. Displays the result, without color and in a single line." << endl;
    cout << "  -h        \tDisplay the help menu.\n\n";
 }
 

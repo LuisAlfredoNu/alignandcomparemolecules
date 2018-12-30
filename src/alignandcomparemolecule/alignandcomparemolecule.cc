@@ -18,7 +18,6 @@ int main (int argc, char *argv[]) {
 	string filename_molecule_B = argv[argc-1];
 
 	OutputAlignProgram output;
-	output.displayFilesNames(optflags.quiet_version,filename_molecule_A,filename_molecule_B);
 
 	vector<Atom> molecule_A;
 	vector<Atom> molecule_B;
@@ -35,6 +34,7 @@ int main (int argc, char *argv[]) {
    bool statusAllData_molecule_B = reader.getValuesFromFile(filename_molecule_B,molecule_B);
 
    output.correctInputData(statusAllData_molecule_A,statusAllData_molecule_B);
+	output.displayFilesNames(optflags.quiet_version,filename_molecule_A,filename_molecule_B);
 
    if(molecularOP.haveSameTypeNumAtoms(molecule_A,molecule_B)){
 
