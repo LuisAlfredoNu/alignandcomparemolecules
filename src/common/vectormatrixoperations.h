@@ -24,6 +24,7 @@ class VectorAndMatrixOperations{
 	/***************************************************************************************/ 
 		void eigenVectorValues(vector<vector<double>> initialmatrix,vector<vector<double>> &diagmatrix, vector<vector<double>>& eigvectors,vector<double>& eigvalues);
 		bool compareEigenValues(vector<double>, vector<double>);
+      bool proveEigenValDegeneracy(vector<double>);
 
 		vector<Atom> rotateMolecule(vector<double> angles,vector<Atom> molecule);
 		vector<Atom> rotateMolecule(vector<vector<double>>,vector<Atom> molecule);

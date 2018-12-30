@@ -45,6 +45,7 @@ class OutputAlignProgram{
 
       void displayRMSD(double);
       void displayLargeEigenVectors(double,vector<vector<double>>,vector<vector<double>>);
+      void displayDegeneracy();
 
 	/***************************************************************************************/ 
 

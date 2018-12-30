@@ -89,6 +89,22 @@ bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_mo
 	}
 	return is_equal;
 }
+/***************************************************************************************/ 
+bool VectorAndMatrixOperations::proveEigenValDegeneracy(vector<double> eigenValues_moleculeA){
+
+   bool degeneracy = true;
+   double epsilon = 0.001;
+   vector<double> diffvalues (3,0.0);
+
+   diffvalues[0] = abs(eigenValues_moleculeA[0] - eigenValues_moleculeA[1]);
+   diffvalues[1] = abs(eigenValues_moleculeA[0] - eigenValues_moleculeA[2]);
+   diffvalues[2] = abs(eigenValues_moleculeA[1] - eigenValues_moleculeA[2]);
+
+   for(int i=0;i<3;i++){
+      if(diffvalues[i] > epsilon) degeneracy = false;
+   }
+   return degeneracy;
+}
 /***************************************************************************************/  
 /***************************************************************************************/  
 /***************************************************************************************/ 

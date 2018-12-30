@@ -210,6 +210,11 @@ void OutputAlignProgram::displayLargeEigenVectors(double new_lenght,vector<vecto
    displayDualMatrix(title,new_eigvectors_molecule_A,new_eigvectors_molecule_B);
 }
 /***************************************************************************************/ 
+void OutputAlignProgram::displayDegeneracy(){
+   cout << " ";
+   scrut.DisplayWarningMessage("The three eigenvalues of molecules A and B are equal, please check by hand.");
+}
+/***************************************************************************************/ 
 /***************************************************************************************/ 
 #endif // _OUTPUT_CPP_
 
