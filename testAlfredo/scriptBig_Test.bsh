@@ -26,7 +26,7 @@ do
 	fi
 done
 cd Comparations
-~/Programacion/alignandcomparemolecules/testAlfredo/Comparations/zz-translato2Latex.bsh 
-~/Programacion/alignandcomparemolecules/testAlfredo/Comparations/zz-translato2Latex-table.bsh
-cp *.tex ../tex/
+~/Programacion/alignandcomparemolecules/testAlfredo/Comparations/translato2Latex.bsh 
+~/Programacion/alignandcomparemolecules/testAlfredo/Comparations/translato2Latex-table.bsh
+mv *.tex ../tex/
 
