@@ -51,7 +51,7 @@ extract_result_align(){
 }
 manual_result(){
 	file_comparation=$1
-	file_manual_comparation="$file_comparation.manual"
+	file_manual_comparation="../ManualComparations/$file_comparation.manual"
 	if [[ -f $file_manual_comparation ]];then
 		manual_result_out=$(cat $file_manual_comparation)
 	else
@@ -73,7 +73,7 @@ extract_rms_align(){
 	file_alignOutput=$1
 
 	program_result=$(extract_result_align $file_alignOutput)
-	values_rms=$(grep -n "RMS" $file_alignOutput | awk '{print $3}'| sed 's/e/E/')
+	values_rms=$(grep -n "RMSD" $file_alignOutput | awk '{print $4}'| sed 's/e/E/')
 	
 	if [[ $program_result == "Equal" ]] 
 	then	
@@ -96,35 +96,61 @@ extract_rms_align(){
 		echo " {RMS = $values_rms}}"
 	fi
 }
+progress_bar(){
+   n_data=$1
+   total_data=$2
+   
+   weight=50
+   pb_spinner="/-\|"
 
-number_of_comparations=1
+   chunk=$(( total_data/weight ))
+   progress=$(( n_data/chunk ))
 
+   printf "|%-${weight}s|\r" "$(printf "%0.s*" $(seq 1 $progress))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")"
+   if (( n_data == total_data ));then
+      printf "|%-${weight}s|\n" "$(printf "%0.s*" $(seq 1 $weight))"
+   fi
+}
+join_all(){
+   number_of_comparations=$1
+   i=$2
+
+   if (( number_of_comparations%7==1 ));then
+      echo -e "\n\\\vtab[-2cm]\n\\\tab[-2cm]\n\\\begin{tabular}{c|m{8cm}|c|c}\n\# & Moléculas & Restultado esperado & Resultado programa \\\\\\\\\\\\\ \hline\hline"
+   fi
+
+   echo "\multirow{4}{*}{\tab[2mm] $number_of_comparations \tab[2mm]} & $(get_name_1 $i) &" 
+   echo $(manual_result $i) 
+   echo "\\\\" 
+   echo "& E = $(extract_SCF_from_log $(get_path_1 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_1 $i))   &    &  \\\\ \cline{2-2}"
+   echo "& $(get_name_2 $i)   & \multicolumn{2}{c}{\multirow{3}{*}"
+   extract_rms_align $i 
+   echo "\\\\"
+   echo "& E = $(extract_SCF_from_log $(get_path_2 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_2 $i))   &    \multicolumn{2}{c}{}  \\\\ \hline"
+
+   if (( number_of_comparations%7==0 ));then
+      echo -e "\\\end{tabular}\n\\\newpage"
+   fi
+}
+#-----------------------------------------------------------------------------#
+# Courpus of Script
+#-----------------------------------------------------------------------------#
+cd Outputs
+
+number_of_comparations_courpus=1
+total_of_comparations_courpus=$(ls *.alignOutput|wc -l)
+
+echo "Start with table of comparation with manual comparations"
 echo " %%%%%%%%%%%%%%%%%%%%" > table_allResult.tex
-for i in $(ls *.alignOutput)
+
+for comparation_name in $(ls *.alignOutput)
 do
+   join_all $number_of_comparations_courpus $comparation_name >> table_allResult.tex
 
-if (( number_of_comparations%7==1 ));then
-echo  >> table_allResult.tex
-echo "\vtab[-2cm]" >> table_allResult.tex
-echo "\tab[-2cm]" >> table_allResult.tex
-echo "\begin{tabular}{c|m{8cm}|c|c}" >> table_allResult.tex
-echo "\# & Moléculas & Restultado esperado & Resultado programa \\\\ \hline\hline" >> table_allResult.tex
-fi
-echo "\multirow{4}{*}{\tab[2mm] $number_of_comparations \tab[2mm]} & $(get_name_1 $i) &" >> table_allResult.tex
-echo $(manual_result $i) >> table_allResult.tex
-echo "\\\\" >> table_allResult.tex
-echo "& E = $(extract_SCF_from_log $(get_path_1 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_1 $i))   &    &  \\\\ \cline{2-2}">> table_allResult.tex
-echo "& $(get_name_2 $i)   & \multicolumn{2}{c}{\multirow{3}{*}" >> table_allResult.tex
-extract_rms_align $i >> table_allResult.tex     
-echo "\\\\">> table_allResult.tex
-echo "& E = $(extract_SCF_from_log $(get_path_2 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_2 $i))   &    \multicolumn{2}{c}{}  \\\\ \hline">> table_allResult.tex
-
-if (( number_of_comparations%7==0 ));then
-echo "\end{tabular}" >> table_allResult.tex
-echo "\newpage" >> table_allResult.tex
-fi
-number_of_comparations=$((number_of_comparations+1))
-
+   progress_bar $number_of_comparations_courpus $total_of_comparations_courpus
+   number_of_comparations_courpus=$((number_of_comparations_courpus+1))
 done
 
 echo "\end{tabular}" >> table_allResult.tex
+echo -e "\nFinish the table for report"
+mv table_allResult.tex ..; cd .. 

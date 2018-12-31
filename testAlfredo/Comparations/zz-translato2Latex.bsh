@@ -174,30 +174,61 @@ cat << LATEX_TAIL
 LATEX_TAIL
 }
 ##############################################
+progress_bar(){
+   n_data=$1
+   total_data=$2
+   
+   weight=50
+   pb_spinner="/-\|"
+
+   chunk=$(( total_data/weight ))
+   progress=$(( n_data/chunk ))
+
+   printf "|%-${weight}s|\r" "$(printf "%0.s*" $(seq 1 $progress))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")"
+   if (( n_data == total_data ));then
+      printf "|%-${weight}s|\n" "$(printf "%0.s*" $(seq 1 $weight))"
+   fi
+}
+##############################################
+join_all(){
+   name_file_join=$1
+   number_of_comparation_join=$2
+   result_join=$3
+
+	latex_title $name_file_join $number_of_comparation_join
+	if [ ! $result_join == "Different" ]
+	then 
+		latex_molecule_matrix $name_file_join "A"
+		echo "\\columnbreak"
+		latex_molecule_matrix $name_file_join "B"
+	else
+		latex_molecule_different $name_file_join "A"
+		echo "\\columnbreak"
+		latex_molecule_different $name_file_join "B"
+	
+	fi
+		latex_tail $name_file_join
+	echo " \newpage"
+}
+##############################################
 # Corpus script
 ##############################################
+cd Outputs
 
-number_of_comparation=1 
+number_of_comparation=1
+total_of_comparation=$(ls *.alignOutput|wc -l)
+echo "Start creating the report"
+echo "% All results" > allResult.tex
 for i in $(ls *.alignOutput)
 do
 	name_file_corpus=$i
 	result=$(find_result $name_file_corpus)
 
-	if [ ! $result == "Different" ]
-	then 
-		latex_title $name_file_corpus $number_of_comparation
-		latex_molecule_matrix $name_file_corpus "A"
-		echo "\\columnbreak"
-		latex_molecule_matrix $name_file_corpus "B"
-		latex_tail $name_file_corpus
-	else
-		latex_title $name_file_corpus $number_of_comparation
-		latex_molecule_different $name_file_corpus "A"
-		echo "\\columnbreak"
-		latex_molecule_different $name_file_corpus "B"
-		latex_tail $name_file_corpus
-	
-	fi
-	echo " \newpage"
+   join_all $name_file_corpus $number_of_comparation $result_join >> allResult.tex
+
+   progress_bar $number_of_comparation $total_of_comparation
 	number_of_comparation=$((number_of_comparation+1))
 done
+echo -e "\nFinish report"
+mv allResult.tex ..
+cd ..

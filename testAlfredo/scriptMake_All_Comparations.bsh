@@ -28,7 +28,7 @@ rm tmp_list.tmp
 mkdir -p Comparations
 rm Comparations/*
 
-while read -r line 
+tail -n +2 list_Comparations.dat | while read -r line 
 do
 	filenameA=$(echo $line | awk '{print $1}')
 	short_filenameA=${filenameA%.xyz}
@@ -45,4 +45,4 @@ do
 		echo "Error in comparation $file_name_comparation"
 		rm $file_name_comparation
 	fi
-done < list_Comparations.dat
+done 
