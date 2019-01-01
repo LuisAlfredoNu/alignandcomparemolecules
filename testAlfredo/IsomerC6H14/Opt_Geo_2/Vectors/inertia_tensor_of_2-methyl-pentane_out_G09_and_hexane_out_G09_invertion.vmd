@@ -1,0 +1,67 @@
+#!/usr/local/bin/vmd
+# VMD script written by save_state $Revision: 1.47 $
+# VMD version: 1.9.3
+set viewplist {}
+set fixedlist {}
+# Display settings
+display projection   Orthographic
+display height       4.000000
+display distance     -2.000000
+display nearclip set 0.000000
+display depthcue   off
+display shadows off
+display ambientocclusion off
+display aoambient 0.800000
+display aodirect 0.300000
+display dof off
+display dof_fnumber 64.000000
+display dof_focaldist 0.700000
+draw text {5 0 0} "Different"
+mol new 2-methyl-pentane_out_G09.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+draw color blue
+draw cylinder {0 0 0} {-3 -0.00317014 -0.00175615} radius 0.05
+draw color red
+draw cylinder {0 0 0} {-0.00316644 2.99999 -0.00631149} radius 0.05
+draw color green
+draw cylinder {0 0 0} {-0.00176281 0.00630963 2.99999} radius 0.05
+mol rename molecule_A_2-methyl-pentane_out_G09.xyz
+# done with molecule 0
+mol new hexane_out_G09_invertion.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+draw color blue3
+draw cylinder {0 0 0} {-1.4953 2.60078 1.83697e-16} radius 0.05
+draw color red3
+draw cylinder {0 0 0} {-2.60078 -1.4953 1.83697e-16} radius 0.05
+draw color green3
+draw cylinder {0 0 0} {0 -0 3} radius 0.05
+mol rename molecule_B_hexane_out_G09_invertion.xyz
+# done with molecule 0
+proc vmdrestoremycolors {} {
+	set colorcmds {
+		{color Display {Background} white}
+		{color Display {BackgroundTop} black}
+		{color Display {BackgroundBot} blue2}
+		{color Display {FPS} black}  
+	}
+	foreach colcmd $colorcmds {    
+		set val [catch {eval $colcmd}]  
+	}
+}
+vmdrestoremycolors
