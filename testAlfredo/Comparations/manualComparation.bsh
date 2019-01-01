@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd ManualComparations 
 for i in $(ls *.manual)
 do
 	if [[ $(cat $i) = "Without comparation" ]] || [[ $(cat $i) = "No idea" ]];then
@@ -7,7 +8,7 @@ do
 		echo;echo;
 		echo $i
 		echo;
-		echo -e " 1 = Equal \t 2 = Different \t 3 = Stereoisomer \t 4 = No idea "
+		echo -e " 1 = Equal \t 2 = Different \t 3 = Enantiomers \t 4 = No idea "
 		read result
 
 		if [[ $result == 1 ]];then
@@ -17,10 +18,11 @@ do
 			echo "Different" > $i
 		fi
 		if [[ $result == 3 ]];then
-			echo "Stereoisomer" > $i
+			echo "Enantiomers" > $i
 		fi
 		if [[ $result == 4 ]];then
 			echo "No idea" > $i
 		fi
 	fi
 done
+cd ..

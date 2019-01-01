@@ -1,7 +1,8 @@
 #!/bin/bash
 
-mkdir -p Comparations
+mkdir -p Comparations/Outputs
 mkdir -p Comparations/ImagesFromVMD
+mkdir -p Comparations/Vectors
 
 rm Comparations/Outputs/*.alignOutput
 rm Comparations/ImagesFromVMD/*.png
@@ -20,7 +21,8 @@ do
 			cp $ii ../../../Comparations/Outputs/"comparations_"$i"_folder_"$base_file_name
 		done
 		cd ..
-		cp *.png ../../Comparations/ImagesFromVMD/.
+		cp ImagesFromVMD/*.png ../../Comparations/ImagesFromVMD/.
+      cp Vectors/*.png ../../Comparations/Vectors/.
 
 		cd ../..
 	fi

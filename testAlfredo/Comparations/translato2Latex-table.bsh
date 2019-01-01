@@ -85,7 +85,7 @@ extract_rms_align(){
 			echo "{ RMS = $values_rms}}"
 		fi
 	
-	elif [[ $program_result == "Stereoisomer" ]]
+	elif [[ $program_result == "Enantiomers" ]]
 	then 
 		if (( $(echo $values_rms'>'0.001 | bc -l) ))
 		then echo " {RMS = $values_rms}}"
