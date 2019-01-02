@@ -16,8 +16,7 @@ display aodirect 0.300000
 display dof off
 display dof_fnumber 64.000000
 display dof_focaldist 0.700000
-draw text {5 0 0} "Different"
-mol new R-R-R-Fructuose_out_G09.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol new ../R-R-R-Fructuose_out_G09.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
 mol delrep 0 top
 mol representation CPK 1.000000 0.400000 150.000000 150.000000
 mol color Name
@@ -35,7 +34,7 @@ draw color green
 draw cylinder {0 0 0} {-0.00326053 -0.00972236 2.99998} radius 0.05
 mol rename molecule_A_R-R-R-Fructuose_out_G09.xyz
 # done with molecule 0
-mol new S-R-S-Fructuose_out_G09.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol new ../S-R-S-Fructuose_out_G09.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
 mol delrep 0 top
 mol representation CPK 1.000000 0.400000 150.000000 150.000000
 mol color Name
@@ -65,3 +64,6 @@ proc vmdrestoremycolors {} {
 	}
 }
 vmdrestoremycolors
+rotate x by 45
+rotate y by -45
+rotate z by -45

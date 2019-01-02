@@ -70,7 +70,7 @@ title=${tmptitle#comparations_*}
 
 cat << LATEX_TITLE
 
-\vtab[-2cm]
+\vtab[-3cm]
 \begin{center}
 {\large $title \tab Número $number_of_comparation}
 \end{center}
@@ -102,25 +102,21 @@ cat << LATEX_MOLECULE_01
 
 Molecule $molecule_label \\\\ 
 $name_molecule
-\includegraphics[width=8cm]{../Comparations/ImagesFromVMD/$image_molecule}
-\\\\
-Inertia Tensor - Molecule $molecule_label \\\\
-\vtab
+\includegraphics[width=6cm]{../Comparations/ImagesFromVMD/$image_molecule}
 
+Inertia Tensor - Molecule $molecule_label \\\\
 LATEX_MOLECULE_01
 matrix3x3 $name_file_molecule $(find_line_inertia_tensor $name_file_molecule) $molecule_label
 cat << LATEX_MOLECULE_02
 
 \vtab
  EingenVectors - Molecule $molecule_label     \\\\
-\vtab
 LATEX_MOLECULE_02
 matrix3x3 $name_file_molecule $(find_line_EingenVectors $name_file_molecule) $molecule_label
 cat << LATEX_MOLECULE_03
 
 \vtab
  EingenValues - Molecule $molecule_label     \\\\
-\vtab
 LATEX_MOLECULE_03
 matrix3x1 $name_file_molecule $(find_line_EingenValues $name_file_molecule) $molecule_label
 }
@@ -161,17 +157,44 @@ fi
 }
 ##############################################
 latex_tail(){
+name_file_tail=$1
+result_tail=$2
+	
+if [ $result_tail != "Different" ];then
+   tmpname=${name_file_tail%*-with-*}
+	name_A="${tmpname#*folder_comparation_*}"
+	
+   tmpname=${file_name_base#*-with-*}
+	name_B="${tmpname%.alignOutput}"
 cat << LATEX_TAIL
 
 \end{center}
 \end{multicols}
+
+\vtab[-5mm]
+\begin{tabular}{*{2}{m{0.38\textwidth}}}
 \begin{center}
-\vtab
-\vtab
-\textcolor{NavyBlue}{\Large $(find_result $1)}
+\textcolor{NavyBlue}{\Large $(find_result $name_file_tail)}
+\end{center}
+&
+\begin{center}
+\includegraphics[height=6.5cm]{../Comparations/Vectors/inertia_tensor_of_${name_A}_and_${name_B}.png}
+\end{center}
+\end{tabular}
+
+LATEX_TAIL
+else
+cat << LATEX_TAIL
+
+\end{center}
+\end{multicols}
+
+\begin{center}
+\textcolor{NavyBlue}{\Large $(find_result $name_file_tail)}
 \end{center}
 
 LATEX_TAIL
+fi
 }
 ##############################################
 progress_bar(){
@@ -181,12 +204,11 @@ progress_bar(){
    weight=50
    pb_spinner="/-\|"
 
-   chunk=$(( total_data/weight ))
-   progress=$(( n_data/chunk ))
+   progress=$(( (n_data*100)/total_data ))
 
-   printf "|%-${weight}s|\r" "$(printf "%0.s*" $(seq 1 $progress))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")"
+   printf "[%-$((weight+1))s]%s  %s/%s \r" "$(printf "%0.s*" $(seq 0 $((progress/2))))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")" " $progress%" "$n_data" "$total_data" 
    if (( n_data == total_data ));then
-      printf "|%-${weight}s|\n" "$(printf "%0.s*" $(seq 1 $weight))"
+      printf "[%-$((weight+1))s]\n" "$(printf "%0.s*" $(seq 0 $weight))"
    fi
 }
 ##############################################
@@ -207,7 +229,7 @@ join_all(){
 		latex_molecule_different $name_file_join "B"
 	
 	fi
-		latex_tail $name_file_join
+		latex_tail $name_file_join $result_join
 	echo " \newpage"
 }
 ##############################################

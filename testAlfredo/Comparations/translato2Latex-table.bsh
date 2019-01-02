@@ -103,12 +103,11 @@ progress_bar(){
    weight=50
    pb_spinner="/-\|"
 
-   chunk=$(( total_data/weight ))
-   progress=$(( n_data/chunk ))
+   progress=$(( (n_data*100)/total_data ))
 
-   printf "|%-${weight}s|\r" "$(printf "%0.s*" $(seq 1 $progress))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")"
+   printf "[%-$((weight+2))s]%s  %s/%s \r" "$(printf "%0.s*" $(seq 0 $((progress/2))))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")" " $progress%" "$n_data" "$total_data" 
    if (( n_data == total_data ));then
-      printf "|%-${weight}s|\n" "$(printf "%0.s*" $(seq 1 $weight))"
+      printf "[%-$((weight+2))s]\n" "$(printf "%0.s*" $(seq 0 $weight))"
    fi
 }
 join_all(){
