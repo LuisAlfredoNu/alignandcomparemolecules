@@ -133,9 +133,11 @@ inertia_tensor_image(){
          print_vmd_script $file_name_xyz_molecule_A $file_name_xyz_molecule_B "$vectors" > $inertia_tensor_name
          mv $inertia_tensor_name Vectors
       fi
-   elif [[ ! -f "Vectors/${inertia_tensor_name%vmd}png" ]];then
+	fi
+   if [[ ! -f "Vectors/${inertia_tensor_name%vmd}png" ]] && [[ -f Vectors/${inertia_tensor_name} ]];then
       echo "Vectors/${inertia_tensor_name%vmd}png"
-      getPNGofXYZ -x 600  "Vectors/$inertia_tensor_name"
+      vectors=$(get_vector $file_output_comparations)
+      getPNGofXYZ -x 600 "Vectors/$inertia_tensor_name"
    fi
 }
 ##############################33

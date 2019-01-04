@@ -160,12 +160,12 @@ latex_tail(){
 name_file_tail=$1
 result_tail=$2
 	
-if [ $result_tail != "Different" ];then
    tmpname=${name_file_tail%*-with-*}
 	name_A="${tmpname#*folder_comparation_*}"
 	
    tmpname=${file_name_base#*-with-*}
 	name_B="${tmpname%.alignOutput}"
+if [[ -f "../Vectors/inertia_tensor_of_${name_A}_and_${name_B}.png" ]];then
 cat << LATEX_TAIL
 
 \end{center}
@@ -174,10 +174,13 @@ cat << LATEX_TAIL
 \vtab[-5mm]
 \begin{tabular}{*{2}{m{0.38\textwidth}}}
 \begin{center}
-\textcolor{NavyBlue}{\Large $(find_result $name_file_tail)}
+\textcolor{NavyBlue}{\Large $result_tail}
 \end{center}
 &
 \begin{center}
+\begin{verbatim}
+Vectors/inertia_tensor_of_${name_A}_and_${name_B}.png
+\end{verbatim}
 \includegraphics[height=6.5cm]{../Comparations/Vectors/inertia_tensor_of_${name_A}_and_${name_B}.png}
 \end{center}
 \end{tabular}
@@ -189,8 +192,11 @@ cat << LATEX_TAIL
 \end{center}
 \end{multicols}
 
+\begin{verbatim}
+Vectors/inertia_tensor_of_${name_A}_and_${name_B}.png
+\end{verbatim}
 \begin{center}
-\textcolor{NavyBlue}{\Large $(find_result $name_file_tail)}
+\textcolor{NavyBlue}{\Large $result_tail}
 \end{center}
 
 LATEX_TAIL
@@ -246,7 +252,7 @@ do
 	name_file_corpus=$i
 	result=$(find_result $name_file_corpus)
 
-   join_all $name_file_corpus $number_of_comparation $result_join >> allResult.tex
+   join_all $name_file_corpus $number_of_comparation $result >> allResult.tex
 
    progress_bar $number_of_comparation $total_of_comparation
 	number_of_comparation=$((number_of_comparation+1))
