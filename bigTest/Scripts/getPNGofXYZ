@@ -1,0 +1,185 @@
+#!/bin/bash
+
+# If VMD was a personalizate installation, please find the library of tachyon_LINUXAMD64 or equivalent 
+# 		and put the path and command for using VMD in the next two lines
+# Authorship, support, and maintenance of this script is attributed to
+# Luis Alfredo Nunez Meneses
+
+path_of_tachyon="/usr/local/lib/vmd/tachyon_LINUXAMD64"
+vmd_line_command="vmd"
+
+#####################################################################
+#--------------------------------------------------------------   Fdx
+#####################################################################
+#--------------------------------------------------------------   Fdx
+#####################################################################
+
+the_prog_name=$0
+cmdl_argv=($@)
+cmdl_argc=${#cmdl_argv[@]}
+
+help_and_syntax()
+{
+   the_prog_name=$1
+echo -e "\n    Script syntax: \033[1m$the_prog_name\033[0m [\033[0;4moption(s)\033[0m \
+[\033[4margument(s)\033[0m]] [\033[4minputname.xyz\033[0m]"
+#Here you may put a description of the script. The text between 'END_USAGE_TEXT'
+#will be displayed as it is.
+cat << END_USAGE_TEXT
+
+This script will create a images in png format from file with format XYZ
+using VMD program
+
+Tip:
+	If you want a different view of your molecule, please open the file "name_file.vmd" with VMD like this
+
+	vmd -e name_file.vmd
+
+	Save the visualization how you like to look your molecule in the same file and run this script again.
+
+Description of options. For instance:
+   -h               Display the help menu.
+   -b color         Color of background. "black" or "white". Default white
+   -x ####          Size wight image. Default 800.
+   -y ####          Size height image. Default 680.
+
+END_USAGE_TEXT
+}
+#####################################################################
+prove_if_exist_tachyon_lib(){
+	path=$1
+	if [[ -f $path ]]
+	then
+		echo $path
+	else
+		echo -e " Error: Missing the tachyon_LINUXAMD64 \n Search where is the lib of vmd"
+		exit 2
+	fi
+}
+#####################################################################
+print_vmd_script(){
+
+file_name=$1
+backgroud_color=$2
+
+cat << END_VMD_SCRIPT
+#!/usr/local/bin/vmd
+# VMD script written by save_state \$Revision: 1.47 $
+# VMD version: 1.9.3
+set viewplist {}
+set fixedlist {}
+# Display settings
+display projection   Orthographic
+display height       4.000000
+display distance     -2.000000
+display nearclip set 0.000000
+display depthcue   off
+display shadows off
+display ambientocclusion off
+display aoambient 0.800000
+display aodirect 0.300000
+display dof off
+display dof_fnumber 64.000000
+display dof_focaldist 0.700000
+mol new $file_name type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+mol rename $file_name
+# done with molecule 0
+proc vmdrestoremycolors {} {
+  set colorcmds {
+    {color Display {Background} $backgroud_color}
+    {color Display {BackgroundTop} black}
+    {color Display {BackgroundBot} blue2}
+    {color Display {FPS} black}
+  }
+  foreach colcmd \$colorcmds {
+    set val [catch {eval \$colcmd}]
+  }
+}
+vmdrestoremycolors
+END_VMD_SCRIPT
+}
+#####################################################################
+generate_png_from_vmd(){
+	file_name=$1
+	res_x=$2
+	res_y=$3
+	backgroud_color=$4
+
+	base_file_name=${file_name%.*}
+	file_name_vmd_view="$base_file_name.vmd"
+	file_name_for_render="$base_file_name.render"
+	file_name_png="$base_file_name.png"
+	file_name_tga="$base_file_name.tga"
+
+	if [[ -f $file_name_vmd_view ]]
+	then
+		echo " Render of $file_name_vmd_view"
+	else
+		print_vmd_script $file_name $backgroud_color > $file_name_vmd_view
+	fi
+
+	tachyon=$path_of_tachyon
+	vmd_commands="axes location off \n render Tachyon $file_name_for_render"
+	echo -e $vmd_commands | $vmd_line_command -e $file_name_vmd_view  -size $res_x $res_y -dispdev text -eofexit >"/dev/null" 2>"/dev/null" 
+	$tachyon -V -aasamples 5 -rescale_lights 2.0 -add_skylight 0.0 $file_name_for_render -o $file_name_tga >"/dev/null" 
+	convert  $file_name_tga $file_name_png
+	
+	rm $file_name_for_render
+	rm $file_name_tga
+}
+#####################################################################
+#     Corpus of the Script
+#####################################################################
+
+file_name_xyz="${@: -1}"
+
+size_in_x=800
+size_in_y=800
+backgroud_color="white"
+
+#Checks the consistency of the argument list
+if [ $# -lt 1 ]; then
+	echo "Error: input filename missing (Try -h for more information.)."
+	exit 2
+fi
+
+while getopts ":hb:x:y:" opt; do
+  case $opt in
+  	 b)
+	 	backgroud_color="$OPTARG"
+	 	;;
+  	 x)
+	 	size_in_x=$OPTARG
+	 	;;
+	 y)
+	 	size_in_y=$OPTARG
+	 	;;
+    h)
+      help_and_syntax $prog_name
+      exit 0
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+if [ ! -f $file_name_xyz ]; then
+	echo "Error: input filename missing (Try -h for more information.)."
+	exit 2
+fi
+
+generate_png_from_vmd $file_name_xyz $size_in_x $size_in_y $backgroud_color
+	

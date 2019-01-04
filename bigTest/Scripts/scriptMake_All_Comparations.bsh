@@ -135,9 +135,10 @@ inertia_tensor_image(){
       fi
 	fi
    if [[ ! -f "Vectors/${inertia_tensor_name%vmd}png" ]] && [[ -f Vectors/${inertia_tensor_name} ]];then
-      echo "Vectors/${inertia_tensor_name%vmd}png"
       vectors=$(get_vector $file_output_comparations)
-      getPNGofXYZ -x 600 "Vectors/$inertia_tensor_name"
+		cd Vectors
+      bash ../../../Scripts/getPNGofXYZ -x 400 -y 300 "$inertia_tensor_name"
+		cd ..
    fi
 }
 ##############################33
@@ -148,11 +149,11 @@ echo "list of comparations" > list_Comparations.dat
 
 mkdir -p ImagesFromVMD
 
-for i in $(ls *.xyz)
+for i in $(ls *.xyz | sed '/.*_align.xyz/d')
 do
 	echo "$i" >> tmp_list.tmp
    if [[ ! -f ImagesFromVMD/${i%.xyz}.png  ]];then
-      getPNGofXYZ -b white -x 600 -y 600 $i 
+      bash ../../Scripts/getPNGofXYZ -b white -x 600 -y 600 $i 
       mv ${i%.xyz}.png ImagesFromVMD
       mv ${i%.xyz}.vmd ImagesFromVMD
    fi
@@ -191,9 +192,9 @@ do
 
    inertia_tensor_image $file_name_comparation $filenameA $filenameB
    
-   if [ -f  "${short_filenameA}_align.xyz" ] && [ -f "${short_filenameB}_align.xyz" ]; then
-   	rm "${short_filenameA}_align.xyz"
-   	rm "${short_filenameB}_align.xyz"
-   fi
+#   if [ -f  "${short_filenameA}_align.xyz" ] && [ -f "${short_filenameB}_align.xyz" ]; then
+#   	rm "${short_filenameA}_align.xyz"
+#   	rm "${short_filenameB}_align.xyz"
+#   fi
 done 
 

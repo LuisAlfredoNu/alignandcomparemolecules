@@ -4,6 +4,8 @@ mkdir -p Comparations/Outputs
 mkdir -p Comparations/ImagesFromVMD
 mkdir -p Comparations/Vectors
 
+bigTestFolder=$(pwd)
+
 rm Comparations/Outputs/*.alignOutput
 rm Comparations/ImagesFromVMD/*.png
 
@@ -13,7 +15,7 @@ do
 	then
 		cd $i/Opt_Geo_2/
       echo "Run comparations of ${i%"/Opt_Geo_2/"}"
-		~/Programacion/alignandcomparemolecules/testAlfredo/scriptMake_All_Comparations.bsh
+		bash ${bigTestFolder}/Scripts/scriptMake_All_Comparations.bsh
 		cd Comparations/
 		for ii in $(ls *.alignOutput)
 		do
@@ -28,7 +30,10 @@ do
 	fi
 done
 cd Comparations
-~/Programacion/alignandcomparemolecules/testAlfredo/Comparations/translato2Latex.bsh 
-~/Programacion/alignandcomparemolecules/testAlfredo/Comparations/translato2Latex-table.bsh
+bash ${bigTestFolder}/Comparations/translato2Latex.bsh 
+bash ${bigTestFolder}/Comparations/translato2Latex-table.bsh
 mv *.tex ../tex/
+
+cd ../tex/
+pdflatex report_of_comparations.tex
 

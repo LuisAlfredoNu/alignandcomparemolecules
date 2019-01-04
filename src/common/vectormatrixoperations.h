@@ -31,7 +31,7 @@ class VectorAndMatrixOperations{
 		vector<Atom> rotateMolecule2(vector<vector<double>>,vector<Atom> molecule);
 		vector<Atom> inversionOfCoordinates(vector<Atom> molecule);
 		bool compareCoordinates(vector<Atom>,vector<Atom>);
-		bool permutationBequalA(vector<Atom>,vector<Atom>);
+		bool permutationBequalA(vector<Atom>,vector<Atom> &);
 		
 		vector<vector<double>> changeBasisEigenVec(vector<vector<double>>,vector<vector<double>>);
 		

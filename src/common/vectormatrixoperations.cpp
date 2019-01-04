@@ -212,7 +212,7 @@ bool VectorAndMatrixOperations::compareCoordinates(vector<Atom> molecule_A, vect
 	return is_equal;
 }
 /***************************************************************************************/
-bool VectorAndMatrixOperations::permutationBequalA(vector<Atom> molecule_A_align, vector<Atom> molecule_B_align){
+bool VectorAndMatrixOperations::permutationBequalA(vector<Atom> molecule_A_align, vector<Atom>& molecule_B_align){
 
 	ReadXYZFile reader;
 
