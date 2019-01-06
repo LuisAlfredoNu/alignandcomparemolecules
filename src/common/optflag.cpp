@@ -21,6 +21,7 @@ OptFlags::OptFlags()	{
 	save_output_coordenates = false;
 	display_rms = false;
    quiet_version = false;
+   run_big_test = false;
 };
 /***************************************************************************************/ 
 void OptFlags::getOptions(int &argc, char** &argv){
@@ -53,6 +54,9 @@ void OptFlags::getOptions(int &argc, char** &argv){
 				case 'r':
 					display_rms = true;
 					break;
+				case 'B':
+					run_big_test = true;
+					break;
             case 'q':
                quiet_version = true;
                break;
@@ -73,6 +77,7 @@ void OptFlags::getOptions(int &argc, char** &argv){
       display_output_coordenates = false;
       save_output_coordenates = false;
       display_rms = false;
+      run_big_test = false;
    }
 }
 /***************************************************************************************/  

@@ -87,18 +87,18 @@ int main (int argc, char *argv[]) {
                   result = "Enantiomers ";
                }
             }
-#if DEBUG
-            inertiatensor_molecula_A = molecularOP.inertiaTensor(molecule_A_align);
-            inertiatensor_molecula_B = molecularOP.inertiaTensor(molecule_B_align);
-            matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
-            matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
+            if (optflags.run_big_test){
+               inertiatensor_molecula_A = molecularOP.inertiaTensor(molecule_A_align);
+               inertiatensor_molecula_B = molecularOP.inertiaTensor(molecule_B_align);
+               matrixOP.eigenVectorValues(inertiatensor_molecula_A,diagmatrix_molecule_A,eigvectors_molecule_A,eigvalues_molecule_A);
+               matrixOP.eigenVectorValues(inertiatensor_molecula_B,diagmatrix_molecule_B,eigvectors_molecule_B,eigvalues_molecule_B);
 
-            if(optflags.display_inertia_tensor)
-               output.displayInertiaTensorEigenVecEigenVal(inertiatensor_molecula_A,inertiatensor_molecula_B,eigvectors_molecule_A,eigvectors_molecule_B,eigvalues_molecule_A,eigvalues_molecule_B);
+               if(optflags.display_inertia_tensor)
+                  output.displayInertiaTensorEigenVecEigenVal(inertiatensor_molecula_A,inertiatensor_molecula_B,eigvectors_molecule_A,eigvectors_molecule_B,eigvalues_molecule_A,eigvalues_molecule_B);
 
-            if(optflags.display_large_eigenvector)
-               output.displayLargeEigenVectors(optflags.vector_increase_length,eigvectors_molecule_A,eigvectors_molecule_B);
-#endif // DEBUG
+               if(optflags.display_large_eigenvector)
+                  output.displayLargeEigenVectors(optflags.vector_increase_length,eigvectors_molecule_A,eigvectors_molecule_B);
+            }
             if(optflags.display_rms)
                RMSD = matrixOP.RMS4Comparations(molecule_A_align,molecule_B_align);
 
