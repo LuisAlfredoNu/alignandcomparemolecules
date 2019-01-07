@@ -72,7 +72,8 @@ alignandcomparemolecules/bigTest/Scripts/getPNGofXYZ
 And run the script 
 
 ~~~~~~~~~~
-$alignandcomparemolecules/bigTest/scriptBig_Test.bsh
+$cd alignandcomparemolecules/bigTest
+$./scriptBig_Test.bsh
 ~~~~~~~~~~
 
 The report are in the following folder 
@@ -82,17 +83,22 @@ alignandcomparemolecules/bigTest/tex/report_of_comparations.pdf
 ~~~~~~~~~~
 # Updating the program (git instructions)
 
-If you only need to get the latest version of demdysigma2d, and you are not using personal modifications to the source, in the local main directory (using the above example should be ```/local/path/to/alignandcomparemolecules```):
+If you only need to get the latest version of alignandcomparemolecules, and you are not using personal modifications to the source, in the local main directory (using the above example should be ```/local/path/to/alignandcomparemolecules```):
 
-   ~~~~~~~~~~
-   $ git pull
-   $ cd src
-   $ make update
-   $ sudo make install
-   ~~~~~~~~~~
+~~~~~~~~~~
+$git pull
+$cd src
+$make update
+$sudo make install
+~~~~~~~~~~
 
 
-# Is there a manual?
+# Instructions
+Instructions of how use the program, type:
+
+~~~~~~~~~~
+$alignandcomparemolecules -h
+~~~~~~~~~~
 
 #Developer instructions
 
