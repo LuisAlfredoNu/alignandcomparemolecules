@@ -16,7 +16,7 @@ display aodirect 0.300000
 display dof off
 display dof_fnumber 64.000000
 display dof_focaldist 0.700000
-mol new ../3NFAACg.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol new ../3NFAACg_align.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
 mol delrep 0 top
 mol representation CPK 1.000000 0.400000 150.000000 150.000000
 mol color Name
@@ -32,9 +32,9 @@ draw color red
 draw cylinder {0 0 0} {-0.00408884 -2.99995 0.0161359} radius 0.05
 draw color green
 draw cylinder {0 0 0} {-0.00182579 0.0161384 2.99996} radius 0.05
-mol rename molecule_A_3NFAACg.xyz
+mol rename molecule_A_3NFAACg_align.xyz
 # done with molecule 0
-mol new ../3NFAACi.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol new ../3NFAACi_align.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
 mol delrep 0 top
 mol representation CPK 1.000000 0.400000 150.000000 150.000000
 mol color Name
@@ -50,7 +50,7 @@ draw color red3
 draw cylinder {0 0 0} {0.00857523 -2.99996 0.0126659} radius 0.05
 draw color green3
 draw cylinder {0 0 0} {0.00984231 0.012694 2.99996} radius 0.05
-mol rename molecule_B_3NFAACi.xyz
+mol rename molecule_B_3NFAACi_align.xyz
 # done with molecule 0
 proc vmdrestoremycolors {} {
 	set colorcmds {

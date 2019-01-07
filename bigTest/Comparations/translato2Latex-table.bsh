@@ -105,9 +105,9 @@ progress_bar(){
 
    progress=$(( (n_data*100)/total_data ))
 
-   printf "[%-$((weight+2))s]%s  %s/%s \r" "$(printf "%0.s*" $(seq 0 $((progress/2))))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")" " $progress%" "$n_data" "$total_data" 
+   printf "[%-$((weight+3))s]%s  %s/%s \r" "$(printf "%0.s*" $(seq 0 $((progress/2))))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")" " $progress%" "$n_data" "$total_data" 
    if (( n_data == total_data ));then
-      printf "[%-$((weight+2))s]\n" "$(printf "%0.s*" $(seq 0 $weight))"
+      printf "[%-$((weight+1))s]\n" "$(printf "%0.s*" $(seq 0 $weight))"
    fi
 }
 join_all(){
@@ -115,7 +115,7 @@ join_all(){
    i=$2
 
    if (( number_of_comparations%7==1 ));then
-      echo -e "\n\\\vtab[-2cm]\n\\\tab[-2cm]\n\\\begin{tabular}{c|m{8cm}|c|c}\n\# & Moléculas & Restultado esperado & Resultado programa \\\\\\\\\\\\\ \hline\hline"
+      echo -e "\n\\\vtab[-2cm]\n\\\tab[-2cm]\n\\\begin{tabular}{c|m{8cm}|c|c}\n\# & Moléculas & Restultado esperado & Resultado programa \\\\\\ \hline\hline"
    fi
 
    echo "\multirow{4}{*}{\tab[2mm] $number_of_comparations \tab[2mm]} & $(get_name_1 $i) &" 

@@ -16,7 +16,7 @@ display aodirect 0.300000
 display dof off
 display dof_fnumber 64.000000
 display dof_focaldist 0.700000
-mol new s-2-chlorobutane_out_G09.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol new ../s-2-chlorobutane_out_G09.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
 mol delrep 0 top
 mol representation CPK 1.000000 0.400000 150.000000 150.000000
 mol color Name
@@ -26,7 +26,7 @@ mol addrep top
 mol scaleminmax top 0 0.000000 0.000000
 mol smoothrep top 0 0
 mol drawframes top 0 {now}
-mol rename s-2-chlorobutane_out_G09.xyz
+mol rename ../s-2-chlorobutane_out_G09.xyz
 # done with molecule 0
 proc vmdrestoremycolors {} {
   set colorcmds {

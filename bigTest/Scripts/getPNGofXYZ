@@ -125,6 +125,7 @@ generate_png_from_vmd(){
 		echo " Render of $file_name_vmd_view"
 	else
 		print_vmd_script $file_name $backgroud_color > $file_name_vmd_view
+		echo " VMD and Render of $file_name_vmd_view"
 	fi
 
 	tachyon=$path_of_tachyon
