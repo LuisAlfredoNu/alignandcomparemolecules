@@ -9,7 +9,7 @@ bigTestFolder=$(pwd)
 rm Comparations/Outputs/*.alignOutput
 rm Comparations/ImagesFromVMD/*.png
 
-for i in $(ls)
+for i in $(ls -v1)
 do
 	if [[ -d "$i/Opt_Geo_2" ]]
 	then
@@ -17,7 +17,7 @@ do
       echo "Run comparations of ${i%"/Opt_Geo_2/"}"
 		bash ${bigTestFolder}/Scripts/scriptMake_All_Comparations.bsh
 		cd Comparations/
-		for ii in $(ls *.alignOutput)
+		for ii in $(ls -v1 *.alignOutput)
 		do
 			base_file_name=${ii#comparations_}
 			cp $ii ../../../Comparations/Outputs/"comparations_"$i"_folder_"$base_file_name

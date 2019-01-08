@@ -241,7 +241,7 @@ number_of_comparation=1
 total_of_comparation=$(ls *.alignOutput|wc -l)
 echo "Start creating the report"
 echo "% All results" > allResult.tex
-for i in $(ls *.alignOutput)
+for i in $(ls -v1 *.alignOutput)
 do
 	name_file_corpus=$i
 	result=$(find_result $name_file_corpus)
