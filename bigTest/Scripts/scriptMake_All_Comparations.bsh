@@ -176,7 +176,7 @@ do
 #      mv ${i%.xyz}.vmd ImagesFromVMD
    fi
 done
-
+echo
 n_comparations=$(cat tmp_list.tmp|wc -l)
 for ((ii=$n_comparations;ii>0;ii--))
 do
@@ -230,5 +230,6 @@ do
 #   	rm "${short_filenameA}_align.xyz"
 #   	rm "${short_filenameB}_align.xyz"
 #   fi
-done 
+done
+echo
 
