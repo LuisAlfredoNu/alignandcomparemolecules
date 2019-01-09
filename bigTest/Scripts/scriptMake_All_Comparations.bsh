@@ -144,10 +144,13 @@ inertia_tensor_image(){
 ##############################################
 progress_bar(){   
    n_data=$1   
-   total_data=$2   
+   total_data=$2  
+
    weight=50   
    pb_spinner="/-\|"   
+   
    progress=$(( (n_data*100)/total_data ))   
+   
    printf "[%-$((weight+3))s]%s  %s/%s \r" "$(printf "%0.s*" $(seq 0 $((progress/2))))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")" " $progress%" "$n_data" "$total_data"   
    if (( n_data == total_data ));then      
       printf "[%-$((weight+1))s]\n" "$(printf "%0.s*" $(seq 0 $((weight))))"   
@@ -162,7 +165,7 @@ echo "list of comparations" > list_Comparations.dat
 
 mkdir -p ImagesFromVMD
 
-for i in $(ls *.xyz | sed '/.*_align.xyz/d')
+for i in $(ls -v1 *.xyz | sed '/.*_align.xyz/d')
 do
 	echo "$i" >> tmp_list.tmp
    if [[ ! -f ImagesFromVMD/${i%.xyz}.png  ]];then
