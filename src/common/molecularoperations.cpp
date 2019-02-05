@@ -81,6 +81,23 @@ vector<Atom> MolecularOperations::moveCM2Origin(vector<Atom> molecule){
 	return molecule_inCM;
 }
 /***************************************************************************************/ 
+vector<Atom> MolecularOperations::moveMolecule(vector<double> deltas,vector<Atom> molecule){
+	
+	vector<Atom> molecule_inCM (molecule.size(),Atom());
+	vector<double> new_coordinates (3,0.0);
+
+	// Copy all info the initial array of molecule
+	molecule_inCM = molecule;
+
+	for(unsigned int i=0;i < molecule.size();++i){
+		for(int xyz=0;xyz<3;++xyz){
+			new_coordinates[xyz] = molecule[i].atomCoordinates[xyz] + deltas[xyz];
+		}
+		molecule_inCM[i].setCoordinates(new_coordinates);
+	}
+	return molecule_inCM;
+}
+/***************************************************************************************/ 
 /***************************************************************************************/ 
 bool MolecularOperations::haveSameTypeNumAtoms(vector<Atom> moleculeA, vector<Atom> moleculeB){
 

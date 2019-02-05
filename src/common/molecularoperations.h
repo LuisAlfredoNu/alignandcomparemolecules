@@ -29,6 +29,7 @@ class MolecularOperations{
 		vector<double> massCenter(vector<Atom>);
 		vector<vector<double>> inertiaTensor(vector<Atom>);
 		vector<Atom> moveCM2Origin(vector<Atom>);
+		vector<Atom> moveMolecule(vector<double>,vector<Atom>);
 		bool haveSameTypeNumAtoms(vector<Atom>,vector<Atom>);
 	/***************************************************************************************/ 
 	/***************************************************************************************/ 

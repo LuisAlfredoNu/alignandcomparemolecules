@@ -45,7 +45,7 @@ int main (int argc, char *argv[]) {
 
 			int decision = 0;
 			cout << "What kind of operation want?" << endl;
-			cout << "Rotation tap 1, Invertion tap 2" << endl;
+			cout << "Rotation tap 1, Invertion tap 2, Translate tap 3" << endl;
 			cin >> decision;
 
 			switch(decision){
@@ -73,10 +73,19 @@ int main (int argc, char *argv[]) {
 					cout << endl << "Coordenates of molecule after rotation "<< endl;
 					reader.sortingAtoms(molecule_B_operate);
 					output.displayXYZFile(argv[1],molecule_B_operate);
-					string filaname = argv[1];
-					filaname += "_operated"; 
+
+					string filename = argv[1];
+					string ofilename = filename.substr(0,(filename.size()-4));
+					ofilename += "rt_rx_";
+					ofilename += std::to_string(phi);
+					ofilename += "_ry_";
+					ofilename += std::to_string(theta);
+					ofilename += "_rz_";
+					ofilename += std::to_string(psi);
+					ofilename += ".xyz";
+
 					string comment = "Molecule rotated";
-					output.saveXYZFile(filaname,comment,molecule_B_operate);
+					output.saveXYZFile(ofilename,comment,molecule_B_operate);
 		 
 				}break;
 				case 2:{
@@ -94,6 +103,45 @@ int main (int argc, char *argv[]) {
 					filaname += "_invertion.xyz"; 
 					string comment = "Molecule invertion";
 					output.saveXYZFile(filaname,comment,molecule_B_operate);
+
+				}break;
+				case 3:{
+					double Dx; 
+					double Dy; 
+					double Dz; 
+					vector<double> deltas(3,0.0);
+
+					cout << "Amount that is going to move " << endl << "move at x = " ;
+					cin >> Dx;
+					cout << "move at y = " ;
+					cin >> Dy;
+					cout << "move at z = ";
+					cin >> Dz;
+					deltas[0] = Dx;
+					deltas[1] = Dy;
+					deltas[2] = Dz;
+
+					MolecularOperations molecularOP;
+					
+					molecule_B_operate = molecularOP.moveMolecule(deltas, molecule_A);
+
+					cout << endl << "Coordenates of inital molecule "<< endl;
+					output.displayXYZFile(argv[1],molecule_B_operate);
+
+					cout << endl << "Coordenates of molecule after rotation "<< endl;
+					reader.sortingAtoms(molecule_B_operate);
+					output.displayXYZFile(argv[1],molecule_B_operate);
+					string filename = argv[1];
+					string ofilename = filename.substr(0,(filename.size()-4));
+					ofilename += "_mv_tx_";
+					ofilename += std::to_string(deltas[0]);
+					ofilename += "_ty_";
+					ofilename += std::to_string(deltas[1]);
+					ofilename += "_tz_";
+					ofilename += std::to_string(deltas[2]);
+					ofilename += ".xyz"; 
+					string comment = "Molecule translate";
+					output.saveXYZFile(ofilename,comment,molecule_B_operate);
 
 				}break;
 				default:
