@@ -63,16 +63,16 @@ matrix3x3(){
 ##############################################
 latex_title(){
 name_file_latex=$1
-number_of_comparation=$2
+number_of_comparison=$2
 
 tmptitle=${name_file_latex%*_folder*}
-title=${tmptitle#comparations_*}
+title=${tmptitle#comparisons_*}
 
 cat << LATEX_TITLE
 
 \vtab[-3cm]
 \begin{center}
-{\large $title \tab Número $number_of_comparation}
+{\large $title \tab Número $number_of_comparison}
 \end{center}
 \begin{multicols}{2}
 \begin{center}
@@ -89,8 +89,8 @@ file_name_base=${name_file_molecule#*folder_*}
 if [ $molecule_label == "A" ]
 then
 	tmpname=${file_name_base%*-with-*}
-	name_molecule=$(echo ${tmpname#comparation_*}|sed 's/\_/\\\_/g')
-	image_molecule="${tmpname#comparation_*}.png"
+	name_molecule=$(echo ${tmpname#comparison_*}|sed 's/\_/\\\_/g')
+	image_molecule="${tmpname#comparison_*}.png"
 elif [ $molecule_label == "B" ]
 then
 	tmpname=${file_name_base#*-with-*}
@@ -103,7 +103,7 @@ cat << LATEX_MOLECULE_01
 Molecule $molecule_label \\
 $name_molecule
 
-\includegraphics[width=6cm]{../Comparations/ImagesFromVMD/$image_molecule}
+\includegraphics[width=6cm]{../Comparisons/ImagesFromVMD/$image_molecule}
 
 Inertia Tensor - Molecule $molecule_label \\\\
 LATEX_MOLECULE_01
@@ -132,8 +132,8 @@ file_name_base=${name_file_molecule#*folder_*}
 if [ $molecule_label == "A" ]
 then
 	tmpname=${file_name_base%*-with-*}
-	name_molecule=$(echo ${tmpname#comparation_*}|sed 's/\_/\\\_/g')
-	image_molecule="${tmpname#comparation_*}.png"
+	name_molecule=$(echo ${tmpname#comparison_*}|sed 's/\_/\\\_/g')
+	image_molecule="${tmpname#comparison_*}.png"
 elif [ $molecule_label == "B" ]
 then
 	tmpname=${file_name_base#*-with-*}
@@ -149,7 +149,7 @@ else
 cat << LATEX_MOLECULE_01
 Molecule $molecule_label \\\\ 
 $name_molecule
-\includegraphics[width=8cm]{../Comparations/ImagesFromVMD/$image_molecule}
+\includegraphics[width=8cm]{../Comparisons/ImagesFromVMD/$image_molecule}
 \\\\
 \vtab
 
@@ -162,7 +162,7 @@ name_file_tail=$1
 result_tail=$2
 	
    tmpname=${name_file_tail%*-with-*}
-	name_A="${tmpname#*folder_comparation_*}"
+	name_A="${tmpname#*folder_comparison_*}"
 	
    tmpname=${file_name_base#*-with-*}
 	name_B="${tmpname%.alignOutput}"
@@ -179,7 +179,7 @@ cat << LATEX_TAIL
 \end{center}
 &
 \begin{center}
-\includegraphics[height=6.5cm]{../Comparations/Vectors/inertia_tensor_of_${name_A}_and_${name_B}.png}
+\includegraphics[height=6.5cm]{../Comparisons/Vectors/inertia_tensor_of_${name_A}_and_${name_B}.png}
 \end{center}
 \end{tabular}
 
@@ -214,10 +214,10 @@ progress_bar(){
 ##############################################
 join_all(){
    name_file_join=$1
-   number_of_comparation_join=$2
+   number_of_comparison_join=$2
    result_join=$3
 
-	latex_title $name_file_join $number_of_comparation_join
+	latex_title $name_file_join $number_of_comparison_join
 	if [ ! $result_join == "Different" ]
 	then 
 		latex_molecule_matrix $name_file_join "A"
@@ -237,8 +237,8 @@ join_all(){
 ##############################################
 cd Outputs
 
-number_of_comparation=1
-total_of_comparation=$(ls *.alignOutput|wc -l)
+number_of_comparison=1
+total_of_comparison=$(ls *.alignOutput|wc -l)
 echo "Start creating the report"
 echo "% All results" > allResult.tex
 for i in $(ls -v1 *.alignOutput)
@@ -246,10 +246,10 @@ do
 	name_file_corpus=$i
 	result=$(find_result $name_file_corpus)
 
-   join_all $name_file_corpus $number_of_comparation $result >> allResult.tex
+   join_all $name_file_corpus $number_of_comparison $result >> allResult.tex
 
-   progress_bar $number_of_comparation $total_of_comparation
-	number_of_comparation=$((number_of_comparation+1))
+   progress_bar $number_of_comparison $total_of_comparison
+	number_of_comparison=$((number_of_comparison+1))
 done
 echo -e "\nFinish report"
 mv allResult.tex ..

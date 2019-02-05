@@ -1,28 +1,28 @@
 #!/bin/bash
 
 get_name_1(){
-	name_comparation=$1
-	file_tmp=${name_comparation#*folder_comparation_*}
+	name_comparison=$1
+	file_tmp=${name_comparison#*folder_comparison_*}
 	file_tmp_2=${file_tmp%*-with-*}
 	echo $file_tmp_2|sed 's/\_/\\\_/g'
 }
 get_name_2(){
-	name_comparation=$1
-	file_tmp=${name_comparation#*folder_comparation_*}
+	name_comparison=$1
+	file_tmp=${name_comparison#*folder_comparison_*}
 	file_tmp_2=${file_tmp#*-with-*}
 	echo ${file_tmp_2%*.alig*}|sed 's/\_/\\\_/g'
 }
 get_path_1(){
-	name_comparation=$1
-	folder=$(echo ${name_comparation%*folder*}  | awk -F "_" '{print "../"$2"/Opt_Geo_2/"}')
-	file_tmp=${name_comparation#*folder_comparation_*}
+	name_comparison=$1
+	folder=$(echo ${name_comparison%*folder*}  | awk -F "_" '{print "../"$2"/Opt_Geo_2/"}')
+	file_tmp=${name_comparison#*folder_comparison_*}
 	file_tmp_2=${file_tmp%*-with-*}
 	echo $folder${file_tmp_2%*_out_G09*}".log"
 }
 get_path_2(){
-	name_comparation=$1
-	folder=$(echo ${name_comparation%*folder*}  | awk -F "_" '{print "../"$2"/Opt_Geo_2/"}')
-	file_tmp=${name_comparation#*folder_comparation_*}
+	name_comparison=$1
+	folder=$(echo ${name_comparison%*folder*}  | awk -F "_" '{print "../"$2"/Opt_Geo_2/"}')
+	file_tmp=${name_comparison#*folder_comparison_*}
 	file_tmp_2=${file_tmp#*-with-*}
 	echo $folder${file_tmp_2%*_out_G09*}".log"
 }
@@ -50,16 +50,16 @@ extract_result_align(){
 	grep -n "Result" $file_alignOutput | awk '{print $4}'
 }
 manual_result(){
-	file_comparation=$1
-	file_manual_comparation="../ManualComparations/$file_comparation.manual"
-	if [[ -f $file_manual_comparation ]];then
-		manual_result_out=$(cat $file_manual_comparation)
+	file_comparison=$1
+	file_manual_comparison="../ManualComparisons/$file_comparison.manual"
+	if [[ -f $file_manual_comparison ]];then
+		manual_result_out=$(cat $file_manual_comparison)
 	else
-		echo "Without comparation" > $file_manual_comparation
-		manual_result_out=$(cat $file_manual_comparation)
+		echo "Without comparison" > $file_manual_comparison
+		manual_result_out=$(cat $file_manual_comparison)
 	fi
 
-	program_result=$(extract_result_align $file_comparation)
+	program_result=$(extract_result_align $file_comparison)
 
 	if [[ $manual_result_out == $program_result ]];then
 
@@ -111,14 +111,14 @@ progress_bar(){
    fi
 }
 join_all(){
-   number_of_comparations=$1
+   number_of_comparisons=$1
    i=$2
 
-   if (( number_of_comparations%7==1 ));then
+   if (( number_of_comparisons%7==1 ));then
       echo -e "\n\\\vtab[-2cm]\n\\\tab[-2cm]\n\\\begin{tabular}{c|m{8cm}|c|c}\n\# & Moléculas & Restultado esperado & Resultado programa \\\\\\ \hline\hline"
    fi
 
-   echo "\multirow{4}{*}{\tab[2mm] $number_of_comparations \tab[2mm]} & $(get_name_1 $i) &" 
+   echo "\multirow{4}{*}{\tab[2mm] $number_of_comparisons \tab[2mm]} & $(get_name_1 $i) &" 
    echo $(manual_result $i) 
    echo "\\\\" 
    echo "& E = $(extract_SCF_from_log $(get_path_1 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_1 $i))   &    &  \\\\ \cline{2-2}"
@@ -127,7 +127,7 @@ join_all(){
    echo "\\\\"
    echo "& E = $(extract_SCF_from_log $(get_path_2 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_2 $i))   &    \multicolumn{2}{c}{}  \\\\ \hline"
 
-   if (( number_of_comparations%7==0 ));then
+   if (( number_of_comparisons%7==0 ));then
       echo -e "\\\end{tabular}\n\\\newpage"
    fi
 }
@@ -136,18 +136,18 @@ join_all(){
 #-----------------------------------------------------------------------------#
 cd Outputs
 
-number_of_comparations_courpus=1
-total_of_comparations_courpus=$(ls *.alignOutput|wc -l)
+number_of_comparisons_courpus=1
+total_of_comparisons_courpus=$(ls *.alignOutput|wc -l)
 
-echo "Start with table of comparation with manual comparations"
+echo "Start with table of comparison with manual comparisons"
 echo " %%%%%%%%%%%%%%%%%%%%" > table_allResult.tex
 
-for comparation_name in $(ls *.alignOutput)
+for comparison_name in $(ls *.alignOutput)
 do
-   join_all $number_of_comparations_courpus $comparation_name >> table_allResult.tex
+   join_all $number_of_comparisons_courpus $comparison_name >> table_allResult.tex
 
-   progress_bar $number_of_comparations_courpus $total_of_comparations_courpus
-   number_of_comparations_courpus=$((number_of_comparations_courpus+1))
+   progress_bar $number_of_comparisons_courpus $total_of_comparisons_courpus
+   number_of_comparisons_courpus=$((number_of_comparisons_courpus+1))
 done
 
 echo "\end{tabular}" >> table_allResult.tex

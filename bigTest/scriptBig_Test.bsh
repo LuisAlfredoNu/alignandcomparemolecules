@@ -1,39 +1,39 @@
 #!/bin/bash
 
-mkdir -p Comparations/Outputs
-mkdir -p Comparations/ImagesFromVMD
-mkdir -p Comparations/Vectors
+mkdir -p Comparisons/Outputs
+mkdir -p Comparisons/ImagesFromVMD
+mkdir -p Comparisons/Vectors
 
 bigTestFolder=$(pwd)
 
-rm Comparations/Outputs/*.alignOutput
-rm Comparations/ImagesFromVMD/*.png
+rm Comparisons/Outputs/*.alignOutput
+rm Comparisons/ImagesFromVMD/*.png
 
 for i in $(ls -v1)
 do
 	if [[ -d "$i/Opt_Geo_2" ]]
 	then
 		cd $i/Opt_Geo_2/
-      echo "Run comparations of ${i%"/Opt_Geo_2/"}"
-		bash ${bigTestFolder}/Scripts/scriptMake_All_Comparations.bsh
-		cd Comparations/
+      echo "Run comparisons of ${i%"/Opt_Geo_2/"}"
+		bash ${bigTestFolder}/Scripts/scriptMake_All_Comparisons.bsh
+		cd Comparisons/
 		for ii in $(ls -v1 *.alignOutput)
 		do
-			base_file_name=${ii#comparations_}
-			cp $ii ../../../Comparations/Outputs/"comparations_"$i"_folder_"$base_file_name
+			base_file_name=${ii#comparisons_}
+			cp $ii ../../../Comparisons/Outputs/"comparisons_"$i"_folder_"$base_file_name
 		done
 		cd ..
-		cp ImagesFromVMD/*.png ../../Comparations/ImagesFromVMD/.
-      cp Vectors/*.png ../../Comparations/Vectors/.
+		cp ImagesFromVMD/*.png ../../Comparisons/ImagesFromVMD/.
+      cp Vectors/*.png ../../Comparisons/Vectors/.
 
 		cd ../..
 	fi
 done
-cd Comparations
-bash ${bigTestFolder}/Comparations/translato2Latex.bsh 
-bash ${bigTestFolder}/Comparations/translato2Latex-table.bsh
+cd Comparisons
+bash ${bigTestFolder}/Comparisons/translato2Latex.bsh 
+bash ${bigTestFolder}/Comparisons/translato2Latex-table.bsh
 mv *.tex ../tex/
 
 cd ../tex/
-pdflatex report_of_comparations.tex
+pdflatex report_of_comparisons.tex
 

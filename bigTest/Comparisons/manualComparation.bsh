@@ -1,9 +1,9 @@
 #!/bin/bash
 
-cd ManualComparations 
+cd ManualComparisons 
 for i in $(ls *.manual)
 do
-	if [[ $(cat $i) = "Without comparation" ]] || [[ $(cat $i) = "No idea" ]];then
+	if [[ $(cat $i) = "Without comparisons" ]] || [[ $(cat $i) = "No idea" ]];then
 		result=0
 		echo;echo;
 		echo $i
