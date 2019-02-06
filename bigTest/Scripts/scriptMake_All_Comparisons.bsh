@@ -203,15 +203,15 @@ do
 	filenameB=$(echo $line | awk '{print $2}')
 	short_filenameB=${filenameB%.xyz}
 
-	file_name_comparation="Comparisons/comparation_$short_filenameA-with-$short_filenameB.alignOutput"
-	../../../src/alignandcomparemolecule/alignandcomparemolecule.x -B -m -l 2.0 -c -s -r $line > $file_name_comparation
+	file_name_comparison="Comparisons/comparison_$short_filenameA-with-$short_filenameB.alignOutput"
+	../../../src/alignandcomparemolecule/alignandcomparemolecule.x -B -m -l 2.0 -c -s -r $line > $file_name_comparison
 	
-	error_of_comparation=$?
+	error_of_comparison=$?
 
-	if (( $error_of_comparation ))
+	if (( $error_of_comparison ))
 	then
-		echo "Error in comparation $file_name_comparation"
-		rm $file_name_comparation
+		echo "Error in comparison $file_name_comparison"
+		rm $file_name_comparison
 	fi
 
    progress_bar $number_comparisons $total_comparisons
@@ -225,9 +225,9 @@ do
 	filenameB=$(echo $line | awk '{print $2}')
 	short_filenameB=${filenameB%.xyz}
 
-	file_name_comparation="Comparisons/comparation_$short_filenameA-with-$short_filenameB.alignOutput"
+	file_name_comparison="Comparisons/comparison_$short_filenameA-with-$short_filenameB.alignOutput"
 
-   inertia_tensor_image $file_name_comparation $filenameA $filenameB
+   inertia_tensor_image $file_name_comparison $filenameA $filenameB
    
 #   if [ -f  "${short_filenameA}_align.xyz" ] && [ -f "${short_filenameB}_align.xyz" ]; then
 #   	rm "${short_filenameA}_align.xyz"
