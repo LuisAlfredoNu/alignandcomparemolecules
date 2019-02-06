@@ -137,7 +137,7 @@ inertia_tensor_image(){
    if [[ ! -f "Vectors/${inertia_tensor_name%vmd}png" ]] && [[ -f Vectors/${inertia_tensor_name} ]];then
       vectors=$(get_vector $file_output_comparisons)
 		cd Vectors
-      bash ../../../Scripts/getPNGofXYZ -x 400 -y 300 "$inertia_tensor_name"
+      bash ../../../Scripts/getPNGofXYZ -x 600 -y 450 "$inertia_tensor_name"
 		cd ..
    fi
 }
@@ -191,7 +191,7 @@ rm tmp_list.tmp
 
 mkdir -p Comparisons
 mkdir -p Vectors
-rm Comparisons/*
+rm Comparisons/* 2>/dev/null
 
 total_comparisons=$(tail -n +2 list_Comparisons.dat | wc -l)
 number_comparisons=1

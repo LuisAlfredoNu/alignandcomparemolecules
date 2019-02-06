@@ -6,8 +6,8 @@ mkdir -p Comparisons/Vectors
 
 bigTestFolder=$(pwd)
 
-rm Comparisons/Outputs/*.alignOutput
-rm Comparisons/ImagesFromVMD/*.png
+rm Comparisons/Outputs/*.alignOutput 2>/dev/null
+rm Comparisons/ImagesFromVMD/*.png 2>/dev/null
 
 for i in $(ls -v1)
 do
