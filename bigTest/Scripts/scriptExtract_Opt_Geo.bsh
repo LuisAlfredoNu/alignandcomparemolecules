@@ -1,0 +1,14 @@
+#!/bin/bash
+
+for i in $(ls)
+do
+	if [[ -d "$i/Opt_Geo_2" ]]
+	then
+		cd $i/Opt_Geo_2
+		for ii in $(ls *.log)
+		do
+			extractcartesian2XYZ $ii
+		done
+		cd ../..
+	fi
+done

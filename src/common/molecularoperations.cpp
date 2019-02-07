@@ -53,6 +53,9 @@ vector<vector<double>> MolecularOperations::inertiaTensor(vector<Atom> molecule)
 					matrix[i][j] += molecule[im].atomWeight * molecule[im].atomCoordinates[i] * molecule[im].atomCoordinates[j] ;
 				matrix[i][j] = -matrix[i][j];
 			}
+			if(matrix[i][j]< 1.0e-12 && matrix[i][j] > -1.0e-12){
+				matrix[i][j] = 0.0e-16; 
+			}
 		}
 	}
 	return matrix;
@@ -63,6 +66,8 @@ vector<Atom> MolecularOperations::moveCM2Origin(vector<Atom> molecule){
 	
 	vector<Atom> molecule_inCM (molecule.size(),Atom());
 	vector<double> new_coordinates (3,0.0);
+
+	centerMass = massCenter(molecule);
 	
 	// Copy all info the initial array of molecule
 	molecule_inCM = molecule;
@@ -76,6 +81,44 @@ vector<Atom> MolecularOperations::moveCM2Origin(vector<Atom> molecule){
 	return molecule_inCM;
 }
 /***************************************************************************************/ 
+vector<Atom> MolecularOperations::moveMolecule(vector<double> deltas,vector<Atom> molecule){
+	
+	vector<Atom> molecule_inCM (molecule.size(),Atom());
+	vector<double> new_coordinates (3,0.0);
+
+	// Copy all info the initial array of molecule
+	molecule_inCM = molecule;
+
+	for(unsigned int i=0;i < molecule.size();++i){
+		for(int xyz=0;xyz<3;++xyz){
+			new_coordinates[xyz] = molecule[i].atomCoordinates[xyz] + deltas[xyz];
+		}
+		molecule_inCM[i].setCoordinates(new_coordinates);
+	}
+	return molecule_inCM;
+}
 /***************************************************************************************/ 
+/***************************************************************************************/ 
+bool MolecularOperations::haveSameTypeNumAtoms(vector<Atom> moleculeA, vector<Atom> moleculeB){
+
+	bool have_same = true;
+
+	vector<int> type_num_atoms_moleculeA (108,0.0);
+	vector<int> type_num_atoms_moleculeB (108,0.0);
+
+	if(moleculeA.size() == moleculeB.size()){
+		for(unsigned int i=0;i<moleculeA.size();i++){
+			type_num_atoms_moleculeA[moleculeA[i].atomNumber] += 1;
+			type_num_atoms_moleculeB[moleculeB[i].atomNumber] += 1;
+		}
+		for(int i=0;i<108;i++){
+			if(type_num_atoms_moleculeA[i] != type_num_atoms_moleculeB[i]) 
+				have_same = false;
+		}
+	}else{
+		have_same = false;
+	}
+	return have_same;
+}
 #endif // _MOLECULAR_OPERATIONS_CPP_
 

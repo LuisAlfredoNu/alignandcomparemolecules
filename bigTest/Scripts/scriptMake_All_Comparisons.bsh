@@ -1,0 +1,238 @@
+#!/bin/bash
+
+
+##############################33
+get_vector(){
+   file_output=$1
+      
+   number_line=$(grep -n "New lenght of EinVec" $file_output |tail -n 1| sed 's;\([0-9]\):\(.*\);\1;')
+
+
+	vector1=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $2}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $3}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $4}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $7}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $8}' $file_output | tr "\n" " ")
+	vector1+=$(awk -v firtsline=$number_line '{if( firtsline < NR && NR <= firtsline + 3) print $9}' $file_output | tr "\n" " ")
+
+	vector1+=$(grep -n "Result" $file_output | awk '{print $4}')
+
+	echo $vector1
+}
+##############################33
+print_vmd_script(){
+
+file_name_molecule_A=$1
+file_name_molecule_B=$2
+all_vectors=$3
+
+if [ -f  "${file_name_molecule_A%.xyz}_align.xyz" ] && [ -f "${file_name_molecule_B%.xyz}_align.xyz" ] 
+then
+	file_name_molecule_A_aling="${file_name_molecule_A%.xyz}_align.xyz"
+	file_name_molecule_B_aling="${file_name_molecule_B%.xyz}_align.xyz"
+else
+	file_name_molecule_A_aling=$file_name_molecule_A
+	file_name_molecule_B_aling=$file_name_molecule_B
+fi
+
+vector_1A=$(echo $all_vectors | awk '{print $1" "$2" "$3}')
+vector_2A=$(echo $all_vectors | awk '{print $4" "$5" "$6}')
+vector_3A=$(echo $all_vectors | awk '{print $7" "$8" "$9}')
+
+vector_1B=$(echo $all_vectors | awk '{print $10" "$11" "$12}')
+vector_2B=$(echo $all_vectors | awk '{print $13" "$14" "$15}')
+vector_3B=$(echo $all_vectors | awk '{print $16" "$17" "$18}')
+
+result=$(echo $all_vectors | awk '{print $19}')
+
+
+cat << END_VMD_SCRIPT
+#!/usr/local/bin/vmd
+# VMD script written by save_state \$Revision: 1.47 $
+# VMD version: 1.9.3
+set viewplist {}
+set fixedlist {}
+# Display settings
+display projection   Orthographic
+display height       4.000000
+display distance     -2.000000
+display nearclip set 0.000000
+display depthcue   off
+display shadows off
+display ambientocclusion off
+display aoambient 0.800000
+display aodirect 0.300000
+display dof off
+display dof_fnumber 64.000000
+display dof_focaldist 0.700000
+mol new ../$file_name_molecule_A_aling type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+draw color blue
+draw cylinder {0 0 0} {$vector_1A} radius 0.05
+draw color red
+draw cylinder {0 0 0} {$vector_2A} radius 0.05
+draw color green
+draw cylinder {0 0 0} {$vector_3A} radius 0.05
+mol rename molecule_A_$file_name_molecule_A_aling
+# done with molecule 0
+mol new ../$file_name_molecule_B_aling type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+draw color blue3
+draw cylinder {0 0 0} {$vector_1B} radius 0.05
+draw color red3
+draw cylinder {0 0 0} {$vector_2B} radius 0.05
+draw color green3
+draw cylinder {0 0 0} {$vector_3B} radius 0.05
+mol rename molecule_B_$file_name_molecule_B_aling
+# done with molecule 0
+proc vmdrestoremycolors {} {
+	set colorcmds {
+		{color Display {Background} white}
+		{color Display {BackgroundTop} black}
+		{color Display {BackgroundBot} blue2}
+		{color Display {FPS} black}  
+	}
+	foreach colcmd \$colorcmds {    
+		set val [catch {eval \$colcmd}]  
+	}
+}
+vmdrestoremycolors
+rotate x by 45
+rotate y by -45
+rotate z by -45
+END_VMD_SCRIPT
+}
+##############################33
+inertia_tensor_image(){
+   file_output_comparisons=$1
+   file_name_xyz_molecule_A=$2
+   file_name_xyz_molecule_B=$3
+
+   inertia_tensor_name="inertia_tensor_of_${file_name_xyz_molecule_A%.xyz}_and_${file_name_xyz_molecule_B%.xyz}.vmd"
+   
+   if [[ ! -f Vectors/${inertia_tensor_name} ]];then
+      if grep -q "New lenght of EinVec" $file_output_comparisons; then
+            
+         vectors=$(get_vector $file_output_comparisons)
+         print_vmd_script $file_name_xyz_molecule_A $file_name_xyz_molecule_B "$vectors" > $inertia_tensor_name
+         mv $inertia_tensor_name Vectors
+      fi
+	fi
+   if [[ ! -f "Vectors/${inertia_tensor_name%vmd}png" ]] && [[ -f Vectors/${inertia_tensor_name} ]];then
+      vectors=$(get_vector $file_output_comparisons)
+		cd Vectors
+      bash ../../../Scripts/getPNGofXYZ -x 600 -y 450 "$inertia_tensor_name"
+		cd ..
+   fi
+}
+##############################################
+progress_bar(){   
+   n_data=$1   
+   total_data=$2  
+
+   weight=50   
+   pb_spinner="/-\|"   
+   
+   progress=$(( (n_data*100)/total_data ))   
+   
+   printf "[%-$((weight+3))s]%s  %s/%s \r" "$(printf "%0.s*" $(seq 0 $((progress/2))))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")" " $progress%" "$n_data" "$total_data"   
+   if (( n_data == total_data ));then      
+      printf "[%-$((weight+1))s]\n" "$(printf "%0.s*" $(seq 0 $((weight))))"   
+   fi
+}
+##############################################
+##############################33
+# Corpus of script
+##############################33
+
+echo "list of comparisons" > list_Comparisons.dat
+
+mkdir -p ImagesFromVMD
+
+for i in $(ls -v1 *.xyz | sed '/.*_align.xyz/d')
+do
+	echo "$i" >> tmp_list.tmp
+   if [[ ! -f ImagesFromVMD/${i%.xyz}.png  ]];then
+      cp $i ImagesFromVMD; cd ImagesFromVMD
+      bash ../../../Scripts/getPNGofXYZ -b white -x 600 -y 600 "$i" 
+      if ! grep -q "..\/$i" ${i%.xyz}.vmd ;then
+         sed -i "s/$i/..\/$i/" ${i%.xyz}.vmd 
+      fi
+      rm $i; cd ..
+#      mv ${i%.xyz}.png ImagesFromVMD
+#      mv ${i%.xyz}.vmd ImagesFromVMD
+   fi
+done
+echo
+n_comparisons=$(cat tmp_list.tmp|wc -l)
+for ((ii=$n_comparisons;ii>0;ii--))
+do
+	first_name=$(tail -n $ii tmp_list.tmp | head -n 1)
+	tail -n $(($ii-1)) tmp_list.tmp | awk -v x=$first_name '{print x"\t"$1}' >> list_Comparisons.dat
+done
+
+rm tmp_list.tmp
+
+mkdir -p Comparisons
+mkdir -p Vectors
+rm Comparisons/* 2>/dev/null
+
+total_comparisons=$(tail -n +2 list_Comparisons.dat | wc -l)
+number_comparisons=1
+
+tail -n +2 list_Comparisons.dat | while read -r line 
+do
+	filenameA=$(echo $line | awk '{print $1}')
+	short_filenameA=${filenameA%.xyz}
+	filenameB=$(echo $line | awk '{print $2}')
+	short_filenameB=${filenameB%.xyz}
+
+	file_name_comparison="Comparisons/comparison_$short_filenameA-with-$short_filenameB.alignOutput"
+	../../../src/alignandcomparemolecule/alignandcomparemolecule.x -B -m -l 2.0 -c -s -r $line > $file_name_comparison
+	
+	error_of_comparison=$?
+
+	if (( $error_of_comparison ))
+	then
+		echo "Error in comparison $file_name_comparison"
+		rm $file_name_comparison
+	fi
+
+   progress_bar $number_comparisons $total_comparisons
+
+   number_comparisons=$((number_comparisons+1))
+done 
+tail -n +2 list_Comparisons.dat | while read -r line 
+do
+	filenameA=$(echo $line | awk '{print $1}')
+	short_filenameA=${filenameA%.xyz}
+	filenameB=$(echo $line | awk '{print $2}')
+	short_filenameB=${filenameB%.xyz}
+
+	file_name_comparison="Comparisons/comparison_$short_filenameA-with-$short_filenameB.alignOutput"
+
+   inertia_tensor_image $file_name_comparison $filenameA $filenameB
+   
+#   if [ -f  "${short_filenameA}_align.xyz" ] && [ -f "${short_filenameB}_align.xyz" ]; then
+#   	rm "${short_filenameA}_align.xyz"
+#   	rm "${short_filenameB}_align.xyz"
+#   fi
+done
+echo
+

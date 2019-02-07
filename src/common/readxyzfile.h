@@ -2,7 +2,13 @@
 /*
  * 
  * Class for read a XYZ file  
- * Methods
+ * Methods : Public
+ * 	getValuesFromFile -> Open/Close the file and pass the ifstream to the other methods  
+ * Methods : Private
+ * 	getNumofAtoms -> From file read the firts line for kwoning the number of atoms in the molecule
+ * 	getDataAtoms -> Assing values from file (atomic number and coordinates) to the object atom
+ * 	typeDataNumOChar -> Check if is a number or symbol for atoms
+ * 	statusAllData -> Chech if all data are good
  *
  */
 /***************************************************************************************/  
@@ -32,6 +38,7 @@ class ReadXYZFile{
 		bool open_without_problems;
 	/***************************************************************************************/ 
 		bool getValuesFromFile(string,vector<Atom>&);
+		void sortingAtoms(vector<Atom> &);
 	
 	/***************************************************************************************/
 	/***************************************************************************************/ 
@@ -43,6 +50,7 @@ class ReadXYZFile{
 		int getNumofAtoms(ifstream &file);
 		bool typeDataNumOChar(ifstream &file);
 		bool statusAllData(vector<Atom>);
+
 
 	/***************************************************************************************/ 
 	/***************************************************************************************/ 

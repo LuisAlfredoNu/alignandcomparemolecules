@@ -1,0 +1,39 @@
+#!/bin/bash
+
+mkdir -p Comparisons/Outputs
+mkdir -p Comparisons/ImagesFromVMD
+mkdir -p Comparisons/Vectors
+
+bigTestFolder=$(pwd)
+
+rm Comparisons/Outputs/*.alignOutput 2>/dev/null
+rm Comparisons/ImagesFromVMD/*.png 2>/dev/null
+
+for i in $(ls -v1)
+do
+	if [[ -d "$i/Opt_Geo_2" ]]
+	then
+		cd $i/Opt_Geo_2/
+      echo "Run comparisons of ${i%"/Opt_Geo_2/"}"
+		bash ${bigTestFolder}/Scripts/scriptMake_All_Comparisons.bsh
+		cd Comparisons/
+		for ii in $(ls -v1 *.alignOutput)
+		do
+			base_file_name=${ii#comparisons_}
+			cp $ii ../../../Comparisons/Outputs/"comparisons_"$i"_folder_"$base_file_name
+		done
+		cd ..
+		cp ImagesFromVMD/*.png ../../Comparisons/ImagesFromVMD/.
+      cp Vectors/*.png ../../Comparisons/Vectors/.
+
+		cd ../..
+	fi
+done
+cd Comparisons
+bash ${bigTestFolder}/Comparisons/translato2Latex.bsh 
+bash ${bigTestFolder}/Comparisons/translato2Latex-table.bsh
+mv *.tex ../tex/
+
+cd ../tex/
+pdflatex report_of_comparisons.tex
+

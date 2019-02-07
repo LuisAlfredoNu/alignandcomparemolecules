@@ -1,0 +1,155 @@
+#!/bin/bash
+
+get_name_1(){
+	name_comparison=$1
+	file_tmp=${name_comparison#*folder_comparison_*}
+	file_tmp_2=${file_tmp%*-with-*}
+	echo $file_tmp_2|sed 's/\_/\\\_/g'
+}
+get_name_2(){
+	name_comparison=$1
+	file_tmp=${name_comparison#*folder_comparison_*}
+	file_tmp_2=${file_tmp#*-with-*}
+	echo ${file_tmp_2%*.alig*}|sed 's/\_/\\\_/g'
+}
+get_path_1(){
+	name_comparison=$1
+	folder=$(echo ${name_comparison%*folder*}  | awk -F "_" '{print "../"$2"/Opt_Geo_2/"}')
+	file_tmp=${name_comparison#*folder_comparison_*}
+	file_tmp_2=${file_tmp%*-with-*}
+	echo $folder${file_tmp_2%*_out_G09*}".log"
+}
+get_path_2(){
+	name_comparison=$1
+	folder=$(echo ${name_comparison%*folder*}  | awk -F "_" '{print "../"$2"/Opt_Geo_2/"}')
+	file_tmp=${name_comparison#*folder_comparison_*}
+	file_tmp_2=${file_tmp#*-with-*}
+	echo $folder${file_tmp_2%*_out_G09*}".log"
+}
+extract_SCF_from_log(){
+	file_log=$1
+	if [[ -f $file_log ]]
+	then
+		grep -n "SCF Done:" $file_log |tail -n 1 | awk '{print $6}'
+	else
+		echo No Data
+	fi
+}
+extract_Freq_from_log(){
+	file_log=$1
+	if [[ -f $file_log ]]
+	then
+		grep -n "Frequencies --" $file_log | head -n 1| awk '{print $4}'
+	else
+		echo No Data
+	fi
+}
+extract_result_align(){
+	file_alignOutput=$1
+
+	grep -n "Result" $file_alignOutput | awk '{print $4}'
+}
+manual_result(){
+	file_comparison=$1
+	file_manual_comparison="../ManualComparisons/$file_comparison.manual"
+	if [[ -f $file_manual_comparison ]];then
+		manual_result_out=$(cat $file_manual_comparison)
+	else
+		echo "Without comparison" > $file_manual_comparison
+		manual_result_out=$(cat $file_manual_comparison)
+	fi
+
+	program_result=$(extract_result_align $file_comparison)
+
+	if [[ $manual_result_out == $program_result ]];then
+
+		echo "\multirow{3}{*}{$manual_result_out} & \multirow{3}{*}{$program_result}"
+	else
+		echo "\multirow{3}{*}{\textcolor{Red}{\bf $manual_result_out}} & \multirow{3}{*}{\textcolor{Red}{\bf $program_result}}"
+
+	fi
+}
+extract_rms_align(){
+	file_alignOutput=$1
+
+	program_result=$(extract_result_align $file_alignOutput)
+	values_rms=$(grep -n "RMSD" $file_alignOutput | awk '{print $4}'| sed 's/e/E/')
+	
+	if [[ $program_result == "Equal" ]] 
+	then	
+		if (( $(echo $values_rms'>'0.001 | bc -l) )) 
+		then 
+			echo "{\textcolor{Red}{ RMS = $values_rms}}}"
+		elif (( $(echo $values_rms'<'0.001 | bc -l) ))
+		then 
+			echo "{ RMS = $values_rms}}"
+		fi
+	
+	elif [[ $program_result == "Enantiomers" ]]
+	then 
+		if (( $(echo $values_rms'>'0.001 | bc -l) ))
+		then echo " {RMS = $values_rms}}"
+		elif (( $(echo $values_rms'<'0.001 | bc -l) ))
+		then echo "{\textcolor{Red}{ RMS = $values_rms}}}"
+		fi
+	else
+		echo " {RMS = $values_rms}}"
+	fi
+}
+progress_bar(){
+   n_data=$1
+   total_data=$2
+   
+   weight=50
+   pb_spinner="/-\|"
+
+   progress=$(( (n_data*100)/total_data ))
+
+   printf "[%-$((weight+3))s]%s  %s/%s \r" "$(printf "%0.s*" $(seq 0 $((progress/2))))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")" " $progress%" "$n_data" "$total_data" 
+   if (( n_data == total_data ));then
+      printf "[%-$((weight+1))s]\n" "$(printf "%0.s*" $(seq 0 $weight))"
+   fi
+}
+join_all(){
+   number_of_comparisons=$1
+   i=$2
+
+   if (( number_of_comparisons%7==1 ));then
+      echo -e "\n\\\vtab[-2cm]\n\\\tab[-2cm]\n\\\begin{tabular}{c|m{8cm}|c|c}\n\# & Moléculas & Restultado esperado & Resultado programa \\\\\\ \hline\hline"
+   fi
+
+   echo "\multirow{4}{*}{\tab[2mm] $number_of_comparisons \tab[2mm]} & $(get_name_1 $i) &" 
+   echo $(manual_result $i) 
+   echo "\\\\" 
+   echo "& E = $(extract_SCF_from_log $(get_path_1 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_1 $i))   &    &  \\\\ \cline{2-2}"
+   echo "& $(get_name_2 $i)   & \multicolumn{2}{c}{\multirow{3}{*}"
+   extract_rms_align $i 
+   echo "\\\\"
+   echo "& E = $(extract_SCF_from_log $(get_path_2 $i)) \tab Freq =$(extract_Freq_from_log $(get_path_2 $i))   &    \multicolumn{2}{c}{}  \\\\ \hline"
+
+   if (( number_of_comparisons%7==0 ));then
+      echo -e "\\\end{tabular}\n\\\newpage"
+   fi
+}
+#-----------------------------------------------------------------------------#
+# Courpus of Script
+#-----------------------------------------------------------------------------#
+cd Outputs
+
+number_of_comparisons_courpus=1
+total_of_comparisons_courpus=$(ls *.alignOutput|wc -l)
+
+echo "Start with table of comparison with manual comparisons"
+echo " %%%%%%%%%%%%%%%%%%%%" > table_allResult.tex
+
+for comparison_name in $(ls *.alignOutput)
+do
+   join_all $number_of_comparisons_courpus $comparison_name >> table_allResult.tex
+
+   progress_bar $number_of_comparisons_courpus $total_of_comparisons_courpus
+   number_of_comparisons_courpus=$((number_of_comparisons_courpus+1))
+done
+
+echo "\end{tabular}" >> table_allResult.tex
+echo -e "\nFinish the table for report"
+mv table_allResult.tex ..; cd .. 

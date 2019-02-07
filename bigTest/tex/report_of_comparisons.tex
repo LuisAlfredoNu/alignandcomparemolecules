@@ -1,0 +1,216 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Report of comparations of the program
+% alignandcomparemolecules
+% LaTeX Template
+% Version 0.1 (10/12/17)
+%
+% Part of this template was downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Modifications by:
+% Isaias Morales Salazar (Shiver) isaiasms117@gmail.com
+% Luis Alfredo Nuñez (Fdx) luis.alfredo.nu@gmail.com
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------------------------------------------------------------------------% 
+% Packages
+%-----------------------------------------------------------------------------%
+\documentclass[12pt]{article} 	
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[usenames]{color}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{amsmath,mathtools}
+\usepackage[font={small},format=plain,labelfont=bf]{caption} % Size and format of foot of figures and tables
+\usepackage[dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{listings} % Add parts of code
+\usepackage{multicol}
+\usepackage{array,multirow}
+%-----------------------------------------------------------------------------%
+% Margin settings 
+%-----------------------------------------------------------------------------%
+\usepackage{geometry}
+\geometry{
+	paper=letterpaper, % Paper type
+	inner=2.5cm, % Inner margin
+	outer=2.5cm, % Outer margin
+	top=3.5cm, % Top margin
+	bottom=1.5cm, % Bottom margin
+}
+%-----------------------------------------------------------------------------% 
+% New Commands
+%-----------------------------------------------------------------------------%
+\renewcommand{\tablename}{Tabla} % Name of table foot 
+\renewcommand{\baselinestretch}{1.5} % space between lines 1.5
+\newcommand\tab[1][0.5cm]{\hspace*{#1}}
+\newcommand\vtab[1][0.5cm]{\vspace*{#1}}
+\newcommand{\classC}[1]{\textcolor{MidnightBlue}{\bf {#1}}}
+\newcommand{\alert}[1]{\begin{center}
+\fcolorbox{RoyalBlue}{Mahogany!90}{\tab\begin{minipage}[c]{0.8\textwidth}
+\vtab[-7mm]\textcolor{Goldenrod}{
+\begin{flushleft}{\bf{#1}}\end{flushleft}
+}\vtab[-3mm]
+\end{minipage}\tab}
+\end{center}}
+%-----------------------------------------------------------------------------% 
+% Path
+%-----------------------------------------------------------------------------% 
+\newcommand*{\srcpath}{src/}
+%-----------------------------------------------------------------------------%
+%-----------------------------------------------------------------------------%
+% Document
+%-----------------------------------------------------------------------------%
+%-----------------------------------------------------------------------------% 
+
+\begin{document}
+%-----------------------------------------------------------------------------%
+% Cover Page
+%-----------------------------------------------------------------------------% 
+\pagestyle{empty} 
+
+\begin{center}
+\includegraphics[width=4cm]{escudo-buap.pdf}
+
+BENEMÉRITA UNIVERSIDAD AUTÓNOMA DE PUEBLA\\
+\rule{150mm}{0.1mm}
+FACULTAD DE CIENCIAS QUÍMICAS\\
+LABORATORIO DE FISICOQUÍMICA TEÓRICA
+\rule{150mm}{0.1mm}
+
+\vtab
+\Large{Reporte de resultados para el programa \\ alignandcomparemolecules}\\
+\vtab[.3cm]
+
+\large{Título del proyecto: \\ \textbf{Desarrollo de software para comparar y resolver estructuras isoméricas mediante el tensor de inercia}}\\
+\vtab[0.5cm]
+
+PRESENTA\\
+Luis Alfredo Nuñez Meneses \\
+\vtab[0.5cm]
+
+\tab[-0.5cm]
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+DIRECTOR DE TESIS  \\
+Dr. Juan Manuel Solano Altamirano \\
+FQ-BUAP \\
+\end{center}
+\end{minipage}
+
+\vtab[0.5cm]
+\today\\
+\end{center}
+
+\newpage
+
+%-----------------------------------------------------------------------------% 
+% Resultados
+%-----------------------------------------------------------------------------% 
+\section{Resultados}
+\subsection{Pruebas realizadas}
+Las Pruebas que ya se realizaron son las siguientes y los resultados son óptimos y satisfactorios en todas las pruebas.\\
+Realicé todas las pruebas que muestro a continuación, para hacer todas las comparaciones programé unos scripts que me ayudaran a 
+automatizar todo el trabajo.
+
+		%\tab[-2cm]
+		%\begin{tabular}{c|m{8cm}|c|c}
+		%\# & Moléculas & Restultado esperado & Resultado programa \\ \hline\hline
+		%\multirow{4}{*}{\tab 1 \tab} & r-2-chlorobutane\_out\_G09\_inversion & \multirow{4}{*}{Estereisómeros} & \multirow{4}{*}{Estereisómeros} \\
+		%						 & E = -618.05708 \tab Freq = 115.2921   &											& 											 \\ \cline{2-2}
+		%						 & r-2-chlorobutane\_out\_G09 			  &											& 											 \\
+		%						 & E = -618.05708 \tab Freq = 115.2921   &											& 											 \\ \hline
+		%\multirow{4}{*}{\tab 1 \tab} & r-2-chlorobutane\_out\_G09\_inversion & \multirow{4}{*}{Estereisómeros} & \multirow{4}{*}{Estereisómeros} \\
+		%						 & E = -618.05708 \tab Freq = 115.2921   &											& 											 \\ \cline{2-2}
+		%						 & r-2-chlorobutane\_out\_G09 			  &											& 											 \\
+		%						 & E = -618.05708 \tab Freq = 115.2921   &											& 											 \\ \hline
+		%\end{tabular}
+		%
+		%\vtab[2cm]
+		%\begin{tabular}{c|m{5cm}|m{5cm}|m{3cm}|m{3cm}}
+		%\# & Molécula A & Molécula B & Resultado esperado & Resultado programa \\ \hline
+		%1  & r-2-chlorobutane\_out\_G09\_inversion & r-2-chlorobutane\_out\_G09 & Estereisómeros & Estereisómeros \\
+		%	& E = -618.057081944 					 & E = -618.057081944 & & \\
+		%	& Freq = 115.2921 						 & Freq = 115.2921 & & \\ \hline
+		%
+		%\end{tabular}
+
+
+
+	%\begin{multicols}{2}
+	%\begin{center}
+	%Molecule A: \\ SymmetricEnantiomers\/Opt\_Geo\/s-tmp\_rotated\_out\_G09\_output.xyz \\
+	% Inertia Tensor - Molecule A \\
+	%\vtab
+	%\begin{tabular}{|c c c|}
+	%            103.7 &  -4.21263e-05 & 8.53829e-06  \\ 
+	%     -4.21263e-05 &       630.074 & 2.17164e-05  \\ 
+	%      8.53829e-06 &   2.17164e-05 &     722.449   
+	%\end{tabular}
+	%
+	%\vtab
+	% EingenVectors - Molecule A     \\ 
+	%\vtab
+	%\begin{tabular}{|c c c|}
+	%               -1  & -8.00311e-08  &1.37993e-08  \\ 
+	%      8.00312e-08  &           -1  &2.35089e-07  \\ 
+	%      1.37993e-08  &  2.35089e-07  &          1   
+	%\end{tabular}
+	%
+	%\vtab
+	% EingenValues - Molecule A       \\
+	%\vtab
+	%\begin{tabular}{|c c c|}
+	%            103.7  &      630.074  &    722.449   
+	%\end{tabular}
+	%
+	%\columnbreak
+	%Molecule B: \\ SymmetricEnantiomers\/Opt\_Geo\/s-tmp\_rotated\_out\_G09.xyz\\
+	%Inertia Tensor - Molecule B\\
+	%
+	%\vtab
+	%\begin{tabular}{|c c c|}
+	%         103.707   &     1.51142    &  1.05403  \\
+	%         1.51142   &     630.103    &  1.67204  \\
+	%         1.05403   &     1.67204    &   722.42  
+	%\end{tabular}
+	%                                                
+	%\vtab
+	%EingenVectors - Molecule B\\
+	%\vtab
+	%\begin{tabular}{|c c c|}
+	%       -0.999994   &  0.00286582  & 0.00169581  \\
+	%      -0.0028346   &   -0.999832  &   0.018136  \\
+	%       0.0017475   &   0.0181311  &   0.999834  
+	%\end{tabular}
+	%                                                
+	%\vtab
+	%EingenValues - Molecule B\\
+	%\vtab
+	%\begin{tabular}{|c c c|}
+	%         103.701   &     630.077   &   722.452   
+	%\end{tabular}
+	%
+	%\end{center}
+	%\end{multicols}
+	%\textcolor{NavyBlue}{\large Resultado: Are Isomers}
+
+\include{allResult}
+\include{table_allResult}
+
+
+%-----------------------------------------------------------------------------% 
+% Extras
+%-----------------------------------------------------------------------------% 
+\section{Extras}
+
+Durante la realización de este reporte me surgió la necesidad de crear un par de scripts que puedan ayudar para el trabajo y 
+el empleo de esté programa. La tarea del script {\it scriptMake\_All\_Comparations.bsh} es realizar todas las comparaciones 
+posibles en una carpeta que contenga varias geometrías en el formato de archivo XYZ, guardando el resultado en otro archivo.\\
+El otro script es {\it translate\_comparatation2Latex.bsh} que utiliza la salida del anterior script para crear un resumen de las comparaciones 
+y traducirlas a un formato personalizado de latex y, de esta manera, poder visualizar con mayor facilidad las comparaciones.\\
+Actualmente el script sigue en desarrollo y se encuentra en el repositiorio del programa.
+
+
+\end{document}

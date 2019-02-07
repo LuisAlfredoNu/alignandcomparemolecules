@@ -1,0 +1,256 @@
+#!/bin/bash
+
+##############################################
+find_line_inertia_tensor(){
+	name_file_tensor=$1
+	grep -n "Inertia Tensor" $name_file_tensor | head -n 1 | sed 's;\([0-9]\):\(.*\);\1;'
+}
+##############################################
+find_line_EingenVectors(){
+	name_file_tensor=$1
+	grep -n "EingenVectors" $name_file_tensor | head -n 1 | sed 's;\([0-9]\):\(.*\);\1;'
+}
+##############################################
+find_line_EingenValues(){
+	name_file_tensor=$1
+	grep -n "EingenValues" $name_file_tensor | head -n 1 | sed 's;\([0-9]\):\(.*\);\1;'
+}
+##############################################
+find_result(){
+	name_file_result=$1
+	grep -n "Result" $name_file_result | awk '{print $4}'
+}
+##############################################
+matrix3x1(){
+
+	name_file_matrix=$1
+	initial_line_matrix=$2
+	molecule_label_matrix=$3
+
+	echo "\begin{tabular}{|c c c|}"
+	
+	if [ $molecule_label_matrix == "A" ]
+	then
+	cat $name_file_matrix | head -n $(( initial_line_matrix+1 )) | tail -n 1 | awk '{print $2 "\t & \t" $3 "\t & \t" $4 "\t \\\\"}'
+	elif [ $molecule_label_matrix == "B" ]
+	then
+	cat $name_file_matrix | head -n $(( initial_line_matrix+1 )) | tail -n 1 | awk '{print $7 "\t & \t" $8 "\t & \t" $9 "\t \\\\"}'
+	fi
+
+	echo "\end{tabular}"
+}
+##############################################
+matrix3x3(){
+
+	name_file_matrix=$1
+	initial_line_matrix=$2
+	molecule_label_matrix=$3
+
+	echo "\begin{tabular}{|c c c|}"
+	
+	if [ $molecule_label_matrix == "A" ]
+	then
+	cat $name_file_matrix | head -n $(( initial_line_matrix+3 )) | tail -n 3 | head -n 2 | awk '{print $2 "\t & \t" $3 "\t & \t" $4 "\t \\\\"}'
+	cat $name_file_matrix | head -n $(( initial_line_matrix+3 )) | tail -n 1 | awk '{print $2 "\t & \t" $3 "\t & \t" $4 }'
+	elif [ $molecule_label_matrix == "B" ]
+	then
+	cat $name_file_matrix | head -n $(( initial_line_matrix+3 )) | tail -n 3 | head -n 2 | awk '{print $7 "\t & \t" $8 "\t & \t" $9 "\t \\\\"}'
+	cat $name_file_matrix | head -n $(( initial_line_matrix+3 )) | tail -n 1 | awk '{print $7 "\t & \t" $8 "\t & \t" $9 }'
+	fi
+
+	echo "\end{tabular}"
+}
+##############################################
+latex_title(){
+name_file_latex=$1
+number_of_comparison=$2
+
+tmptitle=${name_file_latex%*_folder*}
+title=${tmptitle#comparisons_*}
+
+cat << LATEX_TITLE
+
+\vtab[-3cm]
+\begin{center}
+{\large $title \tab Número $number_of_comparison}
+\end{center}
+\begin{multicols}{2}
+\begin{center}
+LATEX_TITLE
+
+}
+##############################################
+latex_molecule_matrix(){
+
+name_file_molecule=$1
+molecule_label=$2
+
+file_name_base=${name_file_molecule#*folder_*}
+if [ $molecule_label == "A" ]
+then
+	tmpname=${file_name_base%*-with-*}
+	name_molecule=$(echo ${tmpname#comparison_*}|sed 's/\_/\\\_/g')
+	image_molecule="${tmpname#comparison_*}.png"
+elif [ $molecule_label == "B" ]
+then
+	tmpname=${file_name_base#*-with-*}
+	name_molecule=$(echo ${tmpname%.alignOutput}|sed 's/\_/\\\_/g')
+	image_molecule=${tmpname%.alignOutput}.png
+fi
+
+cat << LATEX_MOLECULE_01
+
+Molecule $molecule_label \\
+$name_molecule
+
+\includegraphics[width=6cm]{../Comparisons/ImagesFromVMD/$image_molecule}
+
+Inertia Tensor - Molecule $molecule_label \\\\
+LATEX_MOLECULE_01
+matrix3x3 $name_file_molecule $(find_line_inertia_tensor $name_file_molecule) $molecule_label
+cat << LATEX_MOLECULE_02
+
+\vtab
+ EingenVectors - Molecule $molecule_label     \\\\
+LATEX_MOLECULE_02
+matrix3x3 $name_file_molecule $(find_line_EingenVectors $name_file_molecule) $molecule_label
+cat << LATEX_MOLECULE_03
+
+\vtab
+ EingenValues - Molecule $molecule_label     \\\\
+LATEX_MOLECULE_03
+matrix3x1 $name_file_molecule $(find_line_EingenValues $name_file_molecule) $molecule_label
+}
+##############################################
+latex_molecule_different(){
+
+name_file_molecule=$1
+molecule_label=$2
+
+
+file_name_base=${name_file_molecule#*folder_*}
+if [ $molecule_label == "A" ]
+then
+	tmpname=${file_name_base%*-with-*}
+	name_molecule=$(echo ${tmpname#comparison_*}|sed 's/\_/\\\_/g')
+	image_molecule="${tmpname#comparison_*}.png"
+elif [ $molecule_label == "B" ]
+then
+	tmpname=${file_name_base#*-with-*}
+	name_molecule=$(echo ${tmpname%.alignOutput}|sed 's/\_/\\\_/g')
+	image_molecule=${tmpname%.alignOutput}.png
+fi
+
+if grep -q "Inertia Tensor" $name_file_molecule
+then	
+	latex_molecule_matrix $name_file_molecule $molecule_label
+else
+
+cat << LATEX_MOLECULE_01
+Molecule $molecule_label \\\\ 
+$name_molecule
+\includegraphics[width=8cm]{../Comparisons/ImagesFromVMD/$image_molecule}
+\\\\
+\vtab
+
+LATEX_MOLECULE_01
+fi
+}
+##############################################
+latex_tail(){
+name_file_tail=$1
+result_tail=$2
+	
+   tmpname=${name_file_tail%*-with-*}
+	name_A="${tmpname#*folder_comparison_*}"
+	
+   tmpname=${file_name_base#*-with-*}
+	name_B="${tmpname%.alignOutput}"
+if [[ -f "../Vectors/inertia_tensor_of_${name_A}_and_${name_B}.png" ]];then
+cat << LATEX_TAIL
+
+\end{center}
+\end{multicols}
+
+\vtab[-5mm]
+\begin{tabular}{*{2}{m{0.38\textwidth}}}
+\begin{center}
+\textcolor{NavyBlue}{\Large $result_tail}
+\end{center}
+&
+\begin{center}
+\includegraphics[height=6.5cm]{../Comparisons/Vectors/inertia_tensor_of_${name_A}_and_${name_B}.png}
+\end{center}
+\end{tabular}
+
+LATEX_TAIL
+else
+cat << LATEX_TAIL
+
+\end{center}
+\end{multicols}
+\begin{center}
+\textcolor{NavyBlue}{\Large $result_tail}
+\end{center}
+
+LATEX_TAIL
+fi
+}
+##############################################
+progress_bar(){
+   n_data=$1
+   total_data=$2
+   
+   weight=50
+   pb_spinner="/-\|"
+
+   progress=$(( (n_data*100)/total_data ))
+
+   printf "[%-$((weight+3))s]%s  %s/%s \r" "$(printf "%0.s*" $(seq 0 $((progress/2))))$(printf "\b${pb_spinner:n_data%${#pb_spinner}:1}")" " $progress%" "$n_data" "$total_data" 
+   if (( n_data == total_data ));then
+      printf "[%-$((weight+1))s]\n" "$(printf "%0.s*" $(seq 0 $weight))"
+   fi
+}
+##############################################
+join_all(){
+   name_file_join=$1
+   number_of_comparison_join=$2
+   result_join=$3
+
+	latex_title $name_file_join $number_of_comparison_join
+	if [ ! $result_join == "Different" ]
+	then 
+		latex_molecule_matrix $name_file_join "A"
+		echo "\\columnbreak"
+		latex_molecule_matrix $name_file_join "B"
+	else
+		latex_molecule_different $name_file_join "A"
+		echo "\\columnbreak"
+		latex_molecule_different $name_file_join "B"
+	
+	fi
+		latex_tail $name_file_join $result_join
+	echo " \newpage"
+}
+##############################################
+# Corpus script
+##############################################
+cd Outputs
+
+number_of_comparison=1
+total_of_comparison=$(ls *.alignOutput|wc -l)
+echo "Start creating the report"
+echo "% All results" > allResult.tex
+for i in $(ls -v1 *.alignOutput)
+do
+	name_file_corpus=$i
+	result=$(find_result $name_file_corpus)
+
+   join_all $name_file_corpus $number_of_comparison $result >> allResult.tex
+
+   progress_bar $number_of_comparison $total_of_comparison
+	number_of_comparison=$((number_of_comparison+1))
+done
+echo -e "\nFinish report"
+mv allResult.tex ..
+cd ..

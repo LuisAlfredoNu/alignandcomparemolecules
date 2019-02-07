@@ -1,0 +1,69 @@
+#!/usr/local/bin/vmd
+# VMD script written by save_state $Revision: 1.47 $
+# VMD version: 1.9.3
+set viewplist {}
+set fixedlist {}
+# Display settings
+display projection   Orthographic
+display height       4.000000
+display distance     -2.000000
+display nearclip set 0.000000
+display depthcue   off
+display shadows off
+display ambientocclusion off
+display aoambient 0.800000
+display aodirect 0.300000
+display dof off
+display dof_fnumber 64.000000
+display dof_focaldist 0.700000
+mol new ../3NFAACf_align.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+draw color blue
+draw cylinder {0 0 0} {-2.99937 -0.0611954 -0.00566625} radius 0.05
+draw color red
+draw cylinder {0 0 0} {-0.0061631 0.0243035 2.9999} radius 0.05
+draw color green
+draw cylinder {0 0 0} {-0.0611473 2.99928 -0.0244241} radius 0.05
+mol rename molecule_A_3NFAACf_align.xyz
+# done with molecule 0
+mol new ../3NFAACn_align.xyz type xyz first 0 last -1 step 1 filebonds 1 autobonds 1 waitfor all
+mol delrep 0 top
+mol representation CPK 1.000000 0.400000 150.000000 150.000000
+mol color Name
+mol selection {all}
+mol material Opaque
+mol addrep top
+mol scaleminmax top 0 0.000000 0.000000
+mol smoothrep top 0 0
+mol drawframes top 0 {now}
+draw color blue3
+draw cylinder {0 0 0} {2.99821 0.102567 0.0146233} radius 0.05
+draw color red3
+draw cylinder {0 0 0} {-0.0128572 -0.0518154 2.99952} radius 0.05
+draw color green3
+draw cylinder {0 0 0} {0.102804 -2.9978 -0.0513449} radius 0.05
+mol rename molecule_B_3NFAACn_align.xyz
+# done with molecule 0
+proc vmdrestoremycolors {} {
+	set colorcmds {
+		{color Display {Background} white}
+		{color Display {BackgroundTop} black}
+		{color Display {BackgroundBot} blue2}
+		{color Display {FPS} black}  
+	}
+	foreach colcmd $colorcmds {    
+		set val [catch {eval $colcmd}]  
+	}
+}
+vmdrestoremycolors
+rotate x by 45
+rotate y by -45
+rotate z by -45

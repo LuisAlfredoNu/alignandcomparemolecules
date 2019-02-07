@@ -1,0 +1,7 @@
+%nproc=4
+%mem=60gb
+#B3LYP/6-31G* fopt test
+
+Metano opt
+
+0 1

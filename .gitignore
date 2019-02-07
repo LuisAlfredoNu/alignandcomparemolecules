@@ -19,10 +19,16 @@
 *.dat
 *.txt
 *.owo
+*.tga
+*.png
+#*_output.xyz
+*_align.xyz
+*.alignOutput
 
 #specific files
 backup/test/main
 backup/gui/test
+testAlfredo/Comparations/*.tex
 
 #directories
 backup/gui/build/*
@@ -32,5 +38,5 @@ src/bin/*
 src/gui/build/*
 src/gui/bin/*
 src/gui/images/own/*
-
+testAlfredo/*/Opt_Geo/
 
