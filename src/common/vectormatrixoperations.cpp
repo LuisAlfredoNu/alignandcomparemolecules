@@ -93,7 +93,7 @@ bool VectorAndMatrixOperations::compareEigenValues(vector<double> eigenValues_mo
 bool VectorAndMatrixOperations::proveEigenValDegeneracy(vector<double> eigenValues_moleculeA){
 
    bool degeneracy = true;
-   double epsilon = 0.001;
+   double epsilon = 0.1;
    vector<double> diffvalues (3,0.0);
 
    diffvalues[0] = abs(eigenValues_moleculeA[0] - eigenValues_moleculeA[1]);
