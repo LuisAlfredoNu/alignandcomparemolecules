@@ -166,7 +166,7 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 		}
 	}
 	for(int i = 0;i<3;i++){
-		if(max > range_r[i] && range_r[i] > min)
+		if((max >= range_r[i] && i != order2compare[0]) && (range_r[i] >= min && i != order2compare[2]))
 			order2compare[1] = i;
 	}
 /*
