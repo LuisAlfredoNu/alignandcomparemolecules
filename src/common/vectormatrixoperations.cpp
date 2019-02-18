@@ -203,28 +203,42 @@ bool VectorAndMatrixOperations::compareCoordinates(vector<Atom> molecule_A, vect
 
 	while(is_equal && i < maxsize ){
 
-		if(abs(molecule_A[i].atomCoordinates[0] - molecule_B[i].atomCoordinates[0]) > 0.001) is_equal = false;
-		if(abs(molecule_A[i].atomCoordinates[1] - molecule_B[i].atomCoordinates[1]) > 0.001) is_equal = false;
-		if(abs(molecule_A[i].atomCoordinates[2] - molecule_B[i].atomCoordinates[2]) > 0.001) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[0] - molecule_B[i].atomCoordinates[0]) > 0.05) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[1] - molecule_B[i].atomCoordinates[1]) > 0.05) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[2] - molecule_B[i].atomCoordinates[2]) > 0.05) is_equal = false;
 		i++;
 	}
 
 	return is_equal;
 }
 /***************************************************************************************/
+#include "output.h"
 bool VectorAndMatrixOperations::permutationBequalA(vector<Atom> molecule_A_align, vector<Atom>& molecule_B_align){
 
+	OutputAlignProgram output;
 	ReadXYZFile reader;
 
 	vector<double> angles (3,0.0);
 	vector<Atom> molecule_B_align_second_rotation = molecule_B_align;
 	vector<Atom> molecule_B_align_second_rotation_final;
+				  output.saveXYZFile("molecule_B_original.xyz","Molecule B",molecule_B_align);
 
 	bool find_equal = false;
 	for(int i=0;i<4 && !find_equal;++i){
 		for(int j=0;j<4 && !find_equal;++j){
 			for(int k=0;k<4 && !find_equal;++k){
 
+				/*************************************************************************************** 
+				  string tmp_filename_molcule_B = "molecule_B";
+				  tmp_filename_molcule_B += "_X_";
+				  tmp_filename_molcule_B += std::to_string(i*90);
+				  tmp_filename_molcule_B += "_Y_";
+				  tmp_filename_molcule_B += std::to_string(j*90);
+				  tmp_filename_molcule_B += "_Z_";
+				  tmp_filename_molcule_B += std::to_string(k*90);
+				  tmp_filename_molcule_B += ".xyz";
+				  output.saveXYZFile(tmp_filename_molcule_B,"Molecule B",molecule_B_align_second_rotation);
+				/***************************************************************************************/ 
 				reader.sortingAtoms(molecule_B_align_second_rotation);
 				if(compareCoordinates(molecule_A_align,molecule_B_align_second_rotation)){
 					molecule_B_align = molecule_B_align_second_rotation;
@@ -235,17 +249,6 @@ bool VectorAndMatrixOperations::permutationBequalA(vector<Atom> molecule_A_align
 				angles[2] = 90.0;
 
 				molecule_B_align_second_rotation = rotateMolecule(angles,molecule_B_align_second_rotation);
-				/*************************************************************************************** 
-				  string tmp_filename_molcule_B = filename_molecule_B.substr(0,(filename_molecule_B.size()-4));
-				  tmp_filename_molcule_B += "_X_";
-				  tmp_filename_molcule_B += std::to_string(i*90);
-				  tmp_filename_molcule_B += "_Y_";
-				  tmp_filename_molcule_B += std::to_string(j*90);
-				  tmp_filename_molcule_B += "_Z_";
-				  tmp_filename_molcule_B += std::to_string(k*90);
-				  tmp_filename_molcule_B += ".xyz";
-				  output.saveXYZFile(tmp_filename_molcule_B,"Molecule B",molecule_B_align_second_rotation);
-				 ***************************************************************************************/ 
 			}
 			angles[0] = 0.0;
 			angles[1] = 90.0;
@@ -253,9 +256,9 @@ bool VectorAndMatrixOperations::permutationBequalA(vector<Atom> molecule_A_align
 
 			molecule_B_align_second_rotation = rotateMolecule(angles,molecule_B_align_second_rotation);
 		}
-		angles[0] = 0.0;
+		angles[0] = 90.0;
 		angles[1] = 0.0;
-		angles[2] = 90.0;
+		angles[2] = 0.0;
 
 		molecule_B_align_second_rotation = rotateMolecule(angles,molecule_B_align_second_rotation);
 	}
