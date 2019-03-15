@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+
+cd Outputs 
+
+	echo "\newpage" > benchMark.tex
+
+	echo "{\Huge Rendimeinto del programa } \\\\" >> benchMark.tex
+
+	grep -n "real" * | awk '{print $2"\t"$1}' | sort | awk '{print $1}'| sed 's/m//' |sed 's/s//' | awk 'BEGIN {suma=0.0;primero=0.0;max=0.0} NR==1{primero+=$1} {suma+=$1} END {max+=$1;print " Tiempo más corto de cálculo = \t"primero" s""\\\\ Tiempo más largo de cálculo = \t"max" s""\\\\ Tiempo total de todos los cálculos = \t"suma" s""\\\\ Número de comparaciones = \t"NR"\\\\ Promedio de tiempo = \t"suma/NR" s""\n\n \\newpage"}' >> benchMark.tex
+
+	grep -n "real" * | awk '{print $2"\t"$1}' | sort | awk '{print $1}'| sed 's/m//' |sed 's/s//' | awk 'BEGIN {suma=0.0;primero=0.0;max=0.0} NR==1{primero+=$1} {suma+=$1} END {max+=$1;print " Tiempo más corto de cálculo = \t"primero" s""\n Tiempo más largo de cálculo = \t"max" s""\n Tiempo total de todos los cálculos = \t"suma" s""\n Número de comparaciones = \t"NR"\n Promedio de tiempo = \t"suma/NR" s""\n\n"}'
+	
+	mv benchMark.tex ..
+cd ..
