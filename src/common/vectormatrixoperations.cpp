@@ -505,16 +505,21 @@ vector<vector<double>> VectorAndMatrixOperations::incrementLengthVector(double n
 double VectorAndMatrixOperations::RMS4Comparations(vector<Atom> molecule_A, vector<Atom> molecule_B){
 	
 	double rms_comparative = 0.0;
-	int Natoms = molecule_A.size();
+	int Natoms_molA = molecule_A.size();
+	int Natoms_molB = molecule_B.size();
 
-	for(int i = 0; i < Natoms; i++){
-		for(int xyz = 0; xyz < 3; xyz++){
+	if(Natoms_molA == Natoms_molB){
+		for(int i = 0; i < Natoms_molA; i++){
+			for(int xyz = 0; xyz < 3; xyz++){
 
-			rms_comparative = (molecule_A[i].atomCoordinates[xyz] - molecule_B[i].atomCoordinates[xyz]) * (molecule_A[i].atomCoordinates[xyz] - molecule_B[i].atomCoordinates[xyz]);
+				rms_comparative = (molecule_A[i].atomCoordinates[xyz] - molecule_B[i].atomCoordinates[xyz]) * (molecule_A[i].atomCoordinates[xyz] - molecule_B[i].atomCoordinates[xyz]);
+			}
 		}
+		rms_comparative /= (double)Natoms_molA;
+		rms_comparative = sqrt(rms_comparative);
+	}else{
+		rms_comparative = std::nan("") ;
 	}
-	rms_comparative /= (double)Natoms;
-	rms_comparative = sqrt(rms_comparative);
 
 	return rms_comparative;
 }
