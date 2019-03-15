@@ -14,7 +14,8 @@ do
 	if [[ -d "$i/Opt_Geo_2" ]]
 	then
 		cd $i/Opt_Geo_2/
-      echo "Run comparisons of ${i%"/Opt_Geo_2/"}"
+		number_molecules=$(ls -v1 *.xyz | sed '/.*_align.xyz/d'|wc -l)
+      echo "Run comparisons of ${i%"/Opt_Geo_2/"} with $number_molecules molecules"  
 		bash ${bigTestFolder}/Scripts/scriptMake_All_Comparisons.bsh
 		cd Comparisons/
 		for ii in $(ls -v1 *.alignOutput)
@@ -30,10 +31,12 @@ do
 	fi
 done
 cd Comparisons
+bash ${bigTestFolder}/Comparisons/benchMark2Latex.bsh 
 bash ${bigTestFolder}/Comparisons/translato2Latex.bsh 
 bash ${bigTestFolder}/Comparisons/translato2Latex-table.bsh
 mv *.tex ../tex/
 
 cd ../tex/
-pdflatex report_of_comparisons.tex
+echo "Compiling latex to get PDF file"
+pdflatex report_of_comparisons.tex > /dev/null
 
