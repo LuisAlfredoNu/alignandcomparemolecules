@@ -47,7 +47,7 @@ END_USAGE_TEXT
 }
 #####################################################################
 prove_if_exist_tachyon_lib(){
-	path=$1
+	path=$path_of_tachyon
 	if [[ -f $path ]]
 	then
 		echo "true"
