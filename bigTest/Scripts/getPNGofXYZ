@@ -135,7 +135,7 @@ generate_png_from_vmd(){
 		rm $file_name_for_render
 		rm $file_name_tga
 	else
-		echo "Can not create the image of molecule"
+		printf "%s\r%s\r" "$(printf "%0.s " $(seq 0 $(($(tput cols)-1))))" " Can not create the image of molecule $file_name"
 	fi
 }
 #####################################################################
