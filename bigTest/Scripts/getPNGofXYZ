@@ -111,7 +111,7 @@ generate_png_from_vmd(){
 	res_y=$3
 	backgroud_color=$4
 
-	if [[ $(prove_if_exist_tachyon_lib)=="true" ]];then
+	if [[ $(prove_if_exist_tachyon_lib) == "true" ]];then
 		base_file_name=${file_name%.*}
 		file_name_vmd_view="$base_file_name.vmd"
 		file_name_for_render="$base_file_name.render"
