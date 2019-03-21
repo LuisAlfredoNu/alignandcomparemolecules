@@ -51,9 +51,6 @@ prove_if_exist_tachyon_lib(){
 	if [[ -f $path ]]
 	then
 		echo "true"
-	else
-		echo -e " Error: Missing the tachyon_LINUXAMD64 \n Search where is the lib of vmd"
-		exit 2
 	fi
 }
 #####################################################################
