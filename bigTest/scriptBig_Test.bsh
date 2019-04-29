@@ -30,13 +30,16 @@ do
 		cd ../..
 	fi
 done
+
 cd Comparisons
 bash ${bigTestFolder}/Comparisons/benchMark2Latex.bsh 
+
+if [[ $1 == "report" ]]; then
 bash ${bigTestFolder}/Comparisons/translato2Latex.bsh 
 bash ${bigTestFolder}/Comparisons/translato2Latex-table.bsh
 mv *.tex ../tex/
-
 cd ../tex/
 echo "Compiling latex to get PDF file"
-pdflatex report_of_comparisons.tex > /dev/null
+pdflatex report_of_comparisons.tex 
+fi
 
