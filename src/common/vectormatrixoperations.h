@@ -32,6 +32,7 @@ class VectorAndMatrixOperations{
 		vector<Atom> inversionOfCoordinates(vector<Atom> molecule);
 		bool compareCoordinates(vector<Atom>,vector<Atom>);
 		bool permutationBequalA(vector<Atom>,vector<Atom> &);
+		bool fixWtihDeterminants(vector<vector<double>> ,vector<vector<double>> &);
 		
 		vector<vector<double>> changeBasisEigenVec(vector<vector<double>>,vector<vector<double>>);
 		
@@ -49,6 +50,7 @@ class VectorAndMatrixOperations{
 		double dotProduct(vector<double>,vector<double>);
 		vector<double> crossProduct(vector<double>,vector<double>);
 		vector<double> anglesEuler(int,vector<vector<double>>);
+		double determinant3x3(vector<vector<double>>);
 		vector<vector<double>> rotationEuler(vector<double>, vector<vector<double>> ); 
 
 	/***************************************************************************************/ 

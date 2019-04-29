@@ -203,9 +203,9 @@ bool VectorAndMatrixOperations::compareCoordinates(vector<Atom> molecule_A, vect
 
 	while(is_equal && i < maxsize ){
 
-		if(abs(molecule_A[i].atomCoordinates[0] - molecule_B[i].atomCoordinates[0]) > 0.05) is_equal = false;
-		if(abs(molecule_A[i].atomCoordinates[1] - molecule_B[i].atomCoordinates[1]) > 0.05) is_equal = false;
-		if(abs(molecule_A[i].atomCoordinates[2] - molecule_B[i].atomCoordinates[2]) > 0.05) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[0] - molecule_B[i].atomCoordinates[0]) > 0.15) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[1] - molecule_B[i].atomCoordinates[1]) > 0.15) is_equal = false;
+		if(abs(molecule_A[i].atomCoordinates[2] - molecule_B[i].atomCoordinates[2]) > 0.15) is_equal = false;
 		i++;
 	}
 
@@ -221,7 +221,6 @@ bool VectorAndMatrixOperations::permutationBequalA(vector<Atom> molecule_A_align
 	vector<double> angles (3,0.0);
 	vector<Atom> molecule_B_align_second_rotation = molecule_B_align;
 	vector<Atom> molecule_B_align_second_rotation_final;
-				  output.saveXYZFile("molecule_B_original.xyz","Molecule B",molecule_B_align);
 
 	bool find_equal = false;
 	for(int i=0;i<4 && !find_equal;++i){
@@ -263,6 +262,35 @@ bool VectorAndMatrixOperations::permutationBequalA(vector<Atom> molecule_A_align
 		molecule_B_align_second_rotation = rotateMolecule(angles,molecule_B_align_second_rotation);
 	}
 	return find_equal;
+}
+/***************************************************************************************/  
+bool VectorAndMatrixOperations::fixWtihDeterminants(vector<vector<double>> eigenVector_moleculeA, vector<vector<double>>& eigenVector_moleculeB){
+
+	double detA = determinant3x3(eigenVector_moleculeA);
+	double detB = determinant3x3(eigenVector_moleculeB);
+	
+	bool equal = false;
+
+	if ((detA > 0.0 && detB > 0.0) || (detA < 0.0 && detB < 0.0)) equal = true;
+	
+	//cout << "Determinete Mol A = " << detA;
+	//cout << " \tDeterminete Mol B = " << detB << " \tEqual = "<< equal << endl;
+
+	if(!equal){
+		eigenVector_moleculeB[0][0] *= -1.0;
+		eigenVector_moleculeB[0][1] *= -1.0;
+		eigenVector_moleculeB[0][2] *= -1.0;
+	
+		detA = determinant3x3(eigenVector_moleculeA);
+		detB = determinant3x3(eigenVector_moleculeB);
+		
+		if ((detA > 0.0 && detB > 0.0) || (detA < 0.0 && detB < 0.0)) equal = true;
+		
+		//cout << "Determinete Mol A = " << detA;
+		//cout << " 2\tDeterminete Mol B = " << detB << " \tEqual = "<< equal << endl;
+	}
+
+	return equal;
 }
 /***************************************************************************************/ 
 /***************************************************************************************/ 
@@ -537,6 +565,18 @@ vector<double> VectorAndMatrixOperations::crossProduct(vector<double> vectorA, v
 	crossproduct[1] = vectorA[2]*vectorB[0] - vectorA[0]*vectorB[2]; 
 	crossproduct[2] = vectorA[0]*vectorB[1] - vectorA[1]*vectorB[0]; 
 	return crossproduct;
+}
+/***************************************************************************************/  
+double VectorAndMatrixOperations::determinant3x3(vector<vector<double>> matrix){
+	double determinant = 0.0;
+	determinant +=  matrix[0][0] * matrix[1][1] * matrix[2][2];
+	determinant -=  matrix[0][0] * matrix[1][2] * matrix[2][1];
+	determinant +=  matrix[0][2] * matrix[1][0] * matrix[2][1];
+	determinant -=  matrix[0][1] * matrix[1][0] * matrix[2][2];
+	determinant +=  matrix[0][1] * matrix[1][2] * matrix[2][0];
+	determinant -=  matrix[0][2] * matrix[1][1] * matrix[2][0];
+	
+	return determinant;
 }
 /***************************************************************************************/ 
 vector<double> VectorAndMatrixOperations::anglesEuler(int numangle,vector<vector<double>> eigenVector_moleculeA){

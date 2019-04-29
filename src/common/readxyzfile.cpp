@@ -183,8 +183,8 @@ void ReadXYZFile::sortingAtoms(vector<Atom>& molecule){
 
 	int swaps = 1;
 	int gap = molecule.size();
-	double epsilonZ = 0.0001;
-	double epsilonY = 0.0001;
+	double epsilonZ = 0.1001;
+	double epsilonY = 0.1001;
 
 	while(!(swaps == 0 && gap ==1)){
 		if(gap > 1){

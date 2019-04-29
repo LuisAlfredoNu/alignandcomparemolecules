@@ -45,7 +45,7 @@ int main (int argc, char *argv[]) {
 
 			int decision = 0;
 			cout << "What kind of operation want?" << endl;
-			cout << "Rotation tap 1, Invertion tap 2, Translate tap 3" << endl;
+			cout << "Rotation tap 1, Invertion tap 2, Translate tap 3, Move to MassCenter tap 4" << endl;
 			cin >> decision;
 
 			switch(decision){
@@ -142,6 +142,28 @@ int main (int argc, char *argv[]) {
 					ofilename += ".xyz"; 
 					string comment = "Molecule translate";
 					output.saveXYZFile(ofilename,comment,molecule_B_operate);
+				}break;
+				case 4:{
+
+					cout << "Move to mass center " << endl ;
+
+					MolecularOperations molecularOP;
+					
+					molecule_B_operate = molecularOP.moveCM2Origin(molecule_A);
+
+					cout << endl << "Coordenates of inital molecule "<< endl;
+					output.displayXYZFile(argv[1],molecule_A);
+
+					cout << endl << "Coordenates of molecule after rotation "<< endl;
+					reader.sortingAtoms(molecule_B_operate);
+					output.displayXYZFile(argv[1],molecule_B_operate);
+					string filename = argv[1];
+					string ofilename = filename.substr(0,(filename.size()-4));
+					ofilename += "_MassCenter";
+					ofilename += ".xyz"; 
+					string comment = "Molecule translate";
+					output.saveXYZFile(ofilename,comment,molecule_B_operate);
+
 
 				}break;
 				default:

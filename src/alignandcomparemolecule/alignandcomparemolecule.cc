@@ -71,7 +71,9 @@ int main (int argc, char *argv[]) {
          degeneracy = matrixOP.proveEigenValDegeneracy(eigvalues_molecule_A);
          if(!degeneracy){
 
-            molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A_inCM);
+				matrixOP.fixWtihDeterminants(eigvectors_molecule_A,eigvectors_molecule_B);
+            
+				molecule_A_align = matrixOP.rotateMolecule(eigvectors_molecule_A,molecule_A_inCM);
             molecule_B_align = matrixOP.rotateMolecule(eigvectors_molecule_B,molecule_B_inCM);
 
             reader.sortingAtoms(molecule_A_align);
